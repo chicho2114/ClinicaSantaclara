@@ -70,7 +70,9 @@
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_fabricante">Crear Fabricante</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_categoria">Crear Categoría</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_archivo">Cargar Referencias mediante Archivo</a></li>
+											                	<li class="divider"></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/listar">Consultar Referencia</a></li>
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/proveedores/consultar">Consultar Proveedor</a></li>
 											                	<li class="divider"></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_bodega">Bodegas de Inventario</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_ajuste">Cargar Ajustes en Inventario</a>

@@ -3,6 +3,7 @@ package com.control.proveedor;
 
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.control.general.ManejadorMensajes;
 import com.control.general.Redireccion;
 import com.control.general.TipoMensaje;
+import com.control.general.Utils;
 
 
 @Controller
@@ -44,17 +46,17 @@ public class ProveedorController {
 			method = RequestMethod.POST)
 	public ModelAndView crear_accion(HttpServletRequest request,
 								 HttpServletResponse response,
-								 @RequestParam(value="id", required=true) String id,
+								 @RequestParam(value="codigo", required=true) String codigo,
 								 @RequestParam(value="nombre", required=true) String nombre,
 								 @RequestParam(value="telefono", required=true) String telefono) {
 	
 			Proveedor p = new Proveedor();
 			
-			p.setId(id);
+			p.setCodigo(codigo);
 			p.setNombre(nombre);
 			p.setTelefono(telefono);
 			p.setFechacrea(new Date());
-			//p.setUsuaCrea(Utils.obtenerUsuario(request));
+			p.setUsuaCrea(Utils.obtenerUsuario(request));
 			
 			try {
 				this.p.insertarProveedor(p);
@@ -62,7 +64,7 @@ public class ProveedorController {
 			} catch (Exception e) {
 				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
 			}
-	
+			
 		return new Redireccion(map + "/crear");
 	}
 	
@@ -74,5 +76,82 @@ public class ProveedorController {
 		
 		return new ModelAndView(view + "/crear_form", modelo);
 	}
+	
+	@RequestMapping(value = map + "/consultar")
+	public ModelAndView consultar_prov(HttpServletRequest request,
+								   HttpServletResponse response) {
+		
+		ModelMap modelo = new ModelMap();
+		//modelo.addAttribute("fabricantes", p.consultarFabricantes());
+		//modelo.addAttribute("categorias", p.consultarCategorias());
+		
+		return new ModelAndView(view + "/consultar_prov", modelo);
+	}
+	
+	@RequestMapping(value = map + "/ver")
+	public ModelAndView ver(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codigo", required=true) String codigo) {
+		
+		
+		Proveedor proveedor = new Proveedor();
+		proveedor.setCodigo(codigo);
+		
+		List<Proveedor> l = p.listarProveedores(proveedor);
+		
+		if(l.size() == 0 || l.size() > 1) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se encontro proveedor");
+			return new Redireccion(map + "/listar");
+		}
+		
+		ModelMap modelo = new ModelMap();
+		modelo.put("proveedor", l.get(0));
+		
+		return new ModelAndView(view + "/ver", modelo);
+	}
+	
+	@RequestMapping(value = map + "/mostrar")
+	public ModelAndView listar(HttpServletRequest request,
+							   HttpServletResponse response,
+							   @RequestParam(value="codigo", required=false) String codigo,
+							   @RequestParam(value="nombre", required=false) String nombre,
+							   @RequestParam(value="telefono", required=false) String telefono) { 
+		
+		if(codigo == null) {
+			codigo = "";
+		}
+		if(nombre == null) {
+			nombre = "";
+		}
+		if(telefono == null) {
+			telefono = "";
+		}
+		
+		if(codigo.length() < 4 && !codigo.equals("")) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "El campo 'Codigo de proveedor' debe tener, minimo, 4 caracteres");
+			return new Redireccion(map + "/consultar");
+		}
+		
+		if(nombre.length() < 3 && !nombre.equals("")) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "El campo 'Nombre' debe tener, minimo, 3 caracteres");
+			return new Redireccion(map + "/consultar");	
+		}
+		
+		Proveedor proveedor = new Proveedor();
+		proveedor.setCodigo(codigo);
+		proveedor.setNombre(nombre);
+		proveedor.setTelefono(telefono);
 
+		List<Proveedor> l = p.listarProveedores(proveedor);
+		
+		if(l.size() == 0) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se encontraron resultados");
+			return new Redireccion(map + "/listar");
+		}
+		
+		ModelMap modelo = new ModelMap();
+		modelo.addAttribute("refs", l);
+			
+		return new ModelAndView(view + "/listar_reporte", modelo);
+	}
 }

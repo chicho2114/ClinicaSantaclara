@@ -15,12 +15,12 @@
 					  id="crearUsuario">
 					<table class="table table-hover">
 						<tr>
-							<td><strong>Id:</strong></td>
-							<td><input class="uppercase" id="id" name="id" type="text" tabindex="1"></td>
+							<td><strong>Codigo Proveedor:</strong></td>
+							<td><input class="uppercase" id="codigo" name="codigo" type="text" tabindex="1"></td>
 			       		</tr>
 			       		<tr>
 			       			<td><strong>Nombre:</strong></td>
-			       			<td><textarea class="uppercase" name="nombre" rows="2" cols="75" tabindex="2"></textarea></td>
+			       			<td><input class="uppercase" name="nombre" type="text" tabindex="2"></td>
 			       		</tr>
 			       		<tr>
 			       			<td><strong>Telefono:</strong></td>
