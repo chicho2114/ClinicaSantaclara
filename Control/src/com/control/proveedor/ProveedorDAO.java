@@ -83,14 +83,37 @@ public class ProveedorDAO {
 	public List<Proveedor> listarProveedores(Proveedor proveedor) {
 		
 		Object[] argumentos = {proveedor.getCodigo()+"%", proveedor.getNombre()+"%", 
-							   proveedor.getTelefono(), proveedor.getFechacrea()};
+							   proveedor.getTelefono()+"%"};
 		
 		int[] tipos = {Types.VARCHAR, Types.VARCHAR, 
-					   Types.VARCHAR, Types.TIMESTAMP};
+					   Types.VARCHAR};
 		
 		String sql = prop.obtenerSQL("proveedores.listar");
 		
 		return jdbcProveedor.query(sql, argumentos, tipos, new ProveedorMapper());
+	}
+	
+	@Transactional(rollbackFor=DataAccessException.class)
+	public void actualizarProveedor(Proveedor proveedor) throws ExcepcionSQL, Exception {
+		
+		if(verificarProveedor(proveedor.getCodigo()) > 0) {		
+			
+			//Insertar en tabla de proveedores
+			Object[] argumentos = {proveedor.getNombre(), proveedor.getTelefono(), proveedor.getUsuaModi(), proveedor.getFechamodi(), proveedor.getCodigo()};
+			
+			int[] tipos = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+						   Types.TIMESTAMP, Types.VARCHAR};
+			
+			String sql =  prop.obtenerSQL("proveedores.actualizar");
+			
+			try {
+				jdbcProveedor.update(sql, argumentos, tipos);
+			}
+			catch(DataAccessException e) {
+				throw new ExcepcionSQL(e.getCause());
+			}
+		}
+		
 	}
 	
 }

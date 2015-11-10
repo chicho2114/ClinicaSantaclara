@@ -88,28 +88,6 @@ public class ProveedorController {
 		return new ModelAndView(view + "/consultar_prov", modelo);
 	}
 	
-	@RequestMapping(value = map + "/ver")
-	public ModelAndView ver(HttpServletRequest request,
-							HttpServletResponse response,
-							@RequestParam(value="codigo", required=true) String codigo) {
-		
-		
-		Proveedor proveedor = new Proveedor();
-		proveedor.setCodigo(codigo);
-		
-		List<Proveedor> l = p.listarProveedores(proveedor);
-		
-		if(l.size() == 0 || l.size() > 1) {
-			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se encontro proveedor");
-			return new Redireccion(map + "/listar");
-		}
-		
-		ModelMap modelo = new ModelMap();
-		modelo.put("proveedor", l.get(0));
-		
-		return new ModelAndView(view + "/ver", modelo);
-	}
-	
 	@RequestMapping(value = map + "/mostrar")
 	public ModelAndView listar(HttpServletRequest request,
 							   HttpServletResponse response,
@@ -150,8 +128,86 @@ public class ProveedorController {
 		}
 		
 		ModelMap modelo = new ModelMap();
-		modelo.addAttribute("refs", l);
+		modelo.addAttribute("prov", l);
 			
-		return new ModelAndView(view + "/listar_reporte", modelo);
+		return new ModelAndView(view + "/listar_proveedor", modelo);
+	}
+	
+	@RequestMapping(value = map + "/ver")
+	public ModelAndView ver(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codigo", required=true) String codigo) {
+		
+		
+		Proveedor proveedor = new Proveedor();
+		proveedor.setCodigo(codigo);
+		proveedor.setNombre("");
+		proveedor.setTelefono("");
+		
+		List<Proveedor> l = p.listarProveedores(proveedor);
+		
+		if(l.size() == 0 || l.size() > 1) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se encontro Proveedor");
+			return new Redireccion(map + "/consultar");
+		}
+		
+		ModelMap modelo = new ModelMap();
+		modelo.put("proveedor", l.get(0));
+		/*modelo.put("inventarios", r.consultarInventarioReferencia(l.get(0)));
+		modelo.put("categorias", r.consultarCategorias());
+		modelo.put("fabricantes", r.consultarFabricantes());*/
+		
+		return new ModelAndView(view + "/ver", modelo);
+	}
+	
+	@RequestMapping(value = map + "/editar", method = RequestMethod.POST)
+	public ModelAndView editar(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codigo", required=true) String codigo,
+							@RequestParam(value="nombre", required=true) String nombre,
+							@RequestParam(value="telefono", required=true) String telefono) {
+		
+		
+		Proveedor proveedor = new Proveedor();
+		proveedor.setCodigo(codigo);
+		proveedor.setNombre(nombre);
+		proveedor.setTelefono(telefono);
+		
+		List<Proveedor> l = p.listarProveedores(proveedor);
+		
+		if(l.size() == 0 || l.size() > 1) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se encontro Proveedor");
+			return new Redireccion(map + "/consultar");
+		}
+		
+		ModelMap modelo = new ModelMap();
+		modelo.put("proveedor", l.get(0));
+		
+		return new ModelAndView(view + "/editar", modelo);
+	}
+	
+	@RequestMapping(value = map + "/editar_prov", method = RequestMethod.POST)
+	public ModelAndView editar_prov(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codigo", required=true) String codigo,
+							@RequestParam(value="nombre", required=true) String nombre,
+							@RequestParam(value="telefono", required=true) String telefono) {
+		
+		
+		Proveedor proveedor = new Proveedor();
+		proveedor.setCodigo(codigo);
+		proveedor.setNombre(nombre);
+		proveedor.setTelefono(telefono);
+		proveedor.setUsuaModi(Utils.obtenerUsuario(request));
+		proveedor.setFechamodi(new Date());
+		
+		try {
+				this.p.actualizarProveedor(proveedor);
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "El proveedor ha sido modificado satisfactoriamente");
+			} catch (Exception e) {
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
+			}
+			
+		return new Redireccion(map + "/consultar");
 	}
 }
