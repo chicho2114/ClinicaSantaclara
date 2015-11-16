@@ -1,25 +1,32 @@
 package com.control.insumo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Insumo {
+public class Insumo implements Serializable {
 	
-	private Integer id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2257556283567979728L;
+	
+	private String id;
 	private String codigoRef;
 	private String proveedor;
+	private String fabricante;
 	private Integer cantInsumos;
 	private String precioComp;
 	private String precioVent;
-	private Date fechaCompa;
+	private Date fechaComp;
 	private Date fechaVenc;
 	private String usuaCrea;
 	private Date fechaCrea;
 	private String usuaModi;
 	private Date fechaModi;
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getCodigoRef() {
@@ -52,12 +59,6 @@ public class Insumo {
 	public void setPrecioVent(String precioVent) {
 		this.precioVent = precioVent;
 	}
-	public Date getFechaCompa() {
-		return fechaCompa;
-	}
-	public void setFechaCompa(Date fechaCompa) {
-		this.fechaCompa = fechaCompa;
-	}
 	public Date getFechaVenc() {
 		return fechaVenc;
 	}
@@ -87,6 +88,18 @@ public class Insumo {
 	}
 	public void setFechaModi(Date fechaModi) {
 		this.fechaModi = fechaModi;
+	}
+	public Date getFechaComp() {
+		return fechaComp;
+	}
+	public void setFechaComp(Date fechaComp) {
+		this.fechaComp = fechaComp;
+	}
+	public String getFabricante() {
+		return fabricante;
+	}
+	public void setFabricante(String fabricante) {
+		this.fabricante = fabricante;
 	}
 	
 

@@ -23,6 +23,7 @@ public class ReferenciaMapper implements RowMapper<Referencia> {
 		r.setUsuaModi(rs.getString("usuamodi"));
 		r.setFechaModi(rs.getTimestamp("fechamodi"));
 		
+		
 		return r;
 	}
 }
