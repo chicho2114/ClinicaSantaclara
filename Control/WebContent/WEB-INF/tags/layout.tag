@@ -20,14 +20,34 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap-responsive.min.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilogeneral.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.css" type="text/css" media="screen">
+		
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.min.css" type="text/css" media="screen" >
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.structure.css" type="text/css" media="screen" >
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.structure.min.css" type="text/css" media="screen" >
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.theme.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.theme.min.css" type="text/css" media="screen" >
+		
+		<script src="${pageContext.request.contextPath}/js/jquery-ui.js" type="text/javascript"></script> 
+		<script src="${pageContext.request.contextPath}/js/jquery-ui.min.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/jquery.validate.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/funciones.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/tableExport.js" type="text/javascript" ></script>
 		<script src="${pageContext.request.contextPath}/js/jquery.base64.js" type="text/javascript"></script>
+
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>${title}</title>
+		<script>
+		  $(function() {
+			    $( ".datepicker" ).datepicker({
+			      changeMonth: true,
+			      changeYear: true,
+			      dateFormat: "yy-mm-dd"
+			    });
+		   });
+  		</script>
 	</head>
 	<body>
 		<!-- Membrete y menú -->
@@ -196,5 +216,6 @@
 			});
 			$('.numeric').forceNumeric();
 		</script>
+
 	</body>
 </html>

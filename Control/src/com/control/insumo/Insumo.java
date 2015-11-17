@@ -10,7 +10,6 @@ public class Insumo implements Serializable {
 	 */
 	private static final long serialVersionUID = 2257556283567979728L;
 	
-	private String id;
 	private String codigoRef;
 	private String proveedor;
 	private String fabricante;
@@ -23,12 +22,7 @@ public class Insumo implements Serializable {
 	private Date fechaCrea;
 	private String usuaModi;
 	private Date fechaModi;
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
+
 	public String getCodigoRef() {
 		return codigoRef;
 	}
@@ -59,12 +53,6 @@ public class Insumo implements Serializable {
 	public void setPrecioVent(String precioVent) {
 		this.precioVent = precioVent;
 	}
-	public Date getFechaVenc() {
-		return fechaVenc;
-	}
-	public void setFechaVenc(Date fechaVenc) {
-		this.fechaVenc = fechaVenc;
-	}
 	public String getUsuaCrea() {
 		return usuaCrea;
 	}
@@ -89,17 +77,24 @@ public class Insumo implements Serializable {
 	public void setFechaModi(Date fechaModi) {
 		this.fechaModi = fechaModi;
 	}
+
+	public String getFabricante() {
+		return fabricante;
+	}
+	public void setFabricante(String fabricante) {
+		this.fabricante = fabricante;
+	}
 	public Date getFechaComp() {
 		return fechaComp;
 	}
 	public void setFechaComp(Date fechaComp) {
 		this.fechaComp = fechaComp;
 	}
-	public String getFabricante() {
-		return fabricante;
+	public Date getFechaVenc() {
+		return fechaVenc;
 	}
-	public void setFabricante(String fabricante) {
-		this.fabricante = fabricante;
+	public void setFechaVenc(Date fechaVenc) {
+		this.fechaVenc = fechaVenc;
 	}
 	
 
