@@ -67,12 +67,12 @@ public class ReferenciaDAO {
 		//Insertar en tabla de referencias
 		Object[] argumentos = {referencia.getCodigo(), referencia.getDescripcion(), referencia.getComponente(),
 							   referencia.getPresentacion(), referencia.getFabricante(), referencia.getCategoria(),
-							   referencia.getObservacion(), referencia.getUsuaCrea(), referencia.getFechaCrea(),
+							   referencia.getObservacion(), referencia.getCant_minima(), referencia.getUsuaCrea(), referencia.getFechaCrea(),
 							   referencia.getUsuaModi(), referencia.getFechaModi()};
 		
 		int[] tipo = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
 					  Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
-					  Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP,
+					  Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP,
 					  Types.VARCHAR, Types.TIMESTAMP};
 		
 		String sql = prop.obtenerSQL("referencias.insertar");

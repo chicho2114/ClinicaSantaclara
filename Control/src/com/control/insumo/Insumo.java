@@ -13,6 +13,7 @@ public class Insumo implements Serializable {
 	private String codigoRef;
 	private String proveedor;
 	private String fabricante;
+	private String bodega;
 	private Integer cantInsumos;
 	private String precioComp;
 	private String precioVent;
@@ -95,6 +96,12 @@ public class Insumo implements Serializable {
 	}
 	public void setFechaVenc(Date fechaVenc) {
 		this.fechaVenc = fechaVenc;
+	}
+	public String getBodega() {
+		return bodega;
+	}
+	public void setBodega(String bodega) {
+		this.bodega = bodega;
 	}
 	
 

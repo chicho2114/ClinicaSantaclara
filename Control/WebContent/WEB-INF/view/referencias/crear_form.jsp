@@ -16,19 +16,19 @@
 					<table class="table table-hover">
 						<tr>
 							<td><strong>Código:</strong></td>
-							<td><input class="uppercase" id="codigo" name="codigo" type="text" tabindex="1"></td>
+							<td><input class="uppercase" id="codigo" name="codigo" type="text" tabindex="1"  required></td>
 			       		</tr>
 			       		<tr>
 			       			<td><strong>Descripción:</strong></td>
-			       			<td><textarea class="uppercase" name="descripcion" rows="2" cols="75" tabindex="2"></textarea></td>
+			       			<td><textarea class="uppercase" name="descripcion" rows="2" cols="75" tabindex="2"  required></textarea></td>
 			       		</tr>
 			       		<tr>
 			       			<td><strong>Componente:</strong></td>
-			       			<td><textarea class="uppercase" name="componente" rows="2" cols="75" tabindex="3"></textarea></td>
+			       			<td><textarea class="uppercase" name="componente" rows="2" cols="75" tabindex="3"  required></textarea></td>
 			       		</tr>
 			       		<tr>
 			       			<td><strong>Presentación:</strong></td>
-			       			<td><textarea class="uppercase" name="presentacion" rows="2" cols="75" tabindex="4"></textarea></td>
+			       			<td><textarea class="uppercase" name="presentacion" rows="2" cols="75" tabindex="4"  required></textarea></td>
 			       		</tr>
 			       		<tr>
 			       			<td><strong>Fabricante:</strong></td>
@@ -53,7 +53,11 @@
 			       		</tr>
 			       		<tr>
 			       			<td><strong>Observación:</strong></td>
-			       			<td><textarea class="uppercase" name="observacion" rows="5" cols="75" tabindex="7"></textarea></td>
+			       			<td><textarea class="uppercase" name="observacion" rows="5" cols="75" tabindex="7" required></textarea></td>
+			       		</tr>
+						<tr>
+							<td><strong>Cantidad minima:</strong></td>
+							<td><input class="uppercase numeric" name="cant_minima" type="text" tabindex="1" required><p> <span class="label label-info">Representa la cantidad minima <br>que se permitira en almacen</span></p></td>
 			       		</tr>
 					</table>
 					<input type="submit" class="btn btn-primary" value="Crear" tabindex="8">

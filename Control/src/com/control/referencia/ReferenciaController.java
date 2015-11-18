@@ -141,7 +141,8 @@ public class ReferenciaController {
 									 @RequestParam(value="presentacion", required=true) String presentacion,
 									 @RequestParam(value="fabricante", required=true) String fabricante,
 									 @RequestParam(value="categoria", required=true) String categoria,
-									 @RequestParam(value="observacion", required=false) String observacion) {
+									 @RequestParam(value="observacion", required=false) String observacion,
+									 @RequestParam(value="cant_minima", required=true) Integer cant_minima) {
 		
 		Referencia r = new Referencia();
 		
@@ -152,6 +153,7 @@ public class ReferenciaController {
 		r.setFabricante(fabricante);
 		r.setCategoria(categoria);
 		r.setObservacion(observacion);
+		r.setCant_minima(cant_minima);
 		r.setUsuaCrea(Utils.obtenerUsuario(request));
 		
 		try {
