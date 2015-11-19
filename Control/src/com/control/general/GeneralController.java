@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 //import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
+import com.control.insumo.InsumoDAO;
 import com.control.usuario.Usuario;
 import com.control.usuario.UsuarioDAO;
 
@@ -30,6 +31,8 @@ public class GeneralController {
 	
 	@Autowired
 	private UsuarioDAO u;
+	@Autowired
+	private InsumoDAO i;
 	
 	private static final Logger logger = Logger.getLogger(GeneralController.class);
 	
@@ -55,7 +58,10 @@ public class GeneralController {
 				
 			}
 			
+			
 			ModelMap modelo = new ModelMap();
+			modelo.addAttribute("referencias", i.consultarReferencias());
+			modelo.addAttribute("insumos", i.consultarInsumos());
 			
 			return new ModelAndView(view + "/usuario", modelo);
 		}

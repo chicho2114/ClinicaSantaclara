@@ -48,7 +48,7 @@
 					<div class="head">
 						<div class="row-fluid">
 						    <div class="span12">
-								<a href="${pageContext.request.contextPath}/"><img src="http://dummyimage.com/1170x125/000/fff" /></a>
+								<a href="${pageContext.request.contextPath}/#home"><img src="http://dummyimage.com/1170x125/000/fff" /></a>
 						    </div>
 						</div>
 						<div class="navbar">
@@ -92,7 +92,7 @@
 											              	</ul>
 											            </li>
 											            <li class="dropdown">
-										              		<a href="#" id="drop2" class="dropdown-toggle" data-toggle="dropdown">Impuestos<b class="caret"></b></a>
+										              		<a href="#" id="drop2" class="dropdown-toggle text-warning" data-toggle="dropdown" >Impuestos<b class="caret"></b></a>
 										              		<ul class="dropdown-menu">
 											                	<li><a tabindex="-1" href="#">Cargar Impuesto</a></li>
 											                	<li><a tabindex="-1" href="#">Cargar Referencias mediante archivo</a></li>
