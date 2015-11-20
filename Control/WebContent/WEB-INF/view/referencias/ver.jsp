@@ -49,6 +49,14 @@
 		       			<td><strong>Observación:</strong></td>
 		       			<td><textarea class="uppercase" name="observacion" rows="5" cols="75" readonly>${referencia.observacion}</textarea></td>
 		       		</tr>
+		       		<tr>
+		       			<td><strong>Cantidad minima:</strong></td>
+		       			<td><input class="uppercase"  name="cant_mini" type="text" value="${referencia.cant_mini}" readonly></td>
+		       		</tr>
+		       		<tr>
+		       			<td><strong>Cantidad disponible:</strong></td>
+		       			<td><input class="uppercase"  name="cantidad" type="text" value="${referencia.cantidad}" readonly></td>
+		       		</tr>
 				</table>
 				
 				<h2>Cantidades en Bodegas</h2>

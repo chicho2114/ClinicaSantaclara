@@ -18,7 +18,7 @@ public class ReferenciaMapper implements RowMapper<Referencia> {
 		r.setFabricante(rs.getString("fabricante"));
 		r.setCategoria(rs.getString("categoria"));
 		r.setObservacion(rs.getString("observacion"));
-		r.setCant_minima(rs.getInt("cant_mini"));
+		r.setCant_mini(rs.getInt("cant_mini"));
 		r.setCantidad(rs.getInt("cantidad"));
 		r.setUsuaCrea(rs.getString("usuacrea"));
 		r.setFechaCrea(rs.getTimestamp("fechacrea"));

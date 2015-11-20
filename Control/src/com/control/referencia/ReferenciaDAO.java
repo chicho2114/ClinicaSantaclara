@@ -67,7 +67,7 @@ public class ReferenciaDAO {
 		//Insertar en tabla de referencias
 		Object[] argumentos = {referencia.getCodigo(), referencia.getDescripcion(), referencia.getComponente(),
 							   referencia.getPresentacion(), referencia.getFabricante(), referencia.getCategoria(),
-							   referencia.getObservacion(), referencia.getCant_minima(), referencia.getUsuaCrea(), referencia.getFechaCrea(),
+							   referencia.getObservacion(), referencia.getCant_mini(), referencia.getUsuaCrea(), referencia.getFechaCrea(),
 							   referencia.getUsuaModi(), referencia.getFechaModi()};
 		
 		int[] tipo = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
@@ -286,12 +286,17 @@ public class ReferenciaDAO {
 		
 		int[] tipos = {Types.VARCHAR};
 		
-		String sql = "select CONCAT(tps_bodega_codigo, CONCAT(' - ', ts_bodega_nombre)) bodega,  CONCAT(tpfs_invebode_referencia, CONCAT(' - ', ts_referencia_descripcion)) refe, ti_invebode_cantidad cantidad " +
+		/*String sql = "select CONCAT(tps_bodega_codigo, CONCAT(' - ', ts_bodega_nombre)) bodega,  CONCAT(tpfs_invebode_referencia, CONCAT(' - ', ts_referencia_descripcion)) refe, ti_invebode_cantidad cantidad " +
 				 	 "from t_inventario_bodega, t_referencia, t_bodega " +
 				 	 "where tpfs_invebode_referencia = tps_referencia_codigo " +
 				 	 "and tpfs_invebode_bodega = tps_bodega_codigo " +
 				 	 "and tpfs_invebode_referencia = ? " +
-				 	 "and tpfs_invebode_anomes = DATE_FORMAT(NOW() ,'%Y-%m-01')";
+				 	 "and tpfs_invebode_anomes = DATE_FORMAT(NOW() ,'%Y-%m-01')";*/
+		String sql = "SELECT CONCAT(tps_bodega_codigo, CONCAT(' - ', ts_bodega_nombre)) bodega, CONCAT(tpfs_invebode_referencia, CONCAT(' - ', ts_referencia_descripcion)) refe, ti_invebode_cantidad cantidad "
+					+ "FROM t_inventario_bodega, t_referencia, t_bodega  "
+					+ "WHERE tpfs_invebode_referencia = tps_referencia_codigo "
+					+ "AND tpfs_invebode_referencia = ?"
+					+ "AND tpfs_invebode_bodega = tps_bodega_codigo";
 		
 		return jdbcReferencia.queryForList(sql, argumentos, tipos);
 	}

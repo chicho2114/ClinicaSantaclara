@@ -27,10 +27,10 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.structure.min.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.theme.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.theme.min.css" type="text/css" media="screen">
-		<script src="${pageContext.request.contextPath}/js/jquery-ui.js" type="text/javascript"></script>
-		<script src="${pageContext.request.contextPath}/js/jquery-ui.min.js" type="text/javascript"></script>
+
 
 		<script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/js/jquery-ui.min.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/jquery.validate.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/funciones.js" type="text/javascript"></script>

@@ -153,7 +153,7 @@ public class ReferenciaController {
 		r.setFabricante(fabricante);
 		r.setCategoria(categoria);
 		r.setObservacion(observacion);
-		r.setCant_minima(cant_minima);
+		r.setCant_mini(cant_minima);
 		r.setUsuaCrea(Utils.obtenerUsuario(request));
 		
 		try {

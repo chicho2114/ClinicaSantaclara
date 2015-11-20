@@ -14,7 +14,7 @@ public class Referencia implements Serializable {
 	private String fabricante;
 	private String categoria;
 	private String observacion;
-	private Integer cant_minima;
+	private Integer cant_mini;
 	private Integer cantidad;
 	private String usuaCrea;
 	private Date fechaCrea;
@@ -123,19 +123,19 @@ public class Referencia implements Serializable {
 		this.fechaModi = fechaModi;
 	}
 
-	public Integer getCant_minima() {
-		return cant_minima;
-	}
-
-	public void setCant_minima(Integer cant_minima) {
-		this.cant_minima = cant_minima;
-	}
-
 	public Integer getCantidad() {
 		return cantidad;
 	}
 
 	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
+	}
+
+	public Integer getCant_mini() {
+		return cant_mini;
+	}
+
+	public void setCant_mini(Integer cant_mini) {
+		this.cant_mini = cant_mini;
 	}
 }
