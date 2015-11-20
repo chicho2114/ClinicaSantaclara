@@ -15,7 +15,7 @@
 			          <div class="span4">
 			          
 			            <ul class="nav nav-pills nav-tabs nav-stacked" id="myTab">
-					      <li><a href="#home" data-toggle="tab"><i class="icon-home"></i> Inicio</a></li>
+					      <li><a href="${pageContext.request.contextPath}/#home" data-toggle="tab"><i class="icon-home"></i> Inicio</a></li>
 					      <c:choose>
 					      	<c:when test="${ insumos.size() != 0}">
 					      		<li><a href="#vencidos" data-toggle="tab"><i class="icon-calendar"></i> Insumos proximos a vencer <span class="label label-warning text-right">Warning</span></a> </li>
@@ -60,7 +60,7 @@
 							          <td>${insumo.bodega}</td>
 							          <td>${insumo.cantidad}</td>
 							          <td><fmt:formatDate value="${insumo.fecha}" pattern="dd/MM/yyyy" /></td>
-							          <td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${referencia.codigo}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
+							          <td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${insumo.codigo}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
 							        </tr>
 							       </c:forEach>
 							       </tbody>

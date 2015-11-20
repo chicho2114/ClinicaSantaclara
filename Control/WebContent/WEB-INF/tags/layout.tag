@@ -82,6 +82,7 @@
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_categoria">Crear Categoría</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_archivo">Cargar Referencias mediante Archivo</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/cargar_insumos">Cargar Insumos</a></li>
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/crear_archivo">Cargar Insumos mediante Archivo</a></li>
 											                	<li class="divider"></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/listar">Consultar Referencia</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/proveedores/consultar">Consultar Proveedor</a></li>

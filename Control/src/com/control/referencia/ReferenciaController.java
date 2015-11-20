@@ -262,6 +262,7 @@ public class ReferenciaController {
 		List<String> fabricantes = new ArrayList<String>();
 		List<String> categorias = new ArrayList<String>();
 		List<String> observaciones = new ArrayList<String>();
+		List<Integer> cantminima = new ArrayList<Integer>();
 		
 		try {
 			CsvReader lector = new CsvReader(arcParte.getInputStream(), Charset.forName("UTF-8"));
@@ -269,7 +270,7 @@ public class ReferenciaController {
 			
 			lector.readHeaders();
 			
-			if(lector.getHeaderCount() != 7) {
+			if(lector.getHeaderCount() != 8) {
 				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Error leyendo archivo .CSV. El número de columnas especificado es incorrecto");
 				return new Redireccion(map + "/crear_archivo");
 			}
@@ -283,6 +284,7 @@ public class ReferenciaController {
 				fabricantes.add(lector.get(4));
 				categorias.add(lector.get(5));
 				observaciones.add(lector.get(6));
+				cantminima.add( Integer.parseInt(lector.get(7)));
 			}
 			lector.close();
 		}
@@ -291,7 +293,7 @@ public class ReferenciaController {
 		}
 		
 		try {
-			r.insertarReferenciasBatch(codigosReferencias, descripcionesReferencias, componentes, presentaciones, fabricantes, categorias, observaciones, Utils.obtenerUsuario(request));
+			r.insertarReferenciasBatch(codigosReferencias, descripcionesReferencias, componentes, presentaciones, fabricantes, categorias, observaciones, cantminima, Utils.obtenerUsuario(request));
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, codigosReferencias.size() + " referencias creadas satisfactoriamente");
 		} catch (SQLException e) {
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());

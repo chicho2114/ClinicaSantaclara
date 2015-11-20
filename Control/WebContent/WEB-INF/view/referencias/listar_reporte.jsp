@@ -17,18 +17,20 @@
 			         			<th>Descripción</th>
 			         			<th>Usuario de creación</th>
 			         			<th>Fecha de creación</th>
+			         			<th>Cantidad minima</th>
 			         			<th>Cantidad disponible</th>
 			         			<th>Ver</th>
 			       		</tr>
 		       		</thead>
 					<c:forEach var="referencia" items="${refs}">
 						<c:choose>
-							<c:when test="${referencia.cantidad >= referencia.cant_minima}">
+							<c:when test="${referencia.cantidad >= referencia.cant_mini}">
 								<tr >
 									<td>${referencia.codigo}</td>
 									<td>${referencia.descripcion}</td>
 									<td>${referencia.usuaCrea}</td>
 									<td><fmt:formatDate value="${referencia.fechaCrea}" pattern="dd/MM/yyyy hh:mm a" /></td>
+									<td>${referencia.cant_mini }</td>
 									<td>${referencia.cantidad }</td>
 									<td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${referencia.codigo}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
 								</tr>
@@ -39,6 +41,7 @@
 									<td>${referencia.descripcion}</td>
 									<td>${referencia.usuaCrea}</td>
 									<td><fmt:formatDate value="${referencia.fechaCrea}" pattern="dd/MM/yyyy hh:mm a" /></td>
+									<td>${referencia.cant_mini }</td>
 									<td>${referencia.cantidad }</td>
 									<td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${referencia.codigo}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
 								</tr>

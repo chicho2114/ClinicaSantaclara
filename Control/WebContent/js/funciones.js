@@ -26,3 +26,22 @@
          });
      });
  };
+ 
+ function recargar(){   
+     // Limita el contador a solo 5 elementos
+    if ($actual<=5) {
+        $actual=$actual+1;
+    } else {
+        $actual=1;
+    }
+     // Setea la variable que vamos a enviar a php
+    var variable_post=$actual;
+    // Enviamos los valores a miscript.php
+    $.post("miscript.php", { variable: variable_post }, function(data){
+               /// Actualizamos el div recargado
+        $("#recargado").html(data);
+    });        
+}
+$actual=0;
+// Establecemos el temporizador a 2 segundos
+timer = setInterval("recargar()", 2000);

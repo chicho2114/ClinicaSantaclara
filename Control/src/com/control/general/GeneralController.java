@@ -2,6 +2,7 @@ package com.control.general;
 
 import java.io.DataInputStream;
 
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -106,4 +107,47 @@ public class GeneralController {
         
 		return null;
 	}
+	
+	/*@RequestMapping(value = map + "/actualizar_div", method = RequestMethod.POST)
+	public ModelAndView actualizar_div(HttpServletRequest request, 
+									 HttpServletResponse response, 
+									 @RequestParam(value="referencia", required=true) String codigo,
+									 @RequestParam(value="referencia", required=true) String codigo) {
+	
+		SimpleDateFormat fechatxt = new SimpleDateFormat("yyyy-MM-dd");
+		
+		
+		
+		Insumo insumo = new Insumo();
+		insumo.setCodigoRef(referencia);
+		insumo.setProveedor(proveedor);
+		insumo.setFabricante(fabricante);
+		insumo.setBodega(bodega);
+		insumo.setCantInsumos(cantidad);
+		insumo.setPrecioComp(precioComp);
+		insumo.setPrecioVent(precioVent);
+		try {
+			insumo.setFechaComp(fechatxt.parse(fechaComp));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			insumo.setFechaVenc(fechatxt.parse(fechaVenc));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}	
+		
+		insumo.setUsuaCrea(Utils.obtenerUsuario(request));
+		
+		try {
+			this.i.insertarInsumo(insumo);
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "El insumo de ha a�adido satisfactoriamente");
+		} catch (Exception e) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
+		}
+		
+		return new Redireccion(map + "/cargar_insumos");
+	}*/
 }

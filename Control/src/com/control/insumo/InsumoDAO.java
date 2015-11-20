@@ -1,7 +1,12 @@
 package com.control.insumo;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +15,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,6 +143,90 @@ public class InsumoDAO {
 			}
 			catch(DataAccessException dae) {
 				throw new Exception(dae.getCause());
+			}
+		
+	}
+	
+	@Transactional(rollbackFor=SQLException.class)
+	public void insertarInsumosBatch(final List<String> codigosRef, final List<String> proveedores, final List<String> fabricantes, 
+										 final List<String> bodegas, final List<Integer> cantidad, final List<String> preciocompra, 
+										 final List<String> precioventa, final List<String> fechacompra, final List<String> fechavenc, final String usuario) throws SQLException {
+		
+						
+				
+				
+		final SimpleDateFormat fechatxt = new SimpleDateFormat("yyyy-MM-dd");	
+		
+		String sql = prop.obtenerSQL("insumos.insertar");
+		
+		final Date fechaCreacion = new Date();
+		
+		try {
+			jdbcInsumo.batchUpdate(sql, new BatchPreparedStatementSetter() {
+				
+				public int getBatchSize() {
+					return codigosRef.size();
+				}
+	
+				@Override
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
+					ps.setString(1, codigosRef.get(i));
+					ps.setString(2, proveedores.get(i));
+					ps.setString(3, fabricantes.get(i));
+					ps.setString(4, bodegas.get(i));
+					ps.setInt(5, cantidad.get(i));				
+					ps.setString(6, preciocompra.get(i));
+					ps.setString(7, precioventa.get(i));
+					try {
+						ps.setDate(8, new java.sql.Date(fechatxt.parse(fechacompra.get(i)).getTime()));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}					
+					try {
+						ps.setDate(9, new java.sql.Date(fechatxt.parse(fechavenc.get(i)).getTime()));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					ps.setString(10, usuario);
+					ps.setTimestamp(11, new Timestamp(fechaCreacion.getTime()));
+					ps.setString(12, null);
+					ps.setTimestamp(13, null);
+				}	
+			});
+		}
+		catch(DataAccessException e) {
+			throw new SQLException(e);
+		}
+		
+		
+			//Insertar cantidad de insumos en bodega
+			
+			String sql2 = prop.obtenerSQL("insumos.actualizarBodega");
+			
+	
+			
+			try {
+				jdbcInsumo.batchUpdate(sql2, new BatchPreparedStatementSetter() {
+					
+					public int getBatchSize() {
+						return codigosRef.size();
+					}
+		
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						ps.setInt(1, cantidad.get(i));
+						ps.setString(2, usuario);
+						ps.setTimestamp(3, new Timestamp(fechaCreacion.getTime()));
+						ps.setString(4, bodegas.get(i));
+						ps.setString(5, codigosRef.get(i));
+						
+					}	
+				});
+			}
+			catch(DataAccessException e) {
+				throw new SQLException(e);
 			}
 		
 	}

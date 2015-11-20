@@ -104,8 +104,8 @@ public class ReferenciaDAO {
 	
 	@Transactional(rollbackFor=SQLException.class)
 	public void insertarReferenciasBatch(final List<String> codigos, final List<String> descripciones, final List<String> componentes, 
-										 final List<String> presentaciones, final List<String> fabricantes, final List<String> categorias, 
-										 final List<String> observaciones, final String usuario) throws SQLException {
+										 final List<String> presentaciones, final List<String> fabricantes, final List<String> categorias,
+										 final List<String> observaciones, final List<Integer> cantminima, final String usuario) throws SQLException {
 		
 		String sql = prop.obtenerSQL("referencias.insertar");
 		
@@ -127,10 +127,11 @@ public class ReferenciaDAO {
 					ps.setString(5, fabricantes.get(i));
 					ps.setString(6, categorias.get(i));
 					ps.setString(7, observaciones.get(i));
-					ps.setString(8, usuario);
-					ps.setTimestamp(9, new Timestamp(fechaCreacion.getTime()));
-					ps.setString(10, null);
-					ps.setTimestamp(11, null);
+					ps.setInt(8, cantminima.get(i));
+					ps.setString(9, usuario);
+					ps.setTimestamp(10, new Timestamp(fechaCreacion.getTime()));
+					ps.setString(11, null);
+					ps.setTimestamp(12, null);
 				}	
 			});
 		}
