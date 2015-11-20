@@ -10,6 +10,7 @@ public class Insumo implements Serializable {
 	 */
 	private static final long serialVersionUID = 2257556283567979728L;
 	
+	private String codcaja;
 	private String codigoRef;
 	private String proveedor;
 	private String fabricante;
@@ -102,6 +103,12 @@ public class Insumo implements Serializable {
 	}
 	public void setBodega(String bodega) {
 		this.bodega = bodega;
+	}
+	public String getCodcaja() {
+		return codcaja;
+	}
+	public void setCodcaja(String codcaja) {
+		this.codcaja = codcaja;
 	}
 	
 

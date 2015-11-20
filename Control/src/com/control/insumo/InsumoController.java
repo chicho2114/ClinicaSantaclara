@@ -53,6 +53,7 @@ public class InsumoController {
 	@RequestMapping(value = map + "/crear_accion", method = RequestMethod.POST)
 	public ModelAndView crear_accion(HttpServletRequest request, 
 									 HttpServletResponse response, 
+									 @RequestParam(value="codcaja", required=true) String codcaja,
 									 @RequestParam(value="referencia", required=true) String referencia,
 									 @RequestParam(value="proveedor", required=true) String proveedor,
 									 @RequestParam(value="fabricante", required=true) String fabricante,
@@ -68,6 +69,7 @@ public class InsumoController {
 		
 		
 		Insumo insumo = new Insumo();
+		insumo.setCodcaja(codcaja);
 		insumo.setCodigoRef(referencia);
 		insumo.setProveedor(proveedor);
 		insumo.setFabricante(fabricante);
@@ -112,7 +114,8 @@ public class InsumoController {
 	public ModelAndView crear_archivo_accion(HttpServletRequest request,
 								   			 HttpServletResponse response,
 								   			 @RequestParam(value="arcParte", required=true) CommonsMultipartFile arcParte) {
-		
+
+		List<String> codigosCajas = new ArrayList<String>();
 		List<String> codigosReferencias = new ArrayList<String>();
 		List<String> insumosProveedor = new ArrayList<String>();
 		List<String> fabricantes = new ArrayList<String>();
@@ -129,22 +132,23 @@ public class InsumoController {
 			
 			lector.readHeaders();
 			
-			if(lector.getHeaderCount() != 9) {
+			if(lector.getHeaderCount() != 10) {
 				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Error leyendo archivo .CSV. El número de columnas especificado es incorrecto");
 				return new Redireccion(map + "/crear_archivo");
 			}
 			
 			
 			while(lector.readRecord()) {
-				codigosReferencias.add(lector.get(0));
-				insumosProveedor.add(lector.get(1));
-				fabricantes.add(lector.get(2));
-				bodegas.add(lector.get(3));
-				cantidad.add(Integer.parseInt(lector.get(4)));
-				preciocompra.add(lector.get(5));
-				precioventa.add(lector.get(6));
-				fechacompra.add(lector.get(7));
-				fechavenc.add(lector.get(8));
+				codigosCajas.add(lector.get(0));
+				codigosReferencias.add(lector.get(1));
+				insumosProveedor.add(lector.get(2));
+				fabricantes.add(lector.get(3));
+				bodegas.add(lector.get(4));
+				cantidad.add(Integer.parseInt(lector.get(5)));
+				preciocompra.add(lector.get(6));
+				precioventa.add(lector.get(7));
+				fechacompra.add(lector.get(8));
+				fechavenc.add(lector.get(9));
 			}
 			lector.close();
 		}
@@ -153,7 +157,7 @@ public class InsumoController {
 		}
 		
 		try {
-			i.insertarInsumosBatch(codigosReferencias, insumosProveedor, fabricantes, bodegas, cantidad, preciocompra, precioventa, fechacompra, fechavenc, Utils.obtenerUsuario(request)); 
+			i.insertarInsumosBatch(codigosCajas, codigosReferencias, insumosProveedor, fabricantes, bodegas, cantidad, preciocompra, precioventa, fechacompra, fechavenc, Utils.obtenerUsuario(request)); 
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, codigosReferencias.size() + " insumos agregados satisfactoriamente");
 		} catch (SQLException e) {
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());

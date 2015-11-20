@@ -97,12 +97,12 @@ public class InsumoDAO {
 		insumo.setFechaCrea(new Date());
 		
 		//Insertar en tabla de insumos
-		Object[] argumentos = { insumo.getCodigoRef(), insumo.getProveedor(), insumo.getFabricante(), insumo.getBodega(), 
+		Object[] argumentos = { insumo.getCodcaja(), insumo.getCodigoRef(), insumo.getProveedor(), insumo.getFabricante(), insumo.getBodega(), 
 								insumo.getCantInsumos(), insumo.getPrecioComp(), insumo.getPrecioVent(), 
 								insumo.getFechaComp(), insumo.getFechaVenc(),  insumo.getUsuaCrea(), 
 								insumo.getFechaCrea(), insumo.getUsuaModi(), insumo.getFechaModi()};
 		
-		int[] tipo = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+		int[] tipo = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
 					  Types.INTEGER, Types.VARCHAR, Types.VARCHAR,
 					  Types.DATE, Types.DATE, Types.VARCHAR,
 					  Types.TIMESTAMP, Types.VARCHAR, Types.TIMESTAMP};
@@ -148,7 +148,7 @@ public class InsumoDAO {
 	}
 	
 	@Transactional(rollbackFor=SQLException.class)
-	public void insertarInsumosBatch(final List<String> codigosRef, final List<String> proveedores, final List<String> fabricantes, 
+	public void insertarInsumosBatch(final List<String> codigosCajas, final List<String> codigosRef, final List<String> proveedores, final List<String> fabricantes, 
 										 final List<String> bodegas, final List<Integer> cantidad, final List<String> preciocompra, 
 										 final List<String> precioventa, final List<String> fechacompra, final List<String> fechavenc, final String usuario) throws SQLException {
 		
@@ -170,36 +170,36 @@ public class InsumoDAO {
 	
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					ps.setString(1, codigosRef.get(i));
-					ps.setString(2, proveedores.get(i));
-					ps.setString(3, fabricantes.get(i));
-					ps.setString(4, bodegas.get(i));
-					ps.setInt(5, cantidad.get(i));				
-					ps.setString(6, preciocompra.get(i));
-					ps.setString(7, precioventa.get(i));
+					ps.setString(1, codigosCajas.get(i));
+					ps.setString(2, codigosRef.get(i));
+					ps.setString(3, proveedores.get(i));
+					ps.setString(4, fabricantes.get(i));
+					ps.setString(5, bodegas.get(i));
+					ps.setInt(6, cantidad.get(i));				
+					ps.setString(7, preciocompra.get(i));
+					ps.setString(8, precioventa.get(i));
 					try {
-						ps.setDate(8, new java.sql.Date(fechatxt.parse(fechacompra.get(i)).getTime()));
+						ps.setDate(9, new java.sql.Date(fechatxt.parse(fechacompra.get(i)).getTime()));
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}					
 					try {
-						ps.setDate(9, new java.sql.Date(fechatxt.parse(fechavenc.get(i)).getTime()));
+						ps.setDate(10, new java.sql.Date(fechatxt.parse(fechavenc.get(i)).getTime()));
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					ps.setString(10, usuario);
-					ps.setTimestamp(11, new Timestamp(fechaCreacion.getTime()));
-					ps.setString(12, null);
-					ps.setTimestamp(13, null);
+					ps.setString(11, usuario);
+					ps.setTimestamp(12, new Timestamp(fechaCreacion.getTime()));
+					ps.setString(13, null);
+					ps.setTimestamp(14, null);
 				}	
 			});
 		}
 		catch(DataAccessException e) {
 			throw new SQLException(e);
 		}
-		
 		
 			//Insertar cantidad de insumos en bodega
 			
@@ -221,6 +221,28 @@ public class InsumoDAO {
 						ps.setTimestamp(3, new Timestamp(fechaCreacion.getTime()));
 						ps.setString(4, bodegas.get(i));
 						ps.setString(5, codigosRef.get(i));
+						
+					}	
+				});
+			}
+			catch(DataAccessException e) {
+				throw new SQLException(e);
+			}
+			
+			//Actualizar cantidad en referencia
+			String sql3 = prop.obtenerSQL("insumos.actualizarReferencia");
+			
+			try {
+				jdbcInsumo.batchUpdate(sql3, new BatchPreparedStatementSetter() {
+					
+					public int getBatchSize() {
+						return codigosRef.size();
+					}
+		
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						ps.setInt(1, cantidad.get(i));
+						ps.setString(2, codigosRef.get(i));
 						
 					}	
 				});

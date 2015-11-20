@@ -14,6 +14,10 @@
 				<form action="${pageContext.request.contextPath}/insumos/crear_accion" method="post"
 					  id="cargarInsumo">
 					<table class="table table-hover">
+						<tr>	
+							<td><strong>Codigo de caja:</strong></td>
+							<td><input class="uppercase" name="codcaja" type="text" tabindex="2" required></td>
+			       		</tr>
 						<tr>
 							<td><strong>Codigo Referencia:</strong></td>
 							<td>	

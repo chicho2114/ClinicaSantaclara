@@ -12,7 +12,7 @@ public class InsumoMapper implements RowMapper<Insumo> {
 	public Insumo mapRow(ResultSet rs, int rownum) throws SQLException {
 		Insumo i = new Insumo();
 		
-		
+		i.setCodcaja(rs.getString("codcaja"));
 		i.setCodigoRef(rs.getString("codigoRef"));
 		i.setProveedor(rs.getString("proveedor"));
 		i.setFabricante(rs.getString("fabricante"));
