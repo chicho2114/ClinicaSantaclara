@@ -25,7 +25,7 @@
 					      	</c:otherwise>
 					      </c:choose>
 					      <c:choose>
-					      	<c:when test="${ referencias.size() != 0}">
+					      	<c:when test="${ refes.size() > 0}">
 					      		<li><a href="#agotarse" data-toggle="tab"><i class="icon-eye-open"></i> Insumos por acabar su existencia <span class="label label-warning ">Warning</span></a></li>
 					      		</c:when>
 					      	<c:otherwise>
@@ -77,7 +77,7 @@
 							 </div>
 				          	 <div class="tab-pane" id="agotarse">
 				          	 <c:choose>
-				          	 <c:when test="${ referencias.size() != 0}">
+				          	 <c:when test="${ refes.size() > 0}">
 				          	     <table class="table table-bordered table-hover">
 							      <thead>
 							        <tr>
@@ -89,7 +89,7 @@
 							        </tr>
 							      </thead>
 							      <tbody>
-							       <c:forEach var="referencia" items="${referencias}">
+							       <c:forEach var="referencia" items="${refes}">
 								
 									<tr class="error">
 										<td>${referencia.codigo}</td>
@@ -113,7 +113,49 @@
 							  </c:choose>
 					          	
 							 </div>
-				          	 <div class="tab-pane" id="agregados"><img src="${pageContext.request.contextPath}/images/4.jpg" /></div>
+				          	 <div class="tab-pane" id="agregados">
+				          	 <c:choose>
+				          	 <c:when test="${ agregados.size() != 0}">
+				          	     <table class="table table-bordered table-hover">
+							      <thead>
+							        <tr>
+							          <th>Codigo Caja</th>
+							          <th>Referencia</th>
+							          <th>Bodega</th>
+							          <th>Cantidad</th>						          
+							          <th>Usuario</th>
+							          <th>Fecha</th>
+							          <th>Ver</th>
+							        </tr>
+							      </thead>
+							      <tbody>
+							       <c:forEach var="agregado" items="${agregados}">
+								
+									<tr class="success">
+										<td>${agregado.codcaja}</td>
+										<td>${agregado.codref}</td>
+										<td>${agregado.bodega}</td>
+										<td>${agregado.cantidad }</td>
+										<td>${agregado.usuario }</td>
+										<td><fmt:formatDate value="${agregado.fecha }" pattern="dd/MM/yyyy hh:mm:ss a" /></td>
+										
+										<td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${agregado.codigo}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
+									</tr>
+								</c:forEach> 
+							       </tbody>
+							    </table> 
+							   
+							    </c:when>
+							    <c:otherwise>
+							       	
+						           <div class="alert alert-success">
+								      <p><strong>Aviso!</strong> No existen insumos agregados recientemente.</p>
+								    </div>
+								
+							      </c:otherwise>
+							  </c:choose>
+				          	 
+				          	 </div>
 				          	 <div class="tab-pane" id="retirados"><img src="${pageContext.request.contextPath}/images/5.jpg" /></div>
 				          	 
 				          	

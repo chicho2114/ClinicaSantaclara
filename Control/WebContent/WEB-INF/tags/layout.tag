@@ -73,8 +73,16 @@
 									        	<!-- Everything you want hidden at 940px or less, place within here -->
 										        <div class="nav-collapse collapse">
 									          		<ul class="nav">
+									          		<c:choose>
+									          		  <c:when test="${insumos.size() > 0 or refes.size() > 0}">
+									          			<li><a id="drop1" data-toggle="popover" data-content="Hay notificaciones pendientes." data-placement="top" title="Aviso!" href="${pageContext.request.contextPath}/"><i class="icon-home"></i></a></li>
+										              </c:when>
+										              <c:otherwise>
+										              	<li><a id="drop1" href="${pageContext.request.contextPath}/"><i class="icon-home"></i></a></li>
+										              </c:otherwise>
+										            </c:choose>
 										            	<li class="dropdown">
-										              		<a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown">Referencias e Invenarios<b class="caret"></b></a>
+										              		<a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown">Referencias e Invenarios<b class="caret"></b></a>
 										              		<ul class="dropdown-menu">
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear">Crear Referencia</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/proveedores/crear">Crear Proveedor</a></li>
@@ -93,7 +101,7 @@
 											              	</ul>
 											            </li>
 											            <li class="dropdown">
-										              		<a href="#" id="drop2" class="dropdown-toggle text-warning" data-toggle="dropdown" >Impuestos<b class="caret"></b></a>
+										              		<a href="#" id="drop3" class="dropdown-toggle text-warning" data-toggle="dropdown" >Impuestos<b class="caret"></b></a>
 										              		<ul class="dropdown-menu">
 											                	<li><a tabindex="-1" href="#">Cargar Impuesto</a></li>
 											                	<li><a tabindex="-1" href="#">Cargar Referencias mediante archivo</a></li>
@@ -105,7 +113,7 @@
 										          	</ul>
 										          	<ul class="nav pull-right">
 										            	<li id="fat-menu" class="dropdown warning text-warning">
-									              			<a href="#" id="drop3" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-warning-sign"></i> Más Opciones <b class="caret"></b></a>
+									              			<a href="#" id="drop4" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-warning-sign"></i> Más Opciones <b class="caret"></b></a>
 									              			<ul class="dropdown-menu">
 											                	<li><a tabindex="-1" href="http://yahoo.com" target="_blank">Yahoo!</a></li>
 											                	<li><a tabindex="-1" href="http://bing.com" target="_blank">Bing</a></li>
@@ -215,7 +223,10 @@
 				      dateFormat: "yy-mm-dd"
 				    });
 			   });
-	  		
+			
+			  $('#drop1').popover("show");
+			 
+
 		</script>
 
 	</body>

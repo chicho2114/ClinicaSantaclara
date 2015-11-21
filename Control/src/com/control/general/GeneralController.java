@@ -61,7 +61,8 @@ public class GeneralController {
 			
 			
 			ModelMap modelo = new ModelMap();
-			modelo.addAttribute("referencias", i.consultarReferenciasTerminadas());
+			modelo.addAttribute("agregados", i.agregadosRecientemente());
+			modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 			modelo.addAttribute("insumos", i.consultarInsumosVencidos());
 			
 			return new ModelAndView(view + "/usuario", modelo);

@@ -36,6 +36,15 @@ public class InsumoDAO {
 		this.jdbcInsumo = new JdbcTemplate(dataSource);
 	}
 	
+	public List<Map<String, Object>> agregadosRecientemente() {
+		
+		String sql = "SELECT ts_insumo_codcaja codcaja, ts_insumo_codref codref, ts_insumo_bodega bodega, "
+				+ "ti_insumo_cantinsumo cantidad, ts_insumo_usuacrea usuario, td_insumo_fechacrea fecha FROM t_insumo ORDER BY td_insumo_fechacrea DESC limit 10";
+		
+		return jdbcInsumo.queryForList(sql);
+	}
+	
+	
 	public List<Map<String, Object>> consultarFabricantes() {
 		
 		String sql = "select tps_fabricante_codigo codigo, ts_fabricante_nombre nombre, ts_fabricante_usuacrea usuaCrea," +
