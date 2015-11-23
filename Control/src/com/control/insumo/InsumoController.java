@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,7 +72,7 @@ public class InsumoController {
 		
 		Insumo insumo = new Insumo();
 		insumo.setCodcaja(codcaja);
-		insumo.setCodigoRef(referencia);
+		insumo.setCodref(referencia);
 		insumo.setProveedor(proveedor);
 		insumo.setFabricante(fabricante);
 		insumo.setBodega(bodega);
@@ -165,4 +167,92 @@ public class InsumoController {
 		
 		return new Redireccion(map + "/crear_archivo");
 	}
+	
+	@RequestMapping(value = map + "/consultar")
+	public ModelAndView consultar(HttpServletRequest request,
+								   HttpServletResponse response) {
+		
+		ModelMap modelo = new ModelMap();
+		
+		modelo.addAttribute("insumos", i.consultarCajas());
+		modelo.addAttribute("referencias", i.consultarReferencias());
+		modelo.addAttribute("proveedores", i.consultarProveedores());
+		modelo.addAttribute("bodegas", i.consultarBodegas());
+		
+		return new ModelAndView(view + "/consultar", modelo);
+	}
+	
+	@RequestMapping(value = map + "/mostrar")
+	public ModelAndView mostrar(HttpServletRequest request,
+							   HttpServletResponse response,
+							   @RequestParam(value="codcaja", required=false) String codcaja,
+							   @RequestParam(value="codref", required=false) String codref,
+							   @RequestParam(value="proveedor", required=false) String proveedor,
+							   @RequestParam(value="bodega", required=false) String bodega) { 
+		
+		if(codcaja == null) {
+			codcaja = "";
+		}
+		if(codref == null) {
+			codref = "";
+		}
+		if(proveedor == null) {
+			proveedor = "";
+		}
+		if(bodega.equals("")) {
+			bodega = null;
+		}
+		
+		Insumo insumo = new Insumo();
+		insumo.setCodcaja(codcaja);
+		insumo.setCodref(codref);
+		insumo.setProveedor(proveedor);
+		insumo.setBodega(bodega);
+		
+		List<Insumo> l = i.listarInsumos(insumo);
+		
+		if(l.size() == 0) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se encontraron resultados");
+			return new Redireccion(map + "/consultar");
+		}
+		
+		ModelMap modelo = new ModelMap();
+		modelo.addAttribute("insumos", l);
+		Date fechaActual = new Date();
+       Calendar calendar = Calendar.getInstance();
+
+       calendar.setTime(fechaActual); // Configuramos la fecha que se recibe
+
+       calendar.add(Calendar.DAY_OF_YEAR, 30);  // numero de días a añadir, o restar en caso de días<0
+
+       fechaActual = calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+       
+       modelo.addAttribute("fechaActual", fechaActual);
+			
+		return new ModelAndView(view + "/listar_reporte", modelo);
+	} 
+	
+	@RequestMapping(value = map + "/ver")
+	public ModelAndView ver(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codcaja", required=true) String codcaja) {
+		
+		
+		Insumo insumo = new Insumo();
+		insumo.setCodcaja(codcaja);
+		
+		List<Insumo> l = i.consultarInsumo(insumo);
+		
+		if(l.size() == 0 || l.size() > 1) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se encontro el Insumo");
+			return new Redireccion(map + "/consultar");
+		}
+		
+		ModelMap modelo = new ModelMap();
+		modelo.put("insumo", l.get(0));
+		
+		return new ModelAndView(view + "/ver", modelo);
+	}
+	 
+	
 }

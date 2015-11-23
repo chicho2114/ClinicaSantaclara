@@ -93,6 +93,7 @@
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/crear_archivo">Cargar Insumos mediante Archivo</a></li>
 											                	<li class="divider"></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/listar">Consultar Referencia</a></li>
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/consultar">Consultar Insumos</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/proveedores/consultar">Consultar Proveedor</a></li>
 											                	<li class="divider"></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_bodega">Bodegas de Inventario</a></li>

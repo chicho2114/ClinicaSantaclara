@@ -11,7 +11,7 @@ public class Insumo implements Serializable {
 	private static final long serialVersionUID = 2257556283567979728L;
 	
 	private String codcaja;
-	private String codigoRef;
+	private String codref;
 	private String proveedor;
 	private String fabricante;
 	private String bodega;
@@ -24,13 +24,25 @@ public class Insumo implements Serializable {
 	private Date fechaCrea;
 	private String usuaModi;
 	private Date fechaModi;
+	
+	public Insumo(){
+		 codcaja = null;
+		 codref = null;
+		 proveedor = null;
+		 fabricante = null;
+		 bodega = null;
+		 cantInsumos = null;
+		 precioComp = null;
+		 precioVent = null;
+		 fechaComp = null;
+		 fechaVenc = null;
+		 usuaCrea = null;
+		 fechaCrea = null;
+		 usuaModi = null;
+		 fechaModi = null;
+	}
 
-	public String getCodigoRef() {
-		return codigoRef;
-	}
-	public void setCodigoRef(String codigoRef) {
-		this.codigoRef = codigoRef;
-	}
+
 	public String getProveedor() {
 		return proveedor;
 	}
@@ -109,6 +121,16 @@ public class Insumo implements Serializable {
 	}
 	public void setCodcaja(String codcaja) {
 		this.codcaja = codcaja;
+	}
+
+
+	public String getCodref() {
+		return codref;
+	}
+
+
+	public void setCodref(String codref) {
+		this.codref = codref;
 	}
 	
 

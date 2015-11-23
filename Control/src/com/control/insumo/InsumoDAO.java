@@ -90,10 +90,43 @@ public class InsumoDAO {
 		return jdbcInsumo.queryForList(sql);
 	}
 	
+	public List<Insumo> listarInsumos(Insumo insumo) {
+		
+		Object[] argumentos = {insumo.getCodcaja()+"%", insumo.getCodref()+"%", 
+							   insumo.getProveedor()+"%", insumo.getBodega(), insumo.getBodega()};
+		
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR,
+					   Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("insumos.listar");
+		
+		return jdbcInsumo.query(sql, argumentos, tipos, new InsumoMapper());
+	}
+	
+	public List<Insumo> consultarInsumo(Insumo insumo) {
+		
+		Object[] argumentos = {insumo.getCodcaja()};
+		
+		int[] tipos = {Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("insumos.encontrarinsumo");
+		
+		return jdbcInsumo.query(sql, argumentos, tipos, new InsumoMapper());
+	}
+	
 	public List<Map<String, Object>> consultarInsumosVencidos() {
 		
-		String sql = "SELECT ts_insumo_codref codigo, ts_insumo_bodega bodega, ti_insumo_cantinsumo cantidad,td_insumo_fechavenc fecha " +
-					 "FROM t_insumo WHERE (td_insumo_fechavenc <= DATE_ADD(CURDATE(), INTERVAL 30 DAY))";
+		String sql = "SELECT ts_insumo_codcaja codcaja, ts_insumo_codref codigo, ts_insumo_bodega bodega, ti_insumo_cantinsumo cantidad,td_insumo_fechavenc fecha " +
+					 "FROM t_insumo WHERE (td_insumo_fechavenc <= DATE_ADD(CURDATE(), INTERVAL 30 DAY)) ORDER BY td_insumo_fechavenc ASC";
+					 
+		
+		return jdbcInsumo.queryForList(sql);
+	}
+
+	public List<Map<String, Object>> consultarCajas() {
+		
+		String sql = "SELECT ts_insumo_codcaja codcaja, ts_insumo_codref codigo, ts_insumo_bodega bodega " +
+					 "FROM t_insumo";
 					 
 		
 		return jdbcInsumo.queryForList(sql);
@@ -102,11 +135,15 @@ public class InsumoDAO {
 	@Transactional(rollbackFor=Exception.class)
 	public void insertarInsumo(Insumo insumo) throws Exception {
 		
+		if(verificarInsumo(insumo.getCodcaja()) > 0 ) {
+			throw new Exception("Código de caja ya existe");
+		}
+		
 		//Valores por defecto
 		insumo.setFechaCrea(new Date());
 		
 		//Insertar en tabla de insumos
-		Object[] argumentos = { insumo.getCodcaja(), insumo.getCodigoRef(), insumo.getProveedor(), insumo.getFabricante(), insumo.getBodega(), 
+		Object[] argumentos = { insumo.getCodcaja(), insumo.getCodref(), insumo.getProveedor(), insumo.getFabricante(), insumo.getBodega(), 
 								insumo.getCantInsumos(), insumo.getPrecioComp(), insumo.getPrecioVent(), 
 								insumo.getFechaComp(), insumo.getFechaVenc(),  insumo.getUsuaCrea(), 
 								insumo.getFechaCrea(), insumo.getUsuaModi(), insumo.getFechaModi()};
@@ -126,7 +163,7 @@ public class InsumoDAO {
 		}
 		
 			//Insertar cantidad de insumos en referencia
-			Object[] argumentos2 = { insumo.getCantInsumos(), insumo.getCodigoRef()};
+			Object[] argumentos2 = { insumo.getCantInsumos(), insumo.getCodref()};
 			
 			int[] tipo2 = {Types.INTEGER, Types.VARCHAR };
 					
@@ -141,7 +178,7 @@ public class InsumoDAO {
 			
 			//Insertar cantidad de insumos en bodega
 			Object[] argumentos3 = {  insumo.getCantInsumos(), insumo.getUsuaModi(), insumo.getFechaModi(),  
-										insumo.getBodega(), insumo.getCodigoRef(),};
+										insumo.getBodega(), insumo.getCodref(),};
 			
 			int[] tipo3 = { Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR, Types.VARCHAR  };
 					
@@ -154,6 +191,17 @@ public class InsumoDAO {
 				throw new Exception(dae.getCause());
 			}
 		
+	}
+	
+	public int verificarInsumo(String codigo) {
+		
+		Object[] argumentos = {codigo};
+		
+		int[] tipos = {Types.VARCHAR};
+		
+		String sql = "select count(*) from t_insumo where ts_insumo_codcaja = ?";
+		
+		return jdbcInsumo.queryForInt(sql, argumentos, tipos);
 	}
 	
 	@Transactional(rollbackFor=SQLException.class)

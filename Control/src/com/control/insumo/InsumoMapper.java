@@ -11,9 +11,9 @@ public class InsumoMapper implements RowMapper<Insumo> {
 	@Override
 	public Insumo mapRow(ResultSet rs, int rownum) throws SQLException {
 		Insumo i = new Insumo();
-		
+
 		i.setCodcaja(rs.getString("codcaja"));
-		i.setCodigoRef(rs.getString("codigoRef"));
+		i.setCodref(rs.getString("codref"));
 		i.setProveedor(rs.getString("proveedor"));
 		i.setFabricante(rs.getString("fabricante"));
 		i.setBodega(rs.getString("bodega"));

@@ -46,6 +46,7 @@
 				          	     <table class="table table-bordered table-hover">
 							      <thead>
 							        <tr>
+							          <th>Codigo Caja</th>
 							          <th>Codigo Referencia</th>
 							          <th>Codigo Bodega</th>
 							          <th>Cantidad Disponible</th>
@@ -56,12 +57,13 @@
 							      <tbody>
 							      <c:forEach var="insumo" items="${insumos}">
 							        <tr class="error">
+							          <td>${insumo.codcaja}</td>
 							          <td>${insumo.codigo}</td>
 							          <td>${insumo.bodega}</td>
 							          <td>${insumo.cantidad}</td>
 							          <td><fmt:formatDate value="${insumo.fecha}" pattern="dd/MM/yyyy" /></td>
-							          <td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${insumo.codigo}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
-							        </tr>
+							         <td><a href="${pageContext.request.contextPath}/insumos/ver?codcaja=${insumo.codcaja}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
+									</tr>
 							       </c:forEach>
 							       </tbody>
 							    </table> 
