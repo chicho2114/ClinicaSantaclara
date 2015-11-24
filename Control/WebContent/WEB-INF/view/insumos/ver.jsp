@@ -11,7 +11,7 @@
 			<div class="row-fluid">
 				<h2>Ver Insumo: ${insumo.codcaja} - ${insumo.codref}</h2>
 				<form action="${pageContext.request.contextPath}/insumos/editar" method="post"
-					  id="editarProveedor">
+					  id="editarInsumo">
 					<table class="table table-striped">
 						<tr>
 							<td><strong>Código Caja:</strong></td>

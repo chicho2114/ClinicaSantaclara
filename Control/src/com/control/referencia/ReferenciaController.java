@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.control.general.ExcepcionSQL;
 import com.control.general.ManejadorMensajes;
 import com.control.general.Redireccion;
 import com.control.general.TipoMensaje;
 import com.control.general.Utils;
+import com.control.insumo.Insumo;
+import com.control.insumo.InsumoDAO;
 import com.csvreader.CsvReader;
 
 @Controller
@@ -33,6 +36,9 @@ public class ReferenciaController {
 	
 	@Autowired
 	private ReferenciaDAO r;
+	
+	@Autowired
+	private InsumoDAO i;
 	
 	@RequestMapping(value = map + "/listar")
 	public ModelAndView listar_form() {
@@ -392,6 +398,8 @@ public class ReferenciaController {
 											@RequestParam(value="cantidad") int cantidad,
 											@RequestParam(value="bodega") String bodega) {
 		
+		
+		
 		if(referencia == null) {
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "Referencia no debe estar vacío");
 			return new Redireccion(map + "/crear_ajuste");
@@ -413,6 +421,17 @@ public class ReferenciaController {
 		
 		List<Referencia> l = r.listarReferencias(ref);
 		
+		Insumo insumo = new Insumo();
+		insumo.setCodref(l.get(0).getCodigo());
+		insumo.setBodega(bodega);
+		insumo.setCantInsumos(-cantidad);
+		insumo.setUsuaModi( Utils.obtenerUsuario(request));
+		insumo.setFechaModi(new Date());
+		
+		List<Insumo> insu = i.listarInsumos(insumo);
+		Integer centinela=cantidad;
+		Integer contador=insu.size();
+		
 		if(l.size() == 0 || l.size() > 1 || !l.get(0).getDescripcion().equals(refe)) {
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "La referencia no existe");
 			return new Redireccion(map + "/crear_ajuste");
@@ -420,6 +439,21 @@ public class ReferenciaController {
 		
 		try {
 			r.insertarAjuste(bodega, referencia, cantidad, Utils.obtenerUsuario(request));
+			while((centinela<0) &&(contador>=0)){
+				centinela= insu.get(contador).getCantInsumos()-(centinela*-1);
+				try {
+					i.actualizarInsumo(insu.get(contador));
+					contador--;
+				} catch (ExcepcionSQL e) {
+					// TODO Auto-generated catch block
+					ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Ocurrió un error: " + e.getMessage());
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Ocurrió un error: " + e.getMessage());
+					
+				}
+			}
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "Ajuste creado satisfactoriamente");
 		}
 		catch(SQLException e) {

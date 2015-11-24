@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.control.general.ExcepcionSQL;
 import com.control.general.Propiedades;
 
 public class InsumoDAO {
@@ -307,6 +308,108 @@ public class InsumoDAO {
 			catch(DataAccessException e) {
 				throw new SQLException(e);
 			}
+		
+	}
+	
+	@Transactional(rollbackFor=DataAccessException.class)
+	public void actualizarInsumo(Insumo insumo) throws ExcepcionSQL, Exception {	
+			
+			
+		if(insumo.getCantInsumos() <= 0){
+			Object[] argumentos = { insumo.getCodcaja(), insumo.getBodega() };
+			
+			int[] tipos = {Types.VARCHAR, Types.VARCHAR };
+			
+			String sql =  prop.obtenerSQL("insumos.eliminar");
+			
+			try {
+				jdbcInsumo.update(sql, argumentos, tipos);
+			}
+			catch(DataAccessException e) {
+				throw new ExcepcionSQL(e.getCause());
+			}
+		}else{
+			List<Insumo> l = consultarInsumo(insumo);
+			//Actualizar tabla t_insumo
+			Object[] argumentos = {insumo.getBodega(), insumo.getCantInsumos(), insumo.getPrecioVent(), 
+									insumo.getUsuaModi(), insumo.getFechaModi(), insumo.getCodcaja(), insumo.getCodref() };
+			
+			int[] tipos = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR,
+							Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR, Types.VARCHAR};
+			
+			String sql =  prop.obtenerSQL("insumos.actualizar");
+			
+			try {
+				jdbcInsumo.update(sql, argumentos, tipos);
+			}
+			catch(DataAccessException e) {
+				throw new ExcepcionSQL(e.getCause());
+			}
+			
+				//Insertar cantidad de insumos en referencia
+				Object[] argumentos2 = { insumo.getCantInsumos() - l.get(0).getCantInsumos(), insumo.getCodref()};
+				
+				int[] tipo2 = {Types.INTEGER, Types.VARCHAR };
+						
+				String sql2 = prop.obtenerSQL("insumos.actualizarReferencia");
+				
+				try {
+					jdbcInsumo.update(sql2, argumentos2, tipo2);
+				}
+				catch(DataAccessException dae) {
+					throw new Exception(dae.getCause());
+				}
+			//}
+			if(l.get(0).getBodega() != insumo.getBodega()){
+			
+				//Insertar cantidad de insumos en bodega
+				Object[] argumentos3 = {  insumo.getCantInsumos() - l.get(0).getCantInsumos(), insumo.getUsuaModi(), insumo.getFechaModi(),  
+											l.get(0).getBodega(), insumo.getCodref(),};
+				
+				int[] tipo3 = { Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR, Types.VARCHAR  };
+						
+				String sql3 = prop.obtenerSQL("insumos.actualizarBodega");
+				
+				try {
+					jdbcInsumo.update(sql3, argumentos3, tipo3);
+				}
+				catch(DataAccessException dae) {
+					throw new Exception(dae.getCause());
+				}
+				
+				Object[] argumentos4 = {  insumo.getCantInsumos(), insumo.getUsuaModi(), insumo.getFechaModi(),  
+						insumo.getBodega(), insumo.getCodref()};
+
+				int[] tipo4 = { Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR, Types.VARCHAR  };
+					
+				String sql4 = prop.obtenerSQL("insumos.actualizarBodega");
+				
+				try {
+					jdbcInsumo.update(sql4, argumentos4, tipo4);
+				}
+				catch(DataAccessException dae) {
+					throw new Exception(dae.getCause());
+				}
+				
+			}
+			else{
+				//Insertar cantidad de insumos en bodega
+				Object[] argumentos3 = {  insumo.getCantInsumos() - l.get(0).getCantInsumos(), insumo.getUsuaModi(), insumo.getFechaModi(),  
+											insumo.getBodega(), insumo.getCodref()};
+				
+				int[] tipo3 = { Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR, Types.VARCHAR  };
+						
+				String sql3 = prop.obtenerSQL("insumos.actualizarBodega");
+				
+				try {
+					jdbcInsumo.update(sql3, argumentos3, tipo3);
+				}
+				catch(DataAccessException dae) {
+					throw new Exception(dae.getCause());
+				}
+			}
+		}
+		
 		
 	}
 }

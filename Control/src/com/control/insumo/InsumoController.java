@@ -253,6 +253,62 @@ public class InsumoController {
 		
 		return new ModelAndView(view + "/ver", modelo);
 	}
-	 
 	
+	@RequestMapping(value = map + "/editar", method = RequestMethod.POST)
+	public ModelAndView editar(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codcaja", required=true) String codcaja,
+							@RequestParam(value="codref", required=true) String codref,
+							@RequestParam(value="bodega", required=true) String bodega,
+							@RequestParam(value="proveedor", required=true) String proveedor) {
+		
+		
+		Insumo insumo = new Insumo();
+		insumo.setCodcaja(codcaja);
+		insumo.setCodref(codref);
+		insumo.setBodega(bodega);
+		insumo.setProveedor(proveedor);
+		
+		List<Insumo> l = i.listarInsumos(insumo);
+		
+		if(l.size() == 0 || l.size() > 1) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se encontro el Insumo");
+			return new Redireccion(map + "/consultar");
+		}
+		
+		ModelMap modelo = new ModelMap();
+		modelo.put("insumo", l.get(0));
+		modelo.addAttribute("bodegas", i.consultarBodegas());
+		
+		return new ModelAndView(view + "/editar", modelo);
+	}
+	 
+	@RequestMapping(value = map + "/editar_insumo", method = RequestMethod.POST)
+	public ModelAndView editar_insumo(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codcaja", required=true) String codcaja,
+							@RequestParam(value="codref", required=true) String codref,
+							@RequestParam(value="bodega", required=true) String bodega,
+							@RequestParam(value="cantInsumos", required=true) Integer cantInsumos,
+							@RequestParam(value="precioVent", required=true) String precioVent) {
+		
+		
+		Insumo insumo = new Insumo();
+		insumo.setCodcaja(codcaja);
+		insumo.setCodref(codref);
+		insumo.setBodega(bodega);
+		insumo.setCantInsumos(cantInsumos);
+		insumo.setPrecioVent(precioVent);
+		insumo.setUsuaModi(Utils.obtenerUsuario(request));
+		insumo.setFechaModi(new Date());
+		
+		try {
+				this.i.actualizarInsumo(insumo);
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "El insumo ha sido modificado satisfactoriamente");
+			} catch (Exception e) {
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
+			}
+			
+		return new Redireccion(map + "/consultar");
+	}
 }

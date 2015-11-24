@@ -25,7 +25,7 @@
 			       		</tr>
 		       		</thead>
 					<c:forEach var="insumo" items="${insumos}">
-					<c:choose>
+						<c:choose>
 						<c:when test="${insumo.fechaVenc <= fechaActual}">
 						<tr class="error">
 							<td>${insumo.codcaja}</td>
