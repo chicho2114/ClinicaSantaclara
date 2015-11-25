@@ -210,4 +210,24 @@ public class ProveedorController {
 			
 		return new Redireccion(map + "/consultar");
 	}
+	
+	@RequestMapping(value = map + "/eliminar", method = RequestMethod.GET)
+	public ModelAndView eliminar_proveedor(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codigo", required=true) String codigo) {
+		
+		
+		Proveedor proveedor = new Proveedor();
+		proveedor.setCodigo(codigo);
+		List<Proveedor> l = p.encontrarProveedor(proveedor);
+		l.get(0).setUsuaModi(Utils.obtenerUsuario(request));
+		try {
+				this.p.eliminarProveedor(l.get(0));
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "El proveedor ha sido eliminado satisfactoriamente");
+			} catch (Exception e) {
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
+			}
+			
+		return new Redireccion(map + "/consultar");
+	}
 }

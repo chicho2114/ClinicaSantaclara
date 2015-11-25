@@ -312,23 +312,61 @@ public class InsumoDAO {
 	}
 	
 	@Transactional(rollbackFor=DataAccessException.class)
+	public void actualizarInsumoAjuste(String codref, String bodega, Integer cantidad) throws ExcepcionSQL, Exception{
+		
+		Insumo insumo = new Insumo();
+		insumo.setCodref(codref);
+		insumo.setBodega(bodega);
+		insumo.setProveedor("");
+		insumo.setCodcaja("");
+		
+		List<Insumo> l = listarInsumos(insumo);
+		
+		Integer centinela=cantidad;
+		Integer contador=0;
+		
+		while((centinela<0) &&(contador<=l.size())&&(!l.isEmpty())){
+			
+			centinela= centinela + l.get(contador).getCantInsumos();
+			if(centinela<=0){
+				Object[] argumentos = {l.get(contador).getCodcaja(), insumo.getBodega() };
+				
+				int[] tipos = {Types.VARCHAR, Types.VARCHAR};
+				
+				String sql =  prop.obtenerSQL("insumos.eliminar");
+				
+				try {
+					jdbcInsumo.update(sql, argumentos, tipos);
+					contador++;
+				}
+				catch(DataAccessException e) {
+					throw new ExcepcionSQL(e.getCause());
+				}
+			}
+			else{
+				l.get(contador).setCantInsumos(centinela);
+				Object[] argumentos = {l.get(contador).getBodega(), l.get(contador).getCantInsumos(), l.get(contador).getPrecioVent(), 
+						l.get(contador).getUsuaModi(), l.get(contador).getFechaModi(), l.get(contador).getCodcaja(), l.get(contador).getCodref() };
+				
+				int[] tipos = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR,
+								Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR, Types.VARCHAR};
+				
+				String sql =  prop.obtenerSQL("insumos.actualizar");
+				
+				try {
+					jdbcInsumo.update(sql, argumentos, tipos);
+					contador++;
+				}
+				catch(DataAccessException e) {
+					throw new ExcepcionSQL(e.getCause());
+				}
+			}
+		}
+	}
+	
+	@Transactional(rollbackFor=DataAccessException.class)
 	public void actualizarInsumo(Insumo insumo) throws ExcepcionSQL, Exception {	
-			
-			
-		if(insumo.getCantInsumos() <= 0){
-			Object[] argumentos = { insumo.getCodcaja(), insumo.getBodega() };
-			
-			int[] tipos = {Types.VARCHAR, Types.VARCHAR };
-			
-			String sql =  prop.obtenerSQL("insumos.eliminar");
-			
-			try {
-				jdbcInsumo.update(sql, argumentos, tipos);
-			}
-			catch(DataAccessException e) {
-				throw new ExcepcionSQL(e.getCause());
-			}
-		}else{
+
 			List<Insumo> l = consultarInsumo(insumo);
 			//Actualizar tabla t_insumo
 			Object[] argumentos = {insumo.getBodega(), insumo.getCantInsumos(), insumo.getPrecioVent(), 
@@ -360,10 +398,10 @@ public class InsumoDAO {
 					throw new Exception(dae.getCause());
 				}
 			//}
-			if(l.get(0).getBodega() != insumo.getBodega()){
+			if(!l.get(0).getBodega().equals(insumo.getBodega())){
 			
 				//Insertar cantidad de insumos en bodega
-				Object[] argumentos3 = {  insumo.getCantInsumos() - l.get(0).getCantInsumos(), insumo.getUsuaModi(), insumo.getFechaModi(),  
+				Object[] argumentos3 = {  -l.get(0).getCantInsumos(), insumo.getUsuaModi(), insumo.getFechaModi(),  
 											l.get(0).getBodega(), insumo.getCodref(),};
 				
 				int[] tipo3 = { Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR, Types.VARCHAR  };
@@ -408,8 +446,20 @@ public class InsumoDAO {
 					throw new Exception(dae.getCause());
 				}
 			}
-		}
+			if(insumo.getCantInsumos() <= 0){
+				Object[] argumentos5 = { insumo.getCodcaja(), insumo.getBodega() };
+				
+				int[] tipos5 = {Types.VARCHAR, Types.VARCHAR };
+				
+				String sql5 =  prop.obtenerSQL("insumos.eliminar");
+				
+				try {
+					jdbcInsumo.update(sql5, argumentos5, tipos5);
+				}
+				catch(DataAccessException e) {
+					throw new ExcepcionSQL(e.getCause());
+				}
 		
-		
+			}
 	}
 }

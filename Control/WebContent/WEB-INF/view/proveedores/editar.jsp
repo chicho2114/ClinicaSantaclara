@@ -28,6 +28,8 @@
 					</table>
 					<input type="submit" class="btn btn-primary" value="Modificar" tabindex="8">
 				</form>
+				
+					<a href="${pageContext.request.contextPath}/proveedores/eliminar?codigo=${proveedor.codigo}"><button class="btn btn-danger">Eliminar</button></a>
 				<t:regresar></t:regresar>
 			</div>
 		</div>

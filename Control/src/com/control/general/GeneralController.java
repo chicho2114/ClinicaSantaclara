@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 //import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import com.control.insumo.InsumoDAO;
+import com.control.referencia.ReferenciaDAO;
 import com.control.usuario.Usuario;
 import com.control.usuario.UsuarioDAO;
 
@@ -33,7 +34,9 @@ public class GeneralController {
 	@Autowired
 	private UsuarioDAO u;
 	@Autowired
-	private InsumoDAO i;
+	private InsumoDAO i;	
+	@Autowired
+	private ReferenciaDAO r;
 	
 	private static final Logger logger = Logger.getLogger(GeneralController.class);
 	
@@ -64,6 +67,7 @@ public class GeneralController {
 			modelo.addAttribute("agregados", i.agregadosRecientemente());
 			modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 			modelo.addAttribute("insumos", i.consultarInsumosVencidos());
+			modelo.put("movimientos", r.consultarMovimientos());
 			
 			return new ModelAndView(view + "/usuario", modelo);
 		}

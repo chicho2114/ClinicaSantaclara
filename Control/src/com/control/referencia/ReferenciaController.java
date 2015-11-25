@@ -24,7 +24,6 @@ import com.control.general.ManejadorMensajes;
 import com.control.general.Redireccion;
 import com.control.general.TipoMensaje;
 import com.control.general.Utils;
-import com.control.insumo.Insumo;
 import com.control.insumo.InsumoDAO;
 import com.csvreader.CsvReader;
 
@@ -421,17 +420,6 @@ public class ReferenciaController {
 		
 		List<Referencia> l = r.listarReferencias(ref);
 		
-		Insumo insumo = new Insumo();
-		insumo.setCodref(l.get(0).getCodigo());
-		insumo.setBodega(bodega);
-		insumo.setCantInsumos(-cantidad);
-		insumo.setUsuaModi( Utils.obtenerUsuario(request));
-		insumo.setFechaModi(new Date());
-		
-		List<Insumo> insu = i.listarInsumos(insumo);
-		Integer centinela=cantidad;
-		Integer contador=insu.size();
-		
 		if(l.size() == 0 || l.size() > 1 || !l.get(0).getDescripcion().equals(refe)) {
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "La referencia no existe");
 			return new Redireccion(map + "/crear_ajuste");
@@ -439,22 +427,17 @@ public class ReferenciaController {
 		
 		try {
 			r.insertarAjuste(bodega, referencia, cantidad, Utils.obtenerUsuario(request));
-			while((centinela<0) &&(contador>=0)){
-				centinela= insu.get(contador).getCantInsumos()-(centinela*-1);
-				try {
-					i.actualizarInsumo(insu.get(contador));
-					contador--;
-				} catch (ExcepcionSQL e) {
-					// TODO Auto-generated catch block
-					ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Ocurrió un error: " + e.getMessage());
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Ocurrió un error: " + e.getMessage());
-					
-				}
+			try {
+				i.actualizarInsumoAjuste(l.get(0).getCodigo(), bodega, cantidad);
+			} catch (ExcepcionSQL e) {
+				
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Ocurrió un error: " + e.getMessage());
+			} catch (Exception e) {
+			
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Ocurrió un error: " + e.getMessage());
 			}
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "Ajuste creado satisfactoriamente");
+			
 		}
 		catch(SQLException e) {
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Ocurrió un error: " + e.getMessage());
@@ -472,6 +455,7 @@ public class ReferenciaController {
 		List<String> codigosReferencias = new ArrayList<String>();
 		List<Integer> cantidades = new ArrayList<Integer>();
 		List<String> bodegas = new ArrayList<String>();
+		Integer contador=0;
 		
 		try {
 			CsvReader lector = new CsvReader(arcAjuste.getInputStream(), Charset.forName("UTF-8"));
@@ -502,6 +486,20 @@ public class ReferenciaController {
 		try {
 			r.insertarAjustesBatch(codigosReferencias, cantidades, bodegas, Utils.obtenerUsuario(request));
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, codigosReferencias.size() + " ajustadas satisfactoriamente");
+			while(contador<=bodegas.size()){
+				try {
+					i.actualizarInsumoAjuste(codigosReferencias.get(contador), bodegas.get(contador), cantidades.get(contador));
+					contador++;
+				} catch (ExcepcionSQL e) {
+					
+					ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Ocurrió un error: " + e.getMessage());
+				} catch (Exception e) {
+				
+					ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Ocurrió un error: " + e.getMessage());
+				}
+			}
+			
+			
 		} catch (SQLException e) {
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
 		}
@@ -516,5 +514,103 @@ public class ReferenciaController {
 		modelo.addAttribute("inventario", r.inventarioGeneral());
 		
 		return new ModelAndView(view + "/inventario_general_reporte", modelo);
+	}
+	
+	@RequestMapping(value = map + "/editar", method = RequestMethod.POST)
+	public ModelAndView editar(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codigo", required=true) String codigo,
+							@RequestParam(value="descripcion", required=true) String descripcion,
+							@RequestParam(value="componente", required=true) String componente,
+							@RequestParam(value="presentacion", required=true) String presentacion,
+							@RequestParam(value="observacion", required=true) String observacion,
+							@RequestParam(value="cant_mini", required=true) Integer cant_mini,
+							@RequestParam(value="cantidad", required=true) Integer cantidad) {
+		
+		
+		Referencia referencia = new Referencia();
+		referencia.setCodigo(codigo);
+		referencia.setDescripcion(descripcion);
+		referencia.setComponente(componente);
+		referencia.setPresentacion(presentacion);
+		referencia.setObservacion(observacion);
+		referencia.setCant_mini(cant_mini);
+		referencia.setCantidad(cantidad);
+		
+		List<Referencia> l = r.listarReferencias(referencia);
+		
+		if(l.size() == 0 || l.size() > 1) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se encontro Referencia");
+			return new Redireccion(map + "/consultar");
+		}
+		
+		ModelMap modelo = new ModelMap();
+		modelo.put("referencia", l.get(0));
+		modelo.addAttribute("fabricantes", r.consultarFabricantes());
+		modelo.addAttribute("categorias", r.consultarCategorias());
+		
+		return new ModelAndView(view + "/editar", modelo);
+	}
+	
+	@RequestMapping(value = map + "/editar_ref", method = RequestMethod.POST)
+	public ModelAndView editar_ref(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codigo", required=true) String codigo,
+							@RequestParam(value="descripcion", required=true) String descripcion,
+							@RequestParam(value="componente", required=true) String componente,
+							@RequestParam(value="presentacion", required=true) String presentacion,
+							@RequestParam(value="fabricante", required=true) String fabricante,
+							@RequestParam(value="categoria", required=true) String categoria,
+							@RequestParam(value="observacion", required=true) String observacion,
+							@RequestParam(value="cant_minima", required=true) Integer cant_mini) {
+		
+		
+		Referencia referencia = new Referencia();
+		referencia.setCodigo(codigo);
+		
+		//List<Referencia> l = r.listarReferencias(referencia);
+		
+		referencia.setDescripcion(descripcion);
+		referencia.setComponente(componente);
+		referencia.setPresentacion(presentacion);
+		referencia.setFabricante(fabricante);
+		referencia.setCategoria(categoria);
+		referencia.setObservacion(observacion);
+		referencia.setCant_mini(cant_mini);
+		referencia.setFechaModi(new Date());
+		referencia.setUsuaModi(Utils.obtenerUsuario(request));
+		
+		try {
+				this.r.actualizarReferencia(referencia);
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "La referencia ha sido modificado satisfactoriamente");
+			} catch (Exception e) {
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
+			}
+			
+		return new Redireccion(map + "/listar");
+	}
+	
+	@RequestMapping(value = map + "/eliminar", method = RequestMethod.GET)
+	public ModelAndView eliminar_referencia(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codigo", required=true) String codigo) {
+		
+		
+		Referencia referencia = new Referencia();
+		referencia.setCodigo(codigo);
+		referencia.setDescripcion("");		
+		referencia.setFechaModi(new Date());
+		referencia.setUsuaModi(Utils.obtenerUsuario(request));
+		
+		List<Referencia> l = r.encontrarReferencia(referencia);
+		
+		try {
+				this.r.eliminarReferencia(l.get(0));
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "La referencia ha sido modificado satisfactoriamente");
+			} catch (Exception e) {
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
+			}
+			
+		return new Redireccion(map + "/listar");
 	}
 }

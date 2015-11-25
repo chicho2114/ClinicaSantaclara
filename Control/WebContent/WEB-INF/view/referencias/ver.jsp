@@ -8,6 +8,8 @@
 		<div class="container">
 			<div class="row-fluid">
 				<h2>Ver Referencia: ${referencia.codigo} - ${referencia.descripcion}</h2>
+				<form action="${pageContext.request.contextPath}/referencias/editar" method="post"
+					  id="editarInsumo">
 				<table class="table table-striped">
 					<tr>
 						<td><strong>Código:</strong></td>
@@ -58,6 +60,8 @@
 		       			<td><input class="uppercase"  name="cantidad" type="text" value="${referencia.cantidad}" readonly></td>
 		       		</tr>
 				</table>
+					<input type="submit" class="btn btn-primary" value="Editar" tabindex="8">
+				</form>
 				
 				<h2>Cantidades en Bodegas</h2>
 				<table class="table table-striped">

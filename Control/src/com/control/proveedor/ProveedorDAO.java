@@ -1,6 +1,7 @@
 package com.control.proveedor;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.List;
@@ -14,11 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.control.general.ExcepcionSQL;
 import com.control.general.Propiedades;
+import com.control.referencia.ReferenciaDAO;
 
 public class ProveedorDAO {
 
 	private JdbcTemplate jdbcProveedor;
 	private Propiedades prop;
+	
 	
 	public ProveedorDAO() throws IOException {
 		prop = new Propiedades("proveedores.properties");
@@ -29,6 +32,9 @@ public class ProveedorDAO {
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcProveedor = new JdbcTemplate(dataSource);
 	}
+	
+	@Autowired
+	private ReferenciaDAO r;
 	
 	public List<Proveedor> obtenerProveedor(String codigo) {
 		
@@ -66,6 +72,22 @@ public class ProveedorDAO {
 		catch(DataAccessException e) {
 			throw new ExcepcionSQL(e.getCause());
 		}
+		
+		//Establecemos el ajuste 
+				int codigo = r.consultarConsecutivo("AJUSTEPROVEEDOR");
+				//Insertamos el movimiento
+				Object[] argumentos2 = {proveedor.getCodigo(), 1, "AJUSTEPROVEEDOR" + codigo, "AJUSTEPROVEEDOR", proveedor.getUsuaCrea()};
+				
+				int[] tipos2 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+				
+					String sql2 = prop.obtenerSQL("proveedores.movimiento.insertar");
+				
+				try {
+					jdbcProveedor.update(sql2, argumentos2, tipos2);
+				}
+				catch(DataAccessException dae) {
+					throw new SQLException(dae.getMessage() + "1");
+				}
 		
 	}
 	
@@ -114,6 +136,52 @@ public class ProveedorDAO {
 			}
 		}
 		
+	}
+	
+	public List<Proveedor> encontrarProveedor(Proveedor proveedor) {
+		
+		Object[] argumentos = {proveedor.getCodigo()};
+		
+		int[] tipos = {Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("proveedores.encontrar");
+		
+		return jdbcProveedor.query(sql, argumentos, tipos, new ProveedorMapper());
+	}
+	
+	@Transactional(rollbackFor=DataAccessException.class)
+	public void eliminarProveedor(Proveedor proveedor) throws ExcepcionSQL, Exception {
+		//Establecemos el ajuste 
+		int codigo = r.consultarConsecutivo("AJUSTEPROVEEDOR");
+		//Insertamos el movimiento
+		Object[] argumentos2 = {proveedor.getCodigo(), -1, "AJUSTEPROVEEDOR" + codigo, "AJUSTEPROVEEDOR", proveedor.getUsuaModi()};
+		
+		int[] tipos2 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+		
+			String sql2 = prop.obtenerSQL("proveedores.movimiento.insertar");
+		
+		try {
+			jdbcProveedor.update(sql2, argumentos2, tipos2);
+		}
+		catch(DataAccessException dae) {
+			throw new SQLException(dae.getMessage() + "1");
+		}
+		
+		r.actualizarConsecutivo("AJUSTEPROVEEDOR", 1);
+			//Insertar en tabla de proveedores
+			Object[] argumentos = { proveedor.getCodigo()};
+			
+			int[] tipos = {Types.VARCHAR};
+			
+			String sql =  prop.obtenerSQL("proveedores.eliminar");
+			
+			try {
+				jdbcProveedor.update(sql, argumentos, tipos);
+			}
+			catch(DataAccessException e) {
+				throw new ExcepcionSQL(e.getCause());
+			}
+
 	}
 	
 }

@@ -63,8 +63,9 @@
 			       			
 					</table>
 					<input type="submit" class="btn btn-primary" value="Confirmar" tabindex="8">
-					<a href="${pageContext.request.contextPath}/insumos/eliminar?codcaja=${insumo.codcaja}&codref=${insumo.codref}&bodega=${insumo.bodega}"><button class="btn btn-danger">Eliminar</button></a>
+					
 				</form>
+				<a href="${pageContext.request.contextPath}/insumos/eliminar?codcaja=${insumo.codcaja}&codref=${insumo.codref}&bodega=${insumo.bodega}"><button class="btn btn-danger">Eliminar</button></a>
 				<t:regresar></t:regresar>
 			</div>
 		</div>

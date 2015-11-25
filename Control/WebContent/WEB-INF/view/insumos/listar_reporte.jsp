@@ -10,7 +10,7 @@
 			<div class="row-fluid">
 				<h1>Resultados de consulta</h1>
 				<a href="#" onClick ="$('#consulta').tableExport({type:'excel',escape:'false',});"><img src="${pageContext.request.contextPath}/images/icon_excel.png" /></a>
-				<table class="table table-striped" id="consulta">
+				<table class="table table-striped table-hover" id="consulta">
 					<thead>
 						<tr>
 			         			<th>Código Caja</th>

@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.control.general.ExcepcionSQL;
 import com.control.general.Propiedades;
 
 public class ReferenciaDAO {
@@ -358,6 +359,20 @@ public class ReferenciaDAO {
 			throw new SQLException(dae.getMessage() + "1");
 		}
 		
+		//Actualizamos la referencia
+		Object[] argumentos3 = {cantidad, referencia};
+		
+		int[] tipos3 = {Types.INTEGER, Types.VARCHAR}; 
+		
+		String sql3 = prop.obtenerSQL("referencias.actualizarCantReferencia");
+		
+		try {
+			jdbcReferencia.update(sql3, argumentos3, tipos3);
+		}
+		catch(DataAccessException dae) {
+			throw new SQLException(dae.getMessage() + "1");
+		}
+		
 		actualizarConsecutivo("AJUSTEINVENTARIO", 1);
 	}
 	
@@ -412,4 +427,83 @@ public class ReferenciaDAO {
 		
 		actualizarConsecutivo("AJUSTEINVENTARIO", codigos.size());
 	}
+	
+	@Transactional(rollbackFor=DataAccessException.class)
+	public void actualizarReferencia(Referencia referencia) throws ExcepcionSQL, Exception {
+				
+
+			//Insertar en tabla de proveedores
+			Object[] argumentos = {referencia.getDescripcion(), referencia.getComponente(), referencia.getPresentacion(),
+									referencia.getFabricante(), referencia.getCategoria(), referencia.getObservacion(), 
+									referencia.getCant_mini(), referencia.getUsuaModi(), referencia.getFechaModi(), referencia.getCodigo()};
+			
+			int[] tipos = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+							Types.VARCHAR,Types.VARCHAR,Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR};
+			
+			String sql =  prop.obtenerSQL("referencias.actualizar");
+			
+			try {
+				jdbcReferencia.update(sql, argumentos, tipos);
+			}
+			catch(DataAccessException e) {
+				throw new ExcepcionSQL(e.getCause());
+			}
+		
+	}
+	
+	@Transactional(rollbackFor=DataAccessException.class)
+	public void eliminarReferencia(Referencia referencia) throws ExcepcionSQL, Exception {
+		//Establecemos el ajuste 
+		int codigo = consultarConsecutivo("AJUSTEINVENTARIO");
+		//Insertamos el movimiento
+		Object[] argumentos2 = {referencia.getCodigo(), -referencia.getCantidad(), "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", referencia.getUsuaModi()};
+		
+		int[] tipos2 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+		
+			String sql2 = prop.obtenerSQL("referencias.movimiento.insertar");
+		
+		try {
+			jdbcReferencia.update(sql2, argumentos2, tipos2);
+		}
+		catch(DataAccessException dae) {
+			throw new SQLException(dae.getMessage() + "1");
+		}
+		
+		actualizarConsecutivo("AJUSTEINVENTARIO", 1);
+			//Insertar en tabla de proveedores
+			Object[] argumentos = { referencia.getCodigo()};
+			
+			int[] tipos = {Types.VARCHAR};
+			
+			String sql =  prop.obtenerSQL("referencias.eliminar");
+			
+			try {
+				jdbcReferencia.update(sql, argumentos, tipos);
+			}
+			catch(DataAccessException e) {
+				throw new ExcepcionSQL(e.getCause());
+			}
+
+	}
+	
+	public List<Referencia> encontrarReferencia(Referencia referencia) {
+		
+		Object[] argumentos = {referencia.getCodigo()};
+		
+		int[] tipos = {Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("referencias.encontrar");
+		
+		return jdbcReferencia.query(sql, argumentos, tipos, new ReferenciaMapper());
+	}
+		
+
+	public List<Map<String, Object>> consultarMovimientos() {
+	
+		String sql = prop.obtenerSQL("referencias.movimientosConsultar");
+	
+	return jdbcReferencia.queryForList(sql);
+	}
+	
+	
 }

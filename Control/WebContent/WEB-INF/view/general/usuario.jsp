@@ -33,8 +33,8 @@
 					      	</c:otherwise>
 					      </c:choose>
 					      <li class="divider"></li>
-					      <li><a href="#agregados" data-toggle="tab"><i class="icon-plus"></i> Insumos agregados recientemente</a></li>
-					      <li><a href="#retirados" data-toggle="tab"><i class="icon-minus"></i> Insumos retirados recientemente</a></li>
+					      <li><a href="#agregados" data-toggle="tab"><i class="icon-plus"></i> Ultimos insumos agregados</a></li>
+					      <li><a href="#retirados" data-toggle="tab"><i class="icon-list"></i> Ultimos movimientos realizados</a></li>
 					    </ul>
 			          </div>
 				          <div class="span8 ">
@@ -70,7 +70,7 @@
 							    </c:when>
 							     <c:otherwise>
 							       	
-						           <div class="alert alert-success">
+						           <div class="alert alert-info">
 								      <p><strong>Aviso!</strong> No existen insumos proximos a vencer.</p>
 								    </div>
 								
@@ -107,7 +107,7 @@
 							    </c:when>
 							     <c:otherwise>
 							       	
-						           <div class="alert alert-success">
+						           <div class="alert alert-info">
 								      <p><strong>Aviso!</strong> No existen insumos proximos a terminarse.</p>
 								    </div>
 								
@@ -141,7 +141,7 @@
 										<td>${agregado.usuario }</td>
 										<td><fmt:formatDate value="${agregado.fecha }" pattern="dd/MM/yyyy hh:mm:ss a" /></td>
 										
-										<td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${agregado.codigo}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
+										<td><a href="${pageContext.request.contextPath}/insumos/ver?codcaja=${agregado.codcaja}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
 									</tr>
 								</c:forEach> 
 							       </tbody>
@@ -150,7 +150,7 @@
 							    </c:when>
 							    <c:otherwise>
 							       	
-						           <div class="alert alert-success">
+						           <div class="alert alert-info">
 								      <p><strong>Aviso!</strong> No existen insumos agregados recientemente.</p>
 								    </div>
 								
@@ -158,7 +158,60 @@
 							  </c:choose>
 				          	 
 				          	 </div>
-				          	 <div class="tab-pane" id="retirados"><img src="${pageContext.request.contextPath}/images/5.jpg" /></div>
+				          	 <div class="tab-pane" id="retirados">
+					          	 <c:choose>
+					          	 <c:when test="${ movimientos.size() != 0}">
+					          	     <table class="table table-bordered table-hover">
+								      <thead>
+								        <tr>
+								          <th>Nro#</th>
+								          <th>Motivo</th>
+								          <th>Cantidad</th>
+								          <th>Observación</th>						          
+								          <th>Usuario</th>
+								          <th>Fecha</th>
+								        </tr>
+								      </thead>
+								      <tbody>
+								       <c:forEach var="movimiento" items="${movimientos}">
+								       <c:choose>
+										<c:when test="${ movimiento.cantidad > 0}">
+										<tr class="success">
+											<td>${movimiento.id}</td>
+											<td>${movimiento.referencia}</td>
+											<td>${movimiento.cantidad}</td>
+											<td>${movimiento.observacion }</td>
+											<td>${movimiento.usuario }</td>
+											<td><fmt:formatDate value="${movimiento.fecha }" pattern="dd/MM/yyyy hh:mm:ss a" /></td>
+											
+										</tr>
+										</c:when>
+										<c:otherwise>
+											<tr class="error">
+												<td>${movimiento.id}</td>
+												<td>${movimiento.referencia}</td>
+												<td>${movimiento.cantidad}</td>
+												<td>${movimiento.observacion }</td>
+												<td>${movimiento.usuario }</td>
+												<td><fmt:formatDate value="${movimiento.fecha }" pattern="dd/MM/yyyy hh:mm:ss a" /></td>
+											</tr>
+										</c:otherwise>
+										</c:choose>
+									</c:forEach> 
+								       </tbody>
+								    </table> 
+								   
+								    </c:when>
+								    <c:otherwise>
+								       	
+							           <div class="alert alert-info">
+									      <p><strong>Aviso!</strong> No existen movimientos realizados recientemente.</p>
+									    </div>
+									
+								      </c:otherwise>
+								  </c:choose>
+				          	 
+				          	 </div>
 				          	 
 				          	
 				          	

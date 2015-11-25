@@ -311,4 +311,28 @@ public class InsumoController {
 			
 		return new Redireccion(map + "/consultar");
 	}
+	
+	@RequestMapping(value = map + "/eliminar", method = RequestMethod.GET)
+	public ModelAndView eliminar(HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestParam(value="codcaja", required=true) String codcaja,
+							@RequestParam(value="codref", required=true) String codref,
+							@RequestParam(value="bodega", required=true) String bodega) {
+		
+		
+		Insumo insumo = new Insumo();
+		insumo.setCodcaja(codcaja);
+		insumo.setCodref(codref);
+		insumo.setBodega(bodega);
+		List<Insumo> l = i.consultarInsumo(insumo);
+		l.get(0).setCantInsumos(0);
+		try {
+				this.i.actualizarInsumo(l.get(0));
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "El insumo ha sido eliminado satisfactoriamente");
+			} catch (Exception e) {
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
+			}
+			
+		return new Redireccion(map + "/consultar");
+	}
 }
