@@ -64,21 +64,16 @@ public class UsuarioDAO {
 	}
 	
 	@Transactional(rollbackFor=DataAccessException.class)
-	public void insertarUsuario(Usuario usuario, int permisologia, String actualizacion) throws ExcepcionSQL, Exception {
+	public void insertarUsuario(Usuario usuario, int permisologia) throws ExcepcionSQL, Exception {
 		
 		if(verificarUsuario(usuario.getCodigo()) > 0) {
 			throw new Exception("Nombre de usuario ya existe!");
-		}
-		
-		if(actualizacion.equals("S") && permisologia != 1) {
-			throw new Exception("Error al asignar permisos. Se abortó la creación de usuario");
 		}
 		
 		//Valores por defecto
 		usuario.setVigencia("V");
 		usuario.setCambcontra("N");
 		usuario.setUltcambcontra(new Date());
-		usuario.setFechacrea(new Date());
 		
 		//Insertar en tabla de usuarios
 		Object[] argumentos = {usuario.getCodigo(), usuario.getContrasena(), usuario.getCambcontra(),

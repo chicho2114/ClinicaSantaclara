@@ -505,5 +505,12 @@ public class ReferenciaDAO {
 	return jdbcReferencia.queryForList(sql);
 	}
 	
+	public List<Map<String, Object>> consultarMovimientosTodos() {
+	
+		String sql = prop.obtenerSQL("referencias.movimientosConsultarTodos");
+	
+	return jdbcReferencia.queryForList(sql);
+	}
+	
 	
 }

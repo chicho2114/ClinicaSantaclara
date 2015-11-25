@@ -3,8 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
-<t:layout title="Inventario Virtual de Partes - Vehículos Mazda de Venezuela C.A">
+<t:layout title="Sistema de control - Policlínica Santa Clara">
 	<jsp:attribute name="body">
+	<div class="container">
+	 <div class="row-fluid">
 		<h1>Crear Usuario</h1>
 		<p>Complete la información solicitada</p>
 		<div id="error">
@@ -18,26 +20,11 @@
 	       		</tr>
 	       		<tr>
 	       			<td><strong>Nombre:</strong></td>
-	       			<td><textarea class="uppercase" name="nombre" rows="2" cols="75"></textarea></td>
-	       		</tr>
-	       		<tr>
-	       			<td><strong>Concesionario:</strong></td>
-	       			<td>
-	       				<select name="concesionario">
-	       					<option value=""></option>
-	       					<c:forEach items="${concs}" var="concesionario">
-	       						<option value="${concesionario.codigo}">${concesionario.codigo} - ${concesionario.nombre}</option>
-	       					</c:forEach>
-	       				</select>
-					</td>
+	       			<td><textarea class="uppercase" name="nombre" rows="2" cols="75" ></textarea></td>
 	       		</tr>
 	       		<tr>
 	       			<td><strong>Cargo:</strong></td>
-	       			<td><textarea class="uppercase" name="cargo" rows="5" cols="75"></textarea></td>
-	       		</tr>
-	       		<tr>
-	       			<td><strong>Email:</strong></td>
-	       			<td><input class="uppercase" type="text" name="email"></td>
+	       			<td><input class="uppercase" name="cargo" type="text" required></td>
 	       		</tr>
 	       		<tr>
 	       			<td><strong>Contraseña temporal:</strong></td>
@@ -50,7 +37,7 @@
 	       		<tr>
 	       			<td><strong>Nivel de permisos</strong></td>
 	       			<td>
-	       				<select name="permisologia" onchange="activar(this.value);">
+	       				<select name="permisologia">
 	       					<option value=""></option>
 	       					<option value="1">EXTERNO</option>
 	       					<option value="2">INTERNO</option>
@@ -58,13 +45,11 @@
 	       				</select>
 	       			</td>
 	       		</tr>
-	       		<tr>
-	       			<td><strong>¿Permiso de actualización?</strong></td>
-	       			<td><input type="checkbox" id="actualizacion" name="actualizacion" value="S" disabled /></td>
-	       		</tr>
 			</table>
 			<input type="submit" class="btn btn-primary" value="Crear" />
 		</form>
+		</div>
+	</div>
 		<script type="text/javascript">
 		    $(function(){
 		        $('#crearUsuario').validate({
@@ -91,9 +76,6 @@
 		                nombre : {
 		                    required : true
 		                },
-		                concesionario : {
-		                	required : true
-		                },
 		                cargo : {
 		                	required : true
 		                },
@@ -105,16 +87,10 @@
 		                	required : true,
 		                	equalTo : '#contrasena'
 		                },
-		                email : {
-		                	required : true,
-		                	email : true
-		                },
+		               
 		                permisologia : {
 		                	required : true
 		                },
-		                actualizacion : {
-		                	required : false
-		                }
 		            },
 		            messages : {
 		            	codigo : {
@@ -125,15 +101,8 @@
 		            	nombre : {
 		            		required : "El campo 'Nombre' es requerido"
 		            	},
-		            	concesionario : {
-		            		required : "El campo 'Concesionario' es requerido"
-		            	},
 		            	cargo : {
 		            		required : "El campo 'Cargo' es requerido"
-		            	},
-		            	email : {
-		            		required : "El campo 'Email' es requerido",
-		            		email : "Por favor, introduzca un email válido"
 		            	},
 		            	contrasena : {
 		            		required : "El campo 'Contraseña' es requerido",
@@ -153,17 +122,6 @@
 		        });    
 		    });
 		    
-		    function activar(valor) {
-		    	if(valor === '1') {
-		    		$('#actualizacion').prop('disabled', false);
-		    	}
-		    	else {
-		    		$('#actualizacion').prop('disabled', true);
-		    		if($('#actualizacion').prop("checked")) {
-		    			$('#actualizacion').prop("checked", false);
-		    		}
-		    	}
-		    }
 		</script>
 	</jsp:attribute>
 </t:layout>

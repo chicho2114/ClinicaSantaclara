@@ -45,6 +45,8 @@ public class ReferenciaController {
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("fabricantes", r.consultarFabricantes());
 		modelo.addAttribute("categorias", r.consultarCategorias());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/listar_form", modelo);
 	}
@@ -95,6 +97,8 @@ public class ReferenciaController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("refs", l);
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 			
 		return new ModelAndView(view + "/listar_reporte", modelo);
 	}
@@ -121,6 +125,8 @@ public class ReferenciaController {
 		modelo.put("inventarios", r.consultarInventarioReferencia(l.get(0)));
 		modelo.put("categorias", r.consultarCategorias());
 		modelo.put("fabricantes", r.consultarFabricantes());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/ver", modelo);
 	}
@@ -131,7 +137,9 @@ public class ReferenciaController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("fabricantes", r.consultarFabricantes());
-		modelo.addAttribute("categorias", r.consultarCategorias());
+		modelo.addAttribute("categorias", r.consultarCategorias());	
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/crear_form", modelo);
 	}
@@ -177,6 +185,8 @@ public class ReferenciaController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.put("fabricantes", r.consultarFabricantes());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/crear_fabricante_form", modelo);
 	}
@@ -215,6 +225,8 @@ public class ReferenciaController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.put("categorias", r.consultarCategorias());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/crear_categoria_form", modelo);
 	}
@@ -251,7 +263,10 @@ public class ReferenciaController {
 	public ModelAndView crear_archivo_form(HttpServletRequest request,
 								   HttpServletResponse response) {
 		
-		return new ModelAndView(view + "/crear_archivo_form");
+		ModelMap modelo = new ModelMap();
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		return new ModelAndView(view + "/crear_archivo_form", modelo);
 	}
 	
 	@RequestMapping(value = map + "/crear_archivo_accion",
@@ -313,6 +328,8 @@ public class ReferenciaController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.put("bodegas", r.consultarBodegas());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/crear_bodega_form", modelo);
 	}
@@ -351,6 +368,8 @@ public class ReferenciaController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.put("referencias", r.consultarInventarioBodega(codigo));
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView("/ajax/consultar_bodega", modelo);
 	}
@@ -373,6 +392,8 @@ public class ReferenciaController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.put("referencia", l.get(0));
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView("/ajax/consultar_json", modelo);
 	}
@@ -384,6 +405,8 @@ public class ReferenciaController {
 		ModelMap modelo = new ModelMap();
 		modelo.put("ajuste", r.consultarConsecutivo("AJUSTEINVENTARIO"));
 		modelo.put("bodegas", r.consultarBodegas());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/crear_ajuste_form", modelo);
 	}
@@ -512,6 +535,8 @@ public class ReferenciaController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("inventario", r.inventarioGeneral());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/inventario_general_reporte", modelo);
 	}
@@ -548,6 +573,8 @@ public class ReferenciaController {
 		modelo.put("referencia", l.get(0));
 		modelo.addAttribute("fabricantes", r.consultarFabricantes());
 		modelo.addAttribute("categorias", r.consultarCategorias());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/editar", modelo);
 	}

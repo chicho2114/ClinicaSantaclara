@@ -15,6 +15,7 @@
 	<context:component-scan base-package="com.control.referencia" />
 	<context:component-scan base-package="com.control.proveedor" />
 	<context:component-scan base-package="com.control.insumo" />
+	<context:component-scan base-package="com.control.usuario" />
 	<mvc:annotation-driven /> 
 	
 	<mvc:annotation-driven/>

@@ -27,6 +27,7 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.structure.min.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.theme.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui.theme.min.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery.dataTables.min.css" type="text/css" media="screen">
 
 
 		<script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript"></script>
@@ -36,6 +37,7 @@
 		<script src="${pageContext.request.contextPath}/js/funciones.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/tableExport.js" type="text/javascript" ></script>
 		<script src="${pageContext.request.contextPath}/js/jquery.base64.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>${title}</title>
@@ -74,8 +76,8 @@
 										        <div class="nav-collapse collapse">
 									          		<ul class="nav">
 									          		<c:choose>
-									          		  <c:when test="${insumos.size() > 0 or refes.size() > 0}">
-									          			<li><a id="drop1" data-toggle="popover" data-content="Hay notificaciones pendientes." data-placement="top" title="Aviso!" href="${pageContext.request.contextPath}/"><i class="icon-home"></i></a></li>
+									          		  <c:when test="${ins.size() > 0 or refes.size() > 0}">
+									          			<li><a id="drop1" data-toggle="popover" data-content="Hay notificaciones (${ins.size()+refes.size() }) pendientes." data-placement="top" title="Aviso!" href="${pageContext.request.contextPath}/"><i class="icon-home"></i></a></li>
 										              </c:when>
 										              <c:otherwise>
 										              	<li><a id="drop1" href="${pageContext.request.contextPath}/"><i class="icon-home"></i></a></li>
@@ -91,34 +93,31 @@
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_archivo">Cargar Referencias mediante Archivo</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/cargar_insumos">Cargar Insumos</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/crear_archivo">Cargar Insumos mediante Archivo</a></li>
+											                
 											                	<li class="divider"></li>
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_bodega">Bodegas de Inventario</a></li>
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_ajuste">Cargar Ajustes en Inventario</a>
+											              	</ul>
+											            </li>
+											            <li class="dropdown">
+										              		<a href="#" id="drop3" class="dropdown-toggle text-warning" data-toggle="dropdown" >Consultas<b class="caret"></b></a>
+										              		<ul class="dropdown-menu">
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/listar">Consultar Referencia</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/consultar">Consultar Insumos</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/proveedores/consultar">Consultar Proveedor</a></li>
 											                	<li class="divider"></li>
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_bodega">Bodegas de Inventario</a></li>
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_ajuste">Cargar Ajustes en Inventario</a>
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/movimientos">Consulta de Movimientos</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/inventario_general_reporte">Consulta de Inventario General</a></li>
-											              	</ul>
-											            </li>
-											            <li class="dropdown">
-										              		<a href="#" id="drop3" class="dropdown-toggle text-warning" data-toggle="dropdown" >Impuestos<b class="caret"></b></a>
-										              		<ul class="dropdown-menu">
-											                	<li><a tabindex="-1" href="#">Cargar Impuesto</a></li>
-											                	<li><a tabindex="-1" href="#">Cargar Referencias mediante archivo</a></li>
-											                	<li><a tabindex="-1" href="#">Consultar referencia</a></li>
-											                	<li class="divider"></li>
-											                	<li><a tabindex="-1" href="#">Separated link</a></li>
 											              	</ul>
 										            	</li>
 										          	</ul>
 										          	<ul class="nav pull-right">
 										            	<li id="fat-menu" class="dropdown warning text-warning">
-									              			<a href="#" id="drop4" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-warning-sign"></i> Más Opciones <b class="caret"></b></a>
+									              			<a href="#" id="drop4" class="dropdown-toggle" data-toggle="dropdown"> Más Opciones <b class="caret"></b></a>
 									              			<ul class="dropdown-menu">
-											                	<li><a tabindex="-1" href="http://yahoo.com" target="_blank">Yahoo!</a></li>
-											                	<li><a tabindex="-1" href="http://bing.com" target="_blank">Bing</a></li>
-											                	<li><a tabindex="-1" href="#">Something else here</a></li>
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/usuarios/crear">Crear Usuario</a></li>
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/usuarios/listar">Listar Usuarios</a></li>
+											                	<li class="divider"></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/logout">Cerrar sesión</a></li>
 											              	</ul>
 										            	</li>
@@ -227,7 +226,6 @@
 			
 			  $('#drop1').popover("show");
 			 
-
 		</script>
 
 	</body>

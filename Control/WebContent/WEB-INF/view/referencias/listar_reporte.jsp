@@ -10,7 +10,7 @@
 			<div class="row-fluid">
 				<h1>Resultados de consulta</h1>
 				<a href="#" onClick ="$('#consulta').tableExport({type:'excel',escape:'false',});"><img src="${pageContext.request.contextPath}/images/icon_excel.png" /></a>
-				<table class="table table-striped table-hover" id="consulta">
+				<table class="table table-bordered table-striped table-hover" id="consulta">
 					<thead>
 						<tr>
 			         			<th>Código</th>
@@ -55,6 +55,27 @@
 					$(document).ready(function() {
 				        $('table').filterTable();
 				    });
+					$(document).ready(function() {
+					    $('#consulta').DataTable( {
+					        "pagingType": "full_numbers",
+					        "language": {
+					        "search": "Buscar:",
+					        "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+					        "lengthMenu": "Mostrar _MENU_ entradas",
+					        "zeroRecords": "No se encuentran resultados que coincidan con la busqueda",
+					        "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+					        "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+				        	"paginate": {
+				        	      "first": "Primera",
+				        	      "previous": "Anterior",
+				        	      "next": "Siguiente",
+				        	      "last": "Ultima",
+				        	     
+				        	    }
+					    	}
+					    } );
+					} );
+					
 				</script>
 			</div>
 		</div>

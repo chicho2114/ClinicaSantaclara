@@ -17,7 +17,7 @@
 			            <ul class="nav nav-pills nav-tabs nav-stacked" id="myTab">
 					      <li><a href="${pageContext.request.contextPath}/#home" data-toggle="tab"><i class="icon-home"></i> Inicio</a></li>
 					      <c:choose>
-					      	<c:when test="${ insumos.size() != 0}">
+					      	<c:when test="${ ins.size() != 0}">
 					      		<li><a href="#vencidos" data-toggle="tab"><i class="icon-calendar"></i> Insumos proximos a vencer <span class="label label-warning text-right">Warning</span></a> </li>
 					      	</c:when>
 					      	<c:otherwise>
@@ -42,7 +42,7 @@
 				          	 <div class="tab-pane" id="home"><img src="${pageContext.request.contextPath}/images/hospital.jpg" /></div>
 				          	 <div class="tab-pane" id="vencidos">
 				          	 <c:choose>
-				          	 <c:when test="${ insumos.size() != 0}">
+				          	 <c:when test="${ ins.size() != 0}">
 				          	     <table class="table table-bordered table-hover">
 							      <thead>
 							        <tr>
@@ -55,7 +55,7 @@
 							        </tr>
 							      </thead>
 							      <tbody>
-							      <c:forEach var="insumo" items="${insumos}">
+							      <c:forEach var="insumo" items="${ins}">
 							        <tr class="error">
 							          <td>${insumo.codcaja}</td>
 							          <td>${insumo.codigo}</td>
@@ -179,7 +179,7 @@
 										<tr class="success">
 											<td>${movimiento.id}</td>
 											<td>${movimiento.referencia}</td>
-											<td>${movimiento.cantidad}</td>
+											<td>+${movimiento.cantidad}</td>
 											<td>${movimiento.observacion }</td>
 											<td>${movimiento.usuario }</td>
 											<td><fmt:formatDate value="${movimiento.fecha }" pattern="dd/MM/yyyy hh:mm:ss a" /></td>

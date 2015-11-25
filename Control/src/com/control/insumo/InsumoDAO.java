@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.control.general.ExcepcionSQL;
 import com.control.general.Propiedades;
+import com.control.referencia.ReferenciaDAO;
 
 public class InsumoDAO {
 
@@ -31,6 +32,9 @@ public class InsumoDAO {
 		prop = new Propiedades("insumos.properties");
 		jdbcInsumo = null;
 	}
+	
+	@Autowired
+	private ReferenciaDAO r;
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
@@ -183,13 +187,27 @@ public class InsumoDAO {
 			
 			int[] tipo3 = { Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR, Types.VARCHAR  };
 					
-			String sql3 = prop.obtenerSQL("insumos.actualizarBodega");
+			String sql3 = prop.obtenerSQL("insumos.actualizarBodegaInsumo");
 			
 			try {
 				jdbcInsumo.update(sql3, argumentos3, tipo3);
 			}
 			catch(DataAccessException dae) {
 				throw new Exception(dae.getCause());
+			}
+			int codigo = r.consultarConsecutivo("AJUSTEINVENTARIO");
+			//Insertamos el movimiento
+			Object[] argumentos4 = {insumo.getCodref(), insumo.getCantInsumos(), "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", insumo.getUsuaCrea()};
+			
+			int[] tipos4 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+			
+			String sql4 = prop.obtenerSQL("insumos.movimiento.insertar");
+			
+			try {
+				jdbcInsumo.update(sql4, argumentos4, tipos4);
+			}
+			catch(DataAccessException dae) {
+				throw new SQLException(dae.getMessage() + "1");
 			}
 		
 	}
@@ -261,7 +279,7 @@ public class InsumoDAO {
 		
 			//Insertar cantidad de insumos en bodega
 			
-			String sql2 = prop.obtenerSQL("insumos.actualizarBodega");
+			String sql2 = prop.obtenerSQL("insumos.actualizarBodegaInsumo");
 			
 	
 			
@@ -460,6 +478,20 @@ public class InsumoDAO {
 					throw new ExcepcionSQL(e.getCause());
 				}
 		
+			}
+			int codigo = r.consultarConsecutivo("AJUSTEINVENTARIO");
+			//Insertamos el movimiento
+			Object[] argumentos4 = {insumo.getCodref(), insumo.getCantInsumos() - l.get(0).getCantInsumos(), "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", insumo.getUsuaModi()};
+			
+			int[] tipos4 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+			
+			String sql4 = prop.obtenerSQL("insumos.movimiento.insertar");
+			
+			try {
+				jdbcInsumo.update(sql4, argumentos4, tipos4);
+			}
+			catch(DataAccessException dae) {
+				throw new SQLException(dae.getMessage() + "1");
 			}
 	}
 }

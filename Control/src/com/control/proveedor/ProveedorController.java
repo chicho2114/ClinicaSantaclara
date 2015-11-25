@@ -20,6 +20,7 @@ import com.control.general.ManejadorMensajes;
 import com.control.general.Redireccion;
 import com.control.general.TipoMensaje;
 import com.control.general.Utils;
+import com.control.insumo.InsumoDAO;
 
 
 @Controller
@@ -30,6 +31,8 @@ public class ProveedorController {
 	
 	@Autowired
 	private ProveedorDAO p;
+	@Autowired
+	private InsumoDAO i;
 	
 	/*@RequestMapping(value = map + "/listar")
 	public ModelAndView listar_form() {
@@ -73,7 +76,8 @@ public class ProveedorController {
 								   HttpServletResponse response) {
 		
 		ModelMap modelo = new ModelMap();
-		
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		return new ModelAndView(view + "/crear_form", modelo);
 	}
 	
@@ -82,8 +86,8 @@ public class ProveedorController {
 								   HttpServletResponse response) {
 		
 		ModelMap modelo = new ModelMap();
-		//modelo.addAttribute("fabricantes", p.consultarFabricantes());
-		//modelo.addAttribute("categorias", p.consultarCategorias());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/consultar_prov", modelo);
 	}
@@ -129,6 +133,8 @@ public class ProveedorController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("prov", l);
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 			
 		return new ModelAndView(view + "/listar_proveedor", modelo);
 	}
@@ -153,9 +159,8 @@ public class ProveedorController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.put("proveedor", l.get(0));
-		/*modelo.put("inventarios", r.consultarInventarioReferencia(l.get(0)));
-		modelo.put("categorias", r.consultarCategorias());
-		modelo.put("fabricantes", r.consultarFabricantes());*/
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/ver", modelo);
 	}
@@ -182,6 +187,8 @@ public class ProveedorController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.put("proveedor", l.get(0));
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/editar", modelo);
 	}

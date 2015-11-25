@@ -11,20 +11,19 @@
 				<tr>
 	         			<th>Código</th>
 	         			<th>Nombre</th>
-	         			<th>Concesionario</th>
+	         			<!--<th>Concesionario</th>-->
 	         			<th>Cargo</th>
-	         			<th>Email</th>
 	         			<th>Ver</th>
 	       		</tr>
        		</thead>
 			<c:forEach var="usuario" items="${usuarios}">
 				<tr>
-					<td>${usuario.id}</td>
+					<td>${usuario.codigo}</td>
 					<td>${usuario.nombre}</td>
-					<td>${usuario.concesionario} - ${usuario.nombreConcesionario}</td>
+					<!--<td>${usuario.concesionario} - ${usuario.nombreConcesionario}</td>-->
 					<td>${usuario.cargo}</td>
-					<td><a href="mailto:${usuario.email}">${usuario.email}</a></td>
-					<td><a href="${pageContext.request.contextPath}/usuarios/ver?codigo=${usuario.id}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
+					<!--<td><a href="mailto:${usuario.email}">${usuario.email}</a></td>-->
+					<td><a href="${pageContext.request.contextPath}/usuarios/ver?codigo=${usuario.codigo}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
 				</tr>
 			</c:forEach>
 		</table>

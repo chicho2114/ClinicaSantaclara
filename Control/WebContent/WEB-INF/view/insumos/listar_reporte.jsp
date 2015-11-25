@@ -61,6 +61,27 @@
 					$(document).ready(function() {
 				        $('table').filterTable();
 				    });
+					
+					$(document).ready(function() {
+					    $('#consulta').DataTable( {
+					        "pagingType": "full_numbers",
+					        "language": {
+					        "search": "Buscar:",
+					        "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+					        "lengthMenu": "Mostrar _MENU_ entradas",
+					        "zeroRecords": "No se encuentran resultados que coincidan con la busqueda",
+					        "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+					        "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+				        	"paginate": {
+				        	      "first": "Primera",
+				        	      "previous": "Anterior",
+				        	      "next": "Siguiente",
+				        	      "last": "Ultima",
+				        	     
+				        	    }
+					    	}
+					    } );
+					} );
 				</script>
 			</div>
 		</div>

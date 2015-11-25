@@ -1,5 +1,6 @@
 package com.control.usuario;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.control.general.ExcepcionSQL;
 //import com.control.general.ExcepcionSQL;
 //import com.control.general.GeneralController;
 import com.control.general.ManejadorMensajes;
@@ -23,6 +25,7 @@ import com.control.general.Redireccion;
 import com.control.general.ServicioDetallesUsuario;
 import com.control.general.TipoMensaje;
 import com.control.general.Utils;
+import com.control.insumo.InsumoDAO;
 
 @Controller
 public class UsuarioController {
@@ -32,18 +35,22 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioDAO u;
+	@Autowired
+	private InsumoDAO i;
 	
 	@Autowired
 	private ServicioDetallesUsuario sdu;
 	
 	//private static final Logger logger = Logger.getLogger(GeneralController.class);
 	
-	@RequestMapping(value = map)
+	@RequestMapping(value = map + "/listar")
 	public ModelAndView usuario(HttpServletRequest request,
 								HttpServletResponse response) {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("usuarios", u.obtenerUsuario(null));
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		return new ModelAndView(view + "/listado", modelo);
 	}
 	
@@ -51,15 +58,19 @@ public class UsuarioController {
 	public ModelAndView usuario(HttpServletRequest request,
 								HttpServletResponse response,
 								@RequestParam(value="codigo", required=true) String id) {
-		
-		return new ModelAndView(view + "/ver", null);
+		ModelMap modelo = new ModelMap();
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		return new ModelAndView(view + "/ver", modelo);
 	}
 	
 	@RequestMapping(value = map + "/crear")
 	public ModelAndView crear(HttpServletRequest request,
 							  HttpServletResponse response) {
-		
-		return new ModelAndView(view + "/crear");
+		ModelMap modelo = new ModelMap();
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		return new ModelAndView(view + "/crear", modelo);
 	}
 	
 	@RequestMapping(value = map + "/buscarUsuario")
@@ -69,14 +80,42 @@ public class UsuarioController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("respuesta", !(u.verificarUsuario(codigo) > 0));
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView("ajax/usuario", modelo);
 	}
 	
 	@RequestMapping(value = map + "/crear_accion", method=RequestMethod.POST)
 	public ModelAndView crear_accion(HttpServletRequest request,
-									 HttpServletResponse response) {
+									 HttpServletResponse response,
+									 @RequestParam(value="codigo", required=true) String codigo,
+									 @RequestParam(value="contrasena", required=true) String contrasena,
+									 @RequestParam(value="cedul", required=true) String cedula,
+									 @RequestParam(value="nombre", required=true) String nombre,
+									 @RequestParam(value="area", required=true) String area,
+									 @RequestParam(value="area", required=true) int permisologia) {
 		
+		Usuario usuario = new Usuario();
+		usuario.setCodigo(codigo);
+		usuario.setContrasena(contrasena);
+		usuario.setCedula(cedula);
+		usuario.setNombre(nombre);
+		usuario.setArea(area);
+		usuario.setCargo(codigo);
+		usuario.setUsuacrea(Utils.obtenerUsuario(request));
+		usuario.setFechacrea(new Date());
+		
+		try {
+			this.u.insertarUsuario(usuario, permisologia);
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "Usuario creado satisfactoriamente");
+		} catch (ExcepcionSQL e) {
+			// TODO Auto-generated catch block
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
+		}
 		return new Redireccion(map + "/crear");
 	}
 	
@@ -101,6 +140,8 @@ public class UsuarioController {
 		ModelMap modelo = new ModelMap();
 		modelo.put("user", l.get(0));
 		modelo.put("actualizar", permisos.contains("ROLE_ACTUALIZAR"));
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		permisos.remove("ROLE_ACTUALIZAR");
 		
@@ -138,8 +179,10 @@ public class UsuarioController {
 	@RequestMapping(value = map + "/cambiar_contrasena")
 	public ModelAndView cambiar_contrasena(HttpServletRequest request,
 										   HttpServletResponse response) {
-		
-		return new ModelAndView(view + "/cambiar_contrasena");
+		ModelMap modelo = new ModelMap();
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		return new ModelAndView(view + "/cambiar_contrasena", modelo);
 	}
 	
 	@RequestMapping(value = map + "/cambiar_contrasena_accion", method=RequestMethod.POST)

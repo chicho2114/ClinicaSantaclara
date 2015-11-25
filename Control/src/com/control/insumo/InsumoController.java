@@ -26,6 +26,7 @@ import com.control.general.ManejadorMensajes;
 import com.control.general.Redireccion;
 import com.control.general.TipoMensaje;
 import com.control.general.Utils;
+import com.control.referencia.ReferenciaDAO;
 import com.csvreader.CsvReader;
 
 
@@ -36,8 +37,21 @@ public class InsumoController {
 	private static final String view = "/insumos";
 	
 	@Autowired
-	private InsumoDAO i;
+	private InsumoDAO i;	
+	@Autowired
+	private ReferenciaDAO r;
 	
+	@RequestMapping(value = map + "/movimientos")
+	public ModelAndView movimientos(HttpServletRequest request,
+								    HttpServletResponse response) {
+		
+		ModelMap modelo = new ModelMap();
+		
+		modelo.put("movimientos", r.consultarMovimientosTodos());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		return new ModelAndView(view + "/movimientos", modelo);
+	}
 	
 	@RequestMapping(value = map + "/cargar_insumos")
 	public ModelAndView cargar_form(HttpServletRequest request,
@@ -49,6 +63,8 @@ public class InsumoController {
 		modelo.addAttribute("proveedores", i.consultarProveedores());
 		modelo.addAttribute("fabricantes", i.consultarFabricantes());
 		modelo.addAttribute("bodegas", i.consultarBodegas());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		return new ModelAndView(view + "/cargar_insumos", modelo);
 	}
 	
@@ -107,8 +123,10 @@ public class InsumoController {
 	@RequestMapping(value = map + "/crear_archivo")
 	public ModelAndView crear_archivo_form(HttpServletRequest request,
 								   HttpServletResponse response) {
-		
-		return new ModelAndView(view + "/crear_archivo_form");
+		ModelMap modelo = new ModelMap();
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		return new ModelAndView(view + "/crear_archivo_form", modelo);
 	}
 	
 	@RequestMapping(value = map + "/crear_archivo_accion",
@@ -174,10 +192,11 @@ public class InsumoController {
 		
 		ModelMap modelo = new ModelMap();
 		
-		modelo.addAttribute("insumos", i.consultarCajas());
 		modelo.addAttribute("referencias", i.consultarReferencias());
 		modelo.addAttribute("proveedores", i.consultarProveedores());
 		modelo.addAttribute("bodegas", i.consultarBodegas());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/consultar", modelo);
 	}
@@ -228,6 +247,8 @@ public class InsumoController {
        fechaActual = calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
        
        modelo.addAttribute("fechaActual", fechaActual);
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 			
 		return new ModelAndView(view + "/listar_reporte", modelo);
 	} 
@@ -250,6 +271,8 @@ public class InsumoController {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.put("insumo", l.get(0));
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/ver", modelo);
 	}
@@ -279,6 +302,8 @@ public class InsumoController {
 		ModelMap modelo = new ModelMap();
 		modelo.put("insumo", l.get(0));
 		modelo.addAttribute("bodegas", i.consultarBodegas());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		
 		return new ModelAndView(view + "/editar", modelo);
 	}
