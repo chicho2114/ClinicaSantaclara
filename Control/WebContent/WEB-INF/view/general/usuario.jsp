@@ -10,7 +10,7 @@
 			<div class="row-fluid">
 				<p>Bienvenido, <strong>${usuario.nombre}</strong></p>
 				<p><strong>POR FAVOR, SELECCIONE UNA OPCION</strong></p>				    
-				    <div class="row">
+				    <div class="container">
 					
 			          <div class="span4">
 			          

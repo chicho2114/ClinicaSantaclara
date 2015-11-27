@@ -60,16 +60,7 @@
 		        	errorLabelContainer : "#error",
 		        	wrapper: "li",
 		            rules :{
-		                codigo : {
-		                	remote : {
-		                    	url : "buscarUsuario",
-		                    	type : "get",
-		                    	data : {
-		                    		codigo : function() {
-		                    			return $('#codigo').val();
-		                    		}
-		                    	}
-		                    },
+		                
 		                    required : true,
 		                    minlength : 4
 		                },
