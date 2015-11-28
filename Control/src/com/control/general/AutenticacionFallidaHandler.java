@@ -40,8 +40,8 @@ public class AutenticacionFallidaHandler implements AuthenticationFailureHandler
 			
 			if(exception.getMessage().equals("B")) {
 				//Si está bloqueado por mantenimiento
-				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "El sistema de Inventario Virtual de Partes " +
-					"Mazda se encuentra en mantenimiento y estaremos de vuelta pronto. " +
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "El sistema de Policlínico Santa Clara.  " +
+					"se encuentra en mantenimiento y estaremos de vuelta pronto. " +
 					"Si presenta problemas, consulte al administrador de sistema");
 			}
 			else {
@@ -57,7 +57,7 @@ public class AutenticacionFallidaHandler implements AuthenticationFailureHandler
 		}
 		
 		if(exception instanceof AccountExpiredException) { //Si cuenta no está vigente
-			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Falla de autenticación: Usuario no vigente, contraseña expirada u horario no permitido");
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, "Falla de autenticación: Usuario no vigente o contraseña expirada");
 			response.sendRedirect(request.getContextPath());
 		}
 		

@@ -39,7 +39,7 @@
 			          </div>
 				          <div class="span8 ">
 				          <div class="tab-content">
-				          	 <div class="tab-pane" id="home"><img src="${pageContext.request.contextPath}/images/hospital.jpg" /></div>
+				          	 <div class="tab-pane" id="home"><img src="${pageContext.request.contextPath}/images/hospital.jpg" class="img-rounded"/></div>
 				          	 <div class="tab-pane" id="vencidos">
 				          	 <c:choose>
 				          	 <c:when test="${ ins.size() != 0}">

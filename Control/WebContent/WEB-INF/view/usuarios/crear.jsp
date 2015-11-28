@@ -20,7 +20,11 @@
 	       		</tr>
 	       		<tr>
 	       			<td><strong>Nombre:</strong></td>
-	       			<td><textarea class="uppercase" name="nombre" rows="2" cols="75" ></textarea></td>
+	       			<td><textarea name="nombre" rows="2" cols="75" ></textarea></td>
+	       		</tr>
+	       		<tr>
+	       			<td><strong>Cedula:</strong></td>
+	       			<td><input class="uppercase numeric" name="cedula" type="text" required></td>
 	       		</tr>
 	       		<tr>
 	       			<td><strong>Cargo:</strong></td>
@@ -39,8 +43,8 @@
 	       			<td>
 	       				<select name="permisologia">
 	       					<option value=""></option>
-	       					<option value="1">EXTERNO</option>
-	       					<option value="2">INTERNO</option>
+	       					<option value="1">INTERNO</option>
+	       					<option value="2">EXTERNO</option>
 	       					<option value="3">ADMINISTRADOR</option>
 	       				</select>
 	       			</td>
@@ -60,7 +64,7 @@
 		        	errorLabelContainer : "#error",
 		        	wrapper: "li",
 		            rules :{
-		                
+		                codigo:{
 		                    required : true,
 		                    minlength : 4
 		                },
@@ -72,13 +76,12 @@
 		                },
 		                contrasena : {
 		                	required : true,
-		                	minlength : 8
+		                	minlength : 5
 		                },
 		                contrasena2: {
 		                	required : true,
 		                	equalTo : '#contrasena'
-		                },
-		               
+		                },   
 		                permisologia : {
 		                	required : true
 		                },

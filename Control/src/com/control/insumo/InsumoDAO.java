@@ -81,7 +81,7 @@ public class InsumoDAO {
 		
 		String sql = "select tps_referencia_codigo codigo, ts_referencia_presentacion presentacion," +
 					 " t_referencia_cantidad cantidad, ti_referencia_cantmini cantmini, td_referencia_fechacrea fechacrea FROM t_referencia "
-					 + "WHERE ti_referencia_cantmini >= t_referencia_cantidad";
+					 + "WHERE ti_referencia_cantmini >= t_referencia_cantidad limit 10";
 					 
 		
 		return jdbcInsumo.queryForList(sql);

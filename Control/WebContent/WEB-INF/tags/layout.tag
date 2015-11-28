@@ -118,6 +118,8 @@
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/usuarios/crear">Crear Usuario</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/usuarios/listar">Listar Usuarios</a></li>
 											                	<li class="divider"></li>
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/usuarios/ver?codigo=${usuario.codigo}">Mi Perfil</a></li>
+											                	<li class="divider"></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/logout">Cerrar sesión</a></li>
 											              	</ul>
 										            	</li>
@@ -205,7 +207,7 @@
 						<a href="#">Soporte: Manuel Cárdenas / 0426-9452127</a>
 					</div>
 					<div class="span6">
-						<p class="muted pull-right">© 2014 Policlínico Santa Clara. RIF: J-30040457-9. Todos los derechos reservados</p>
+						<p class="muted pull-right">© 2015 Policlínico Santa Clara. RIF: J-30040457-9. Todos los derechos reservados</p>
 					</div>
 				</div>
 			</div>

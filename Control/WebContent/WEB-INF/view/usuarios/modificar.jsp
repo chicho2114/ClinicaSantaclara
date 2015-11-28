@@ -3,9 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
-<t:layout title="Inventario Virtual de Partes - Vehículos Mazda de Venezuela C.A">
+<t:layout title="Sistema de control - Policlínica Santa Clara">
 	<jsp:attribute name="body">
-		<h1>Información del Usuario - ${user.id}</h1>
+	<div class="container">
+			<div class="row-fluid">
+		<h1>Información del Usuario - ${user.codigo}</h1>
 		<div id="error">
 		</div>
 		<form action="${pageContext.request.contextPath}/usuarios/modificar_accion" method="post"
@@ -13,30 +15,19 @@
 			<table class="table table-striped">
 				<tr>
 					<td><strong>Código:</strong></td>
-					<td><input class="uppercase" type="text" value="${user.id}" disabled required></td>
+					<td><input type="text" value="${user.codigo}" name="codigo" readonly required></td>
 	       		</tr>
 	       		<tr>
 	       			<td><strong>Nombre:</strong></td>
-	       			<td><textarea class="uppercase" name="nombre" rows="2" cols="75" required>${user.nombre}</textarea></td>
+	       			<td><textarea name="nombre" rows="2" cols="75" required>${user.nombre}</textarea></td>
 	       		</tr>
 	       		<tr>
-	       			<td><strong>Concesionario:</strong></td>
-	       			<td>
-	       				<select id="concesionario" name="concesionario">
-	       					<option value="-"></option>
-	       					<c:forEach items="${concs}" var="concesionario">
-	       						<option value="${concesionario.codigo}">${concesionario.codigo} - ${concesionario.nombre}</option>
-	       					</c:forEach>
-	       				</select>
-					</td>
+	       			<td><strong>Cedula:</strong></td>
+	       			<td><input class="uppercase numeric" name="cedula" type="text" value="${user.cedula}" required></td>
 	       		</tr>
 	       		<tr>
 	       			<td><strong>Cargo:</strong></td>
-	       			<td><textarea class="uppercase" name="cargo" rows="5" cols="75" required>${user.cargo}</textarea></td>
-	       		</tr>
-	       		<tr>
-	       			<td><strong>Email:</strong></td>
-	       			<td><input class="uppercase" name="email" type="text" value="${user.email}" required></td>
+	       			<td><input class="uppercase" name="cargo" type="text" value="${user.cargo}" required></td>
 	       		</tr>
 	       		<tr>
 	       			<td><strong>Vigencia:</strong></td>
@@ -50,46 +41,58 @@
 	       		<tr>
 	       			<td><strong>Nivel de permisos:</strong></td>
 	       			<td>
-	       				<select id="permisologia" name="permisologia" onchange="activar(this.value);">
-	       					<option value=""></option>
-	       					<option value="1">EXTERNO</option>
-	       					<option value="2">INTERNO</option>
-	       					<option value="3">ADMINISTRADOR</option>
-	       				</select>
+	       				<select id="permisologia" name="permisologia">
+      						<c:choose>
+       						<c:when test="${permiso == 'ROLE_USUARIO'}">
+       							<option selected value="1">INTERNO</option>
+       							<option value="2">EXTERNO</option>
+       							<option value="3">ADMINISTRADOR</option>
+       						</c:when>
+       						<c:when test="${permiso == 'ROLE_NOUSUARIO'}">
+       							<option value="1">INTERNO</option>
+       							<option selected value="2">EXTERNO</option>
+       							<option value="3">ADMINISTRADOR</option>
+       						</c:when>
+       						<c:otherwise>
+       							<option value="1">INTERNO</option>
+       							<option value="2">EXTERNO</option>
+       							<option selected value="3">ADMINISTRADOR</option>
+       						</c:otherwise>
+       						</c:choose>
+				       	
+      				</select>
 	       			</td>
 	       		</tr>
-	       		<tr>
-	       			<td><strong>¿Permiso de actualización?</strong></td>
-	       			<c:if test="${actualizar}">
-	       				<td><input type="checkbox" id="actualizacion" name="actualizacion" value="S" checked/></td>
-	       			</c:if>
-	       			<c:if test="${not actualizar}">
-	       				<td><input type="checkbox" id="actualizacion" name="actualizacion" value="S" disabled /></td>
-	       			</c:if>
-	       		</tr>
+
 			</table>
-			<input type="hidden" name="id" value="${user.id}" required />
+			<input type="hidden" name="id" value="${user.codigo}" required />
 			<input type="submit" class="btn btn-primary" value="Modificar" />
 		</form>
-		<h1>Cambiar contraseña - ${user.id}</h1>
+		<h1>Cambiar contraseña - ${user.codigo}</h1>
 		<form action="${pageContext.request.contextPath}/usuarios/modificar_contrasena_accion" method="post"
 			  id="cambioContrasena">
 			<table class="table table-striped">
 				<tr>
 					<td>Nueva contraseña:</td>
-					<td><input id="contrasena" name="contrasena" type="password"></td>
+					<td><input id="contrasena" name="contrasena" type="password" required></td>
 				</tr>
 				<tr>
 					<td>Repita nueva contraseña:</td>
-					<td><input name="contrasena2" type="password"></td>
+					<td><input id="contrasena2" name="contrasena2" type="password" required></td>
 				</tr>
 			</table>
-			<input type="hidden" name="id" value="${user.id}" />
+			<input type="hidden" name="codigo" value="${user.codigo}" />
 			<input type="submit" class="btn btn-primary" value="Cambiar contraseña" />
 		</form>
+		
+		<form action="${pageContext.request.contextPath}/usuarios/eliminar" method="post">
+			<input type="hidden" name="codigo" value="${user.codigo}" />
+			<input type="submit" class="btn btn-danger" value="Eliminar Usuario" />
+		</form>
+		</div>
+		</div>
 		<script type="text/javascript">
-			$('#vigencia').val('${user.vigente}');
-			$('#concesionario').val('${user.concesionario}');
+			$('#vigencia').val('${user.vigencia}');
 			
 			$(function(){
 		        $('#modificarUsuario').validate({
@@ -103,16 +106,11 @@
 		                nombre : {
 		                    required : true
 		                },
-		                concesionario : {
-		                	required : true
-		                },
+		               
 		                cargo : {
 		                	required : true
 		                },
-		                email : {
-		                	required : true,
-		                	email : true
-		                },
+		                
 		                vigencia : {
 		                	required : true
 		                }
@@ -125,15 +123,8 @@
 		            	nombre : {
 		            		required : "El campo 'Nombre' es requerido"
 		            	},
-		            	concesionario : {
-		            		required : "El campo 'Concesionario' es requerido"
-		            	},
 		            	cargo : {
 		            		required : "El campo 'Cargo' es requerido"
-		            	},
-		            	email : {
-		            		required : "El campo 'Email' es requerido",
-		            		email : "Por favor, introduzca un email válido"
 		            	},
 		            	vigencia : {
 		            		required : "El campo 'Vigencia' es requerido"
@@ -156,7 +147,7 @@
 					rules : {
 						contrasena : {
 							required : true,
-							length : 8
+							minlength : 5
 						},
 						contrasena2 : {
 							required : true,
@@ -166,7 +157,7 @@
 					messages : {
 						contrasena : {
 							required : "El campo 'Contraseña' es requerido",
-							length : "La contraseña debe contener 8 caracteres"
+							length : "La contraseña debe contener 5 caracteres"
 						},
 						contrasena2 : {
 							required : "Debe repetir la contraseña",
@@ -176,21 +167,6 @@
 				});
 			});
 			
-			function activar(valor) {
-		    	if(valor === '1') {
-		    		$('#actualizacion').prop('disabled', false);
-		    	}
-		    	else {
-		    		$('#actualizacion').prop('disabled', true);
-		    		if($('#actualizacion').prop("checked")) {
-		    			$('#actualizacion').prop("checked", false);
-		    		}
-		    	}
-		    }
-			
-			$(document).ready(function() {
-				$('#permisologia option:eq(${permiso})').prop('selected', true);
-			});
 		</script>
 	</jsp:attribute>
 </t:layout>
