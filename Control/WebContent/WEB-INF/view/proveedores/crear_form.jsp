@@ -7,6 +7,8 @@
 	<jsp:attribute name="body">
 		<div class="container">
 			<div class="row-fluid">
+<c:choose>
+	<c:when test="${!(UserRol eq ('[ROLE_NOUSUARIO]')) }">
 				<h2>Crear Proveedor</h2>
 				<p>Complete la información solicitada</p>
 				<div id="error">
@@ -29,6 +31,33 @@
 					</table>
 					<input type="submit" class="btn btn-primary" value="Crear" tabindex="8">
 				</form>
+					</c:when>
+	<c:otherwise>
+		<!-- Modal -->
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Aviso!</h3>
+		  </div>
+		  <div class="modal-body">
+			<p>Usted no posee los permisos necesarios para realizar
+			esta acción</p>
+		  </div>
+		  <div class="modal-footer">
+			<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onClick="">Cerrar</button>
+			<!--  <button class="btn btn-primary">Save changes</button>-->
+		  </div>
+		</div>
+		<script type="text/javascript">
+				$('#myModal').modal({
+					keyboard: false
+				  })
+				$('#myModal').on('hide', function () {
+					location.href="${pageContext.request.contextPath}/";// do something…
+					})
+		</script>
+	</c:otherwise>
+</c:choose>
 				<t:regresar></t:regresar>
 			</div>
 		</div>

@@ -8,6 +8,7 @@
 	<jsp:attribute name="body">
 		<div class="container">
 			<div class="row-fluid">
+			
 				<h1>Inventario General al mes</h1>
 				<a href="#" onClick ="$('#consulta').tableExport({type:'excel',escape:'false'});"><img src="${pageContext.request.contextPath}/images/icon_excel.png" /></a>
 				<table class="table table-hover table-bordered table-striped" id="consulta">

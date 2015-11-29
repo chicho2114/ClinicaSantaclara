@@ -25,6 +25,7 @@ import com.control.general.Redireccion;
 import com.control.general.TipoMensaje;
 import com.control.general.Utils;
 import com.control.insumo.InsumoDAO;
+import com.control.usuario.UsuarioDAO;
 import com.csvreader.CsvReader;
 
 @Controller
@@ -38,15 +39,19 @@ public class ReferenciaController {
 	
 	@Autowired
 	private InsumoDAO i;
+	@Autowired
+	private UsuarioDAO u;
 	
 	@RequestMapping(value = map + "/listar")
-	public ModelAndView listar_form() {
+	public ModelAndView listar_form(HttpServletRequest request,
+			   HttpServletResponse response) {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("fabricantes", r.consultarFabricantes());
 		modelo.addAttribute("categorias", r.consultarCategorias());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/listar_form", modelo);
 	}
@@ -99,6 +104,7 @@ public class ReferenciaController {
 		modelo.addAttribute("refs", l);
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 			
 		return new ModelAndView(view + "/listar_reporte", modelo);
 	}
@@ -127,6 +133,7 @@ public class ReferenciaController {
 		modelo.put("fabricantes", r.consultarFabricantes());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/ver", modelo);
 	}
@@ -140,6 +147,7 @@ public class ReferenciaController {
 		modelo.addAttribute("categorias", r.consultarCategorias());	
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/crear_form", modelo);
 	}
@@ -187,6 +195,7 @@ public class ReferenciaController {
 		modelo.put("fabricantes", r.consultarFabricantes());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/crear_fabricante_form", modelo);
 	}
@@ -227,6 +236,7 @@ public class ReferenciaController {
 		modelo.put("categorias", r.consultarCategorias());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/crear_categoria_form", modelo);
 	}
@@ -266,6 +276,7 @@ public class ReferenciaController {
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		return new ModelAndView(view + "/crear_archivo_form", modelo);
 	}
 	
@@ -330,6 +341,7 @@ public class ReferenciaController {
 		modelo.put("bodegas", r.consultarBodegas());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/crear_bodega_form", modelo);
 	}
@@ -370,6 +382,7 @@ public class ReferenciaController {
 		modelo.put("referencias", r.consultarInventarioBodega(codigo));
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView("/ajax/consultar_bodega", modelo);
 	}
@@ -394,6 +407,7 @@ public class ReferenciaController {
 		modelo.put("referencia", l.get(0));
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView("/ajax/consultar_json", modelo);
 	}
@@ -407,6 +421,7 @@ public class ReferenciaController {
 		modelo.put("bodegas", r.consultarBodegas());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/crear_ajuste_form", modelo);
 	}
@@ -531,12 +546,14 @@ public class ReferenciaController {
 	}
 	
 	@RequestMapping(value = map + "/inventario_general_reporte")
-	public ModelAndView inventario_general_reporte() {
+	public ModelAndView inventario_general_reporte(HttpServletRequest request,
+			HttpServletResponse response) {
 		
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("inventario", r.inventarioGeneral());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/inventario_general_reporte", modelo);
 	}
@@ -575,6 +592,7 @@ public class ReferenciaController {
 		modelo.addAttribute("categorias", r.consultarCategorias());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/editar", modelo);
 	}
@@ -617,7 +635,7 @@ public class ReferenciaController {
 		return new Redireccion(map + "/listar");
 	}
 	
-	@RequestMapping(value = map + "/eliminar", method = RequestMethod.GET)
+	@RequestMapping(value = map + "/eliminar", method = RequestMethod.POST)
 	public ModelAndView eliminar_referencia(HttpServletRequest request,
 							HttpServletResponse response,
 							@RequestParam(value="codigo", required=true) String codigo) {
@@ -630,10 +648,11 @@ public class ReferenciaController {
 		referencia.setUsuaModi(Utils.obtenerUsuario(request));
 		
 		List<Referencia> l = r.encontrarReferencia(referencia);
+		l.get(0).setUsuaModi(Utils.obtenerUsuario(request));
 		
 		try {
 				this.r.eliminarReferencia(l.get(0));
-				ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "La referencia ha sido modificado satisfactoriamente");
+				ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "La referencia ha sido eliminada satisfactoriamente ");
 			} catch (Exception e) {
 				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
 			}

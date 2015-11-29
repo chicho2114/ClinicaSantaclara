@@ -86,17 +86,35 @@
 										            	<li class="dropdown">
 										              		<a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown">Referencias e Invenarios<b class="caret"></b></a>
 										              		<ul class="dropdown-menu">
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear">Crear Referencia</a></li>
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/proveedores/crear">Crear Proveedor</a></li>
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_fabricante">Crear Fabricante</a></li>
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_categoria">Crear Categoría</a></li>
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_archivo">Cargar Referencias mediante Archivo</a></li>
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/cargar_insumos">Cargar Insumos</a></li>
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/crear_archivo">Cargar Insumos mediante Archivo</a></li>
-											                
-											                	<li class="divider"></li>
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_bodega">Bodegas de Inventario</a></li>
-											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_ajuste">Cargar Ajustes en Inventario</a>
+										              		<c:choose>
+											              		<c:when test="${!(UserRol eq ('[ROLE_NOUSUARIO]')) }">
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear">Crear Referencia</a></li>
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/proveedores/crear">Crear Proveedor</a></li>
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_fabricante">Crear Fabricante</a></li>
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_categoria">Crear Categoría</a></li>
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_archivo">Cargar Referencias mediante Archivo</a></li>
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/cargar_insumos">Cargar Insumos</a></li>
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/crear_archivo">Cargar Insumos mediante Archivo</a></li>
+												                
+												                	<li class="divider"></li>
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_bodega">Bodegas de Inventario</a></li>
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_ajuste">Cargar Ajustes en Inventario</a></li>
+												              	</c:when>
+												              	<c:otherwise>
+												              		<li><a tabindex="-1" href="#myModal" data-toggle="modal">Crear Referencia</a></li>
+												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Crear Proveedor</a></li>
+												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Crear Fabricante</a></li>
+												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Crear Categoría</a></li>
+												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Cargar Referencias mediante Archivo</a></li>
+												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Cargar Insumos</a></li>
+												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Cargar Insumos mediante Archivo</a></li>
+												                
+												                	<li class="divider"></li>
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_bodega">Bodegas de Inventario</a></li>
+												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Cargar Ajustes en Inventario</a></li>
+												              	
+												              	</c:otherwise>
+											              	</c:choose>
 											              	</ul>
 											            </li>
 											            <li class="dropdown">
@@ -115,9 +133,10 @@
 										            	<li id="fat-menu" class="dropdown warning text-warning">
 									              			<a href="#" id="drop4" class="dropdown-toggle" data-toggle="dropdown"> Más Opciones <b class="caret"></b></a>
 									              			<ul class="dropdown-menu">
+									              				<c:if test="${!(UserRol eq ('[ROLE_NOUSUARIO]')) }">
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/usuarios/crear">Crear Usuario</a></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/usuarios/listar">Listar Usuarios</a></li>
-											                	<li class="divider"></li>
+											                	<li class="divider"></li></c:if>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/usuarios/ver?codigo=${usuario.codigo}">Mi Perfil</a></li>
 											                	<li class="divider"></li>
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/logout">Cerrar sesión</a></li>
@@ -229,6 +248,22 @@
 			  $('#drop1').popover("show");
 			 
 		</script>
+		
+		<!-- Modal -->
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="myModalLabel">Aviso!</h3>
+		  </div>
+		  <div class="modal-body">
+		    <p>Usted no posee los permisos necesarios para realizar
+		    esta acción</p>
+		  </div>
+		  <div class="modal-footer">
+		    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+		    <!--  <button class="btn btn-primary">Save changes</button>-->
+		  </div>
+		</div>
 
 	</body>
 </html>

@@ -21,6 +21,7 @@ import com.control.general.Redireccion;
 import com.control.general.TipoMensaje;
 import com.control.general.Utils;
 import com.control.insumo.InsumoDAO;
+import com.control.usuario.UsuarioDAO;
 
 
 @Controller
@@ -33,6 +34,8 @@ public class ProveedorController {
 	private ProveedorDAO p;
 	@Autowired
 	private InsumoDAO i;
+	@Autowired
+	private UsuarioDAO u;
 	
 	/*@RequestMapping(value = map + "/listar")
 	public ModelAndView listar_form() {
@@ -78,6 +81,7 @@ public class ProveedorController {
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		return new ModelAndView(view + "/crear_form", modelo);
 	}
 	
@@ -88,6 +92,7 @@ public class ProveedorController {
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/consultar_prov", modelo);
 	}
@@ -128,13 +133,14 @@ public class ProveedorController {
 		
 		if(l.size() == 0) {
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se encontraron resultados");
-			return new Redireccion(map + "/listar");
+			return new Redireccion(map + "/consultar");
 		}
 		
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("prov", l);
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 			
 		return new ModelAndView(view + "/listar_proveedor", modelo);
 	}
@@ -161,6 +167,7 @@ public class ProveedorController {
 		modelo.put("proveedor", l.get(0));
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/ver", modelo);
 	}
@@ -189,6 +196,7 @@ public class ProveedorController {
 		modelo.put("proveedor", l.get(0));
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/editar", modelo);
 	}
@@ -218,7 +226,7 @@ public class ProveedorController {
 		return new Redireccion(map + "/consultar");
 	}
 	
-	@RequestMapping(value = map + "/eliminar", method = RequestMethod.GET)
+	@RequestMapping(value = map + "/eliminar", method = RequestMethod.POST)
 	public ModelAndView eliminar_proveedor(HttpServletRequest request,
 							HttpServletResponse response,
 							@RequestParam(value="codigo", required=true) String codigo) {

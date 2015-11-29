@@ -52,6 +52,7 @@ public class UsuarioController {
 		modelo.addAttribute("usuarios", u.obtenerUsuario(null));
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		return new ModelAndView(view + "/listado", modelo);
 	}
 	
@@ -65,6 +66,7 @@ public class UsuarioController {
 		modelo.addAttribute("roles", u.obtenerRoles());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		return new ModelAndView(view + "/ver", modelo);
 	}
 	
@@ -74,6 +76,7 @@ public class UsuarioController {
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		return new ModelAndView(view + "/crear", modelo);
 	}
 	
@@ -86,6 +89,7 @@ public class UsuarioController {
 		modelo.addAttribute("respuesta", !(u.verificarUsuario(codigo) > 0));
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView("ajax/usuario", modelo);
 	}
@@ -149,6 +153,8 @@ public class UsuarioController {
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		modelo.addAttribute("permiso", u.obtenerPermisos(codigo).get(0));
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
+		modelo.addAttribute("UserCodigo", u.obtenerUsuario(Utils.obtenerUsuario(request)).get(0));
 		
 		/*permisos.remove("ROLE_ACTUALIZAR");
 		
@@ -235,6 +241,7 @@ public class UsuarioController {
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		return new ModelAndView(view + "/cambiar_contrasena", modelo);
 	}
 	

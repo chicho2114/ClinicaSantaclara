@@ -34,7 +34,10 @@
 	
 	
 					</table>
+					
+				<c:if test="${!(UserRol eq ('[ROLE_NOUSUARIO]')) }">
 					<input type="submit" class="btn btn-primary" value="Editar" tabindex="8">
+				</c:if>
 				</form>
 				
 				<t:regresar></t:regresar>

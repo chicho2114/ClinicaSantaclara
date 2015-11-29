@@ -26,6 +26,8 @@
 		</script>
 		<div class="container">
 			<div class="row-fluid">
+			<c:choose>
+				<c:when test="${!(UserRol eq ('[ROLE_NOUSUARIO]')) }">
 				<h2>Crear bodega</h2>
 				<p>Por favor, complete la información solicitada</p>
 				<div id="error">
@@ -44,6 +46,11 @@
 					</table>
 					<input type="submit" class="btn btn-primary" value="Crear bodega" />
 				</form>
+				</c:when>
+				<c:otherwise>
+					
+				</c:otherwise>
+				</c:choose>
 				<h2>Consultar bodega</h2>
 				<p>Consulte referencias por la bodega en que se encuentran</p>
 				<table>
@@ -91,6 +98,7 @@
 				    });
 				</script>
 				<t:regresar></t:regresar>
+				
 			</div>
 		</div>
 	</jsp:attribute>

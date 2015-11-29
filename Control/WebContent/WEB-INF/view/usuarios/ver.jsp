@@ -8,6 +8,7 @@
 	<jsp:attribute name="body">
 	<div class="container">
 			<div class="row-fluid">
+			
 		<h1>Información del Usuario - ${user.codigo}</h1>
 		<table class="table table-striped">
 			<tr>

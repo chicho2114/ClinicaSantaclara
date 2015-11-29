@@ -456,7 +456,7 @@ public class ReferenciaDAO {
 		//Establecemos el ajuste 
 		int codigo = consultarConsecutivo("AJUSTEINVENTARIO");
 		//Insertamos el movimiento
-		Object[] argumentos2 = {referencia.getCodigo(), -referencia.getCantidad(), "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", referencia.getUsuaModi()};
+		Object[] argumentos2 = {referencia.getCodigo(), -referencia.getCantidad(), "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", referencia.getUsuaCrea()};
 		
 		int[] tipos2 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 		

@@ -68,6 +68,7 @@ public class GeneralController {
 			modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 			modelo.addAttribute("ins", i.consultarInsumosVencidos());
 			modelo.put("movimientos", r.consultarMovimientos());
+			modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 			
 			return new ModelAndView(view + "/usuario", modelo);
 		}

@@ -27,6 +27,7 @@ import com.control.general.Redireccion;
 import com.control.general.TipoMensaje;
 import com.control.general.Utils;
 import com.control.referencia.ReferenciaDAO;
+import com.control.usuario.UsuarioDAO;
 import com.csvreader.CsvReader;
 
 
@@ -39,7 +40,9 @@ public class InsumoController {
 	@Autowired
 	private InsumoDAO i;	
 	@Autowired
-	private ReferenciaDAO r;
+	private ReferenciaDAO r;	
+	@Autowired
+	private UsuarioDAO u;
 	
 	@RequestMapping(value = map + "/movimientos")
 	public ModelAndView movimientos(HttpServletRequest request,
@@ -50,6 +53,7 @@ public class InsumoController {
 		modelo.put("movimientos", r.consultarMovimientosTodos());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		return new ModelAndView(view + "/movimientos", modelo);
 	}
 	
@@ -65,6 +69,7 @@ public class InsumoController {
 		modelo.addAttribute("bodegas", i.consultarBodegas());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		return new ModelAndView(view + "/cargar_insumos", modelo);
 	}
 	
@@ -126,6 +131,7 @@ public class InsumoController {
 		ModelMap modelo = new ModelMap();
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		return new ModelAndView(view + "/crear_archivo_form", modelo);
 	}
 	
@@ -197,6 +203,7 @@ public class InsumoController {
 		modelo.addAttribute("bodegas", i.consultarBodegas());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/consultar", modelo);
 	}
@@ -249,6 +256,7 @@ public class InsumoController {
        modelo.addAttribute("fechaActual", fechaActual);
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 			
 		return new ModelAndView(view + "/listar_reporte", modelo);
 	} 
@@ -273,6 +281,7 @@ public class InsumoController {
 		modelo.put("insumo", l.get(0));
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/ver", modelo);
 	}
@@ -304,6 +313,7 @@ public class InsumoController {
 		modelo.addAttribute("bodegas", i.consultarBodegas());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
 		
 		return new ModelAndView(view + "/editar", modelo);
 	}
@@ -337,7 +347,7 @@ public class InsumoController {
 		return new Redireccion(map + "/consultar");
 	}
 	
-	@RequestMapping(value = map + "/eliminar", method = RequestMethod.GET)
+	@RequestMapping(value = map + "/eliminar", method = RequestMethod.POST)
 	public ModelAndView eliminar(HttpServletRequest request,
 							HttpServletResponse response,
 							@RequestParam(value="codcaja", required=true) String codcaja,

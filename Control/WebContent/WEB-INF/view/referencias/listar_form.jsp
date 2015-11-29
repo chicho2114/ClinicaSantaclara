@@ -7,6 +7,8 @@
 	<jsp:attribute name="body">
 		<div class="container">
 			<div class="row-fluid">
+			
+
 				<h1>Búsqueda de Referencias</h1>
 				<p>Debe utilizar un mínimo de 4 caracteres para la búsqueda por código de referencia.</p>
 				<p>Debe utilizar un mínimo de 3 caracteres para la búsqueda por descripción.</p>
@@ -48,6 +50,7 @@
 					</table>
 					<input type="submit" class="btn btn-primary" value="Buscar" />
 				</form>
+					
 				<t:regresar></t:regresar>
 				<script type="text/javascript">
 				    $(function(){
