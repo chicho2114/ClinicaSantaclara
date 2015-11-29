@@ -84,10 +84,20 @@
 			
 			 </tr>
 		</table>
-		<form action="${pageContext.request.contextPath}/usuarios/modificar">
-			<input type="hidden" name="codigo" value="${user.codigo}" />
-			<input type="submit" class="btn btn-primary" value="Modificar" />
-		</form>
+		<c:if test="${!(UserRol eq ('[ROLE_NOUSUARIO]')) }">
+	       	<c:if test="${(UserRol eq ('[ROLE_USUARIO]')) and (permiso != 'ROLE_ADMINISTRADOR')}">
+			<form action="${pageContext.request.contextPath}/usuarios/modificar">
+				<input type="hidden" name="codigo" value="${user.codigo}" />
+				<input type="submit" class="btn btn-primary" value="Modificar" />
+			</form>
+			</c:if>
+			<c:if test="${(UserRol eq ('[ROLE_ADMINISTRADOR]'))}">
+			<form action="${pageContext.request.contextPath}/usuarios/modificar">
+				<input type="hidden" name="codigo" value="${user.codigo}" />
+				<input type="submit" class="btn btn-primary" value="Modificar" />
+			</form>
+			</c:if>
+		</c:if>
 		<t:regresar></t:regresar>
 					</div>
 		</div>

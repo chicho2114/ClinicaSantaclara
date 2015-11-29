@@ -3,9 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
-<t:layout title="Inventario Virtual de Partes - Vehículos Mazda de Venezuela C.A">
+<t:layout title="Sistema de control - Policlínica Santa Clara">
 	<jsp:attribute name="body">
-		
+	<div class="container">
+	 <div class="row-fluid">
 		<!-- Información -->
 		<div class="container">
 			<div class="row">
@@ -13,7 +14,7 @@
 					<div class="head">
 						<div class="row-fluid">
 						    <div class="span12">
-								<img src="${pageContext.request.contextPath}/images/hero-unit.png" />
+								<!-- <img src="${pageContext.request.contextPath}/images/hero-unit.png" /> -->
 						    </div>
 						</div>
 					</div>
@@ -22,13 +23,8 @@
 		</div>
 		
 		<div class="container">
+		
 			<br>
-			<p style="text-align: center;">
-				Bienvenido al Inventario Virtual de Partes de VEHICULOS MAZDA DE VENEZUELA C.A. 
-				Por favor, para ingresar solicite asistencia con el área de venta de 
-				repuestos del concesionario o servicio autorizado 
-				para especificaciones de uso y consulta.
-			</p>
 			<form action="${pageContext.request.contextPath}/usuarios/cambiar_contrasena_accion" method="post" autocomplete="off"
 				  id="cambioContrasena">
    				<fieldset class="scheduler-border">
@@ -68,6 +64,8 @@
 				</fieldset>
    			</form>
 		</div>
+	</div>
+</div>
 		<script type="text/javascript">
 			$(function() {
 				$('#cambioContrasena').validate({

@@ -47,7 +47,9 @@
 	       					<option value=""></option>
 	       					<option value="1">INTERNO</option>
 	       					<option value="2">EXTERNO</option>
+	       					<c:if test="${(UserRol eq ('[ROLE_ADMINISTRADOR]')) }">
 	       					<option value="3">ADMINISTRADOR</option>
+	       					</c:if>
 	       				</select>
 	       			</td>
 	       		</tr>

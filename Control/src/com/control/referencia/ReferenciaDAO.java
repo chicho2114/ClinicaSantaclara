@@ -48,6 +48,54 @@ public class ReferenciaDAO {
 		return jdbcReferencia.query(sql, argumentos, tipos, new ReferenciaMapper());
 	}
 	
+	public void eliminarCategoria(String categoria) throws Exception {
+		
+		Object[] argumentos = {categoria};
+		
+		int[] tipos = {Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("referencias.eliminarCategoria");
+		
+		try {
+			jdbcReferencia.update(sql, argumentos, tipos);
+		}
+		catch(DataAccessException dae) {
+			throw new Exception(dae.getCause());
+		}
+	}
+	
+	public void eliminarFabricante(String fabricante) throws Exception {
+		
+		Object[] argumentos = {fabricante};
+		
+		int[] tipos = {Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("referencias.eliminarFabricante");
+		
+		try {
+			jdbcReferencia.update(sql, argumentos, tipos);
+		}
+		catch(DataAccessException dae) {
+			throw new Exception(dae.getCause());
+		}
+	}
+	
+	public void eliminarBodega(String bodega) throws Exception {
+		
+		Object[] argumentos = {bodega};
+		
+		int[] tipos = {Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("referencias.eliminarBodega");
+		
+		try {
+			jdbcReferencia.update(sql, argumentos, tipos);
+		}
+		catch(DataAccessException dae) {
+			throw new Exception(dae.getCause());
+		}
+	}
+	
 	public List<Map<String, Object>> inventarioGeneral() {
 		
 		String sql = prop.obtenerSQL("referencias.inventario.listar");
@@ -475,7 +523,7 @@ public class ReferenciaDAO {
 			
 			int[] tipos = {Types.VARCHAR};
 			
-			String sql =  prop.obtenerSQL("referencias.eliminar");
+			String sql =  prop.obtenerSQL("referencias.eliminarRef");
 			
 			try {
 				jdbcReferencia.update(sql, argumentos, tipos);

@@ -14,7 +14,7 @@
 			    	var xmlHttp = null;
 
 			        xmlHttp = new XMLHttpRequest();
-			        xmlHttp.open( "GET", "${pageContext.request.contextPath}/referencias/consultar_bodega?codigo="+selectedValue, false );
+			        xmlHttp.open( "GET", "${pageContext.request.contextPath}/referencias/consultar_categoria?codigo="+selectedValue, false );
 			        xmlHttp.send( null );
 			        document.getElementById("referencias").innerHTML = xmlHttp.responseText;
 			    }

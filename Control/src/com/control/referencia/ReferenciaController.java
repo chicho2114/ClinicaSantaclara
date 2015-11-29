@@ -377,8 +377,8 @@ public class ReferenciaController {
 	public ModelAndView consultar_bodega(HttpServletRequest request,
 										 HttpServletResponse response,
 										 @RequestParam(value="codigo") String codigo) {
-		
 		ModelMap modelo = new ModelMap();
+		modelo.put("bodega", codigo);
 		modelo.put("referencias", r.consultarInventarioBodega(codigo));
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
@@ -386,6 +386,92 @@ public class ReferenciaController {
 		
 		return new ModelAndView("/ajax/consultar_bodega", modelo);
 	}
+	
+	@RequestMapping(value = map + "/consultar_categoria")
+	public ModelAndView consultar_categoria(HttpServletRequest request,
+										 HttpServletResponse response,
+										 @RequestParam(value="codigo") String codigo) {
+		Referencia referencia = new Referencia();
+		referencia.setCodigo("");
+		referencia.setDescripcion("");
+		referencia.setFabricante(null);
+		referencia.setCategoria(codigo);
+			
+		ModelMap modelo = new ModelMap();
+		modelo.put("cantRefes", r.listarReferencias(referencia).size());
+		modelo.addAttribute("categoria", codigo);
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
+		
+		return new ModelAndView("/ajax/consultar_categorias", modelo);
+	}
+	
+	@RequestMapping(value = map + "/consultar_fabricante")
+	public ModelAndView consultar_fabricante(HttpServletRequest request,
+										 HttpServletResponse response,
+										 @RequestParam(value="codigo") String codigo) {
+		Referencia referencia = new Referencia();
+		referencia.setCodigo("");
+		referencia.setDescripcion("");
+		referencia.setFabricante(codigo);
+		referencia.setCategoria(null);
+			
+		ModelMap modelo = new ModelMap();
+		modelo.put("cantRefes", r.listarReferencias(referencia).size());
+		modelo.addAttribute("fabricante", codigo);
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
+		
+		return new ModelAndView("/ajax/consultar_fabricante", modelo);
+	}
+	
+	@RequestMapping(value = map + "/eliminar_categoria")
+	public ModelAndView eliminar_categoria(HttpServletRequest request,
+										 HttpServletResponse response,
+										 @RequestParam(value="codigo") String codigo) {
+		
+		try {
+			r.eliminarCategoria(codigo);
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "Categoria eliminada satisfactoriamente");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new Redireccion(map + "/crear_categoria");
+	}
+	
+	@RequestMapping(value = map + "/eliminar_fabricante")
+	public ModelAndView eliminar_fabricante(HttpServletRequest request,
+										 HttpServletResponse response,
+										 @RequestParam(value="codigo") String codigo) {
+		
+		try {
+			r.eliminarFabricante(codigo);
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "Fabricante eliminado satisfactoriamente");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new Redireccion(map + "/crear_fabricante");
+	}
+	
+	@RequestMapping(value = map + "/eliminar_bodega")
+	public ModelAndView eliminar_bodega(HttpServletRequest request,
+										 HttpServletResponse response,
+										 @RequestParam(value="codigo") String codigo) {
+		
+		try {
+			r.eliminarBodega(codigo);
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "Bodega eliminada satisfactoriamente");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new Redireccion(map + "/crear_bodega");
+	}
+	
 	
 	@RequestMapping(value = map + "/consultar_json")
 	public ModelAndView consultar_json(HttpServletRequest request,
@@ -645,7 +731,6 @@ public class ReferenciaController {
 		referencia.setCodigo(codigo);
 		referencia.setDescripcion("");		
 		referencia.setFechaModi(new Date());
-		referencia.setUsuaModi(Utils.obtenerUsuario(request));
 		
 		List<Referencia> l = r.encontrarReferencia(referencia);
 		l.get(0).setUsuaModi(Utils.obtenerUsuario(request));

@@ -12,6 +12,11 @@
 			<th>
 				Cantidad
 			</th>
+			<c:if test="${referencias.isEmpty()}">
+			<th>
+				Operar
+			</th>
+			</c:if>
 			<th>
 				Ver
 			</th>
@@ -25,7 +30,26 @@
 				<td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${referencia.referencia}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
 			<tr>
 		</c:forEach>
+		<c:if test="${referencias.isEmpty() }">
+			<tr>
+				<td><p class="text-error">BODEGA SIN INSUMOS</p></td>
+				<td><p class="text-error">0</p></td>
+				<td class="text-center">
+					<form action="${pageContext.request.contextPath}/referencias/eliminar_bodega">
+						<input type=hidden name="codigo" value="${bodega}" >
+						<button class="btn btn-small btn-danger" type="submit">Eliminar</button>
+					</form>
+				</td>
+				<td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${referencia.referencia}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
+			<tr>
+		</c:if>
 	</tbody>
+				<td class="text-center">
+					<form action="${pageContext.request.contextPath}/referencias/eliminar_bodega">
+						<input type=hidden name="codigo" value="${bodega}" >
+						<button class="btn btn-danger" type="submit">Eliminar Bodega</button>
+					</form>
+				</td>
 </table>
 <script src="${pageContext.request.contextPath}/js/jquery.filtertable.min.js" type="text/javascript"></script>
 <script type="text/javascript">

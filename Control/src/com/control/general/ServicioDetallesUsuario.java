@@ -44,11 +44,11 @@ public class ServicioDetallesUsuario implements UserDetailsService {
 		String password = usuario.getContrasena();
 		boolean enabled = usuario.getVigencia().equals("S"); 
 		
-		int dias = u.vigenciaContrasena(username);
+		//int dias = u.vigenciaContrasena(username); Descomentar si se desea llevar el control de cambio de contraseña
 		boolean accountNonExpired = !usuario.getVigencia().equals("N"); //Cuenta no expirada y horario verificado
 		boolean credentialsNonExpired = !usuario.getCambcontra().equals("S"); //Credenciales no expiradas
 		
-		boolean mayorA45 = dias > 45;
+		boolean mayorA45 = false;//dias > 45;
 		boolean accountNonLocked = !usuario.getVigencia().equals("N") && !mayorA45; //Cuenta no bloqueada
 		
 		List<GrantedAuthority> permisos = u.obtenerPermisos(nombreUsuario); //Obtenemos los permisos de usuario
