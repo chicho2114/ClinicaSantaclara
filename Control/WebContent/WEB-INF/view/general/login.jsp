@@ -11,7 +11,8 @@
 		<div class="container">
 			<div class="row-fluid">
 				<div class="span6">
-					<img src="http://dummyimage.com/570x400/000/fff" />
+					<img src="${pageContext.request.contextPath}/images/logo.png" width="80%" height="80%" />
+					<!-- <img src="http://dummyimage.com/570x400/000/fff" /> -->
 				</div>
 				<div class="span6">
 					<form action="${pageContext.request.contextPath}/j_spring_security_check" method="post" autocomplete="off">
