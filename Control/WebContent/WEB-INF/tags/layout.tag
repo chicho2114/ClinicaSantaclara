@@ -50,7 +50,7 @@
 					<div class="head">
 						<div class="row-fluid">
 						    <div class="span12">
-								<a href="${pageContext.request.contextPath}/#home"><img src="http://dummyimage.com/1170x125/000/fff" /></a>
+								<a href="${pageContext.request.contextPath}/#home"><img src="${pageContext.request.contextPath}/images/banner7.png" /></a>
 						    </div>
 						</div>
 						<div class="navbar">
@@ -62,7 +62,8 @@
  			            				<span class="icon-bar"></span> 
  			          				</a>
  			          				<c:choose>
- 			          					<c:when test="${!empty sessionScope.usuario}">
+ 			          					<c:when test="${!empty (sessionScope.usuario)}">
+ 			          			
 								      		<div class="container" style="width: auto;">
 											
 										        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->

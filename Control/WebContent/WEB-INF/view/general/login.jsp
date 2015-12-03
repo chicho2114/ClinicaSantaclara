@@ -11,7 +11,7 @@
 		<div class="container">
 			<div class="row-fluid">
 				<div class="span6">
-					<img src="${pageContext.request.contextPath}/images/logo.png" width="80%" height="80%" />
+					<img class="img-rounded" src="${pageContext.request.contextPath}/images/logo_negro.png" />
 					<!-- <img src="http://dummyimage.com/570x400/000/fff" /> -->
 				</div>
 				<div class="span6">
