@@ -48,17 +48,24 @@
        						<c:when test="${permiso == 'ROLE_USUARIO'}">
        							<option selected value="1">INTERNO</option>
        							<option value="2">EXTERNO</option>
-       							<option value="3">ADMINISTRADOR</option>
+       							<c:if test="${(UserRol eq ('[ROLE_ADMINISTRADOR]')) }">
+       								<option value="3">ADMINISTRADOR</option>
+       							</c:if>
        						</c:when>
        						<c:when test="${permiso == 'ROLE_NOUSUARIO'}">
        							<option value="1">INTERNO</option>
        							<option selected value="2">EXTERNO</option>
-       							<option value="3">ADMINISTRADOR</option>
+       							<c:if test="${(UserRol eq ('[ROLE_ADMINISTRADOR]')) }">
+       								<option value="3">ADMINISTRADOR</option>
+       							</c:if>
        						</c:when>
        						<c:otherwise>
-       							<option value="1">INTERNO</option>
-       							<option value="2">EXTERNO</option>
-       							<option selected value="3">ADMINISTRADOR</option>
+       							       			
+		       					<c:if test="${(UserRol eq ('[ROLE_ADMINISTRADOR]')) }">
+	       							<option value="1">INTERNO</option>
+	       							<option value="2">EXTERNO</option>
+	       							<option selected value="3">ADMINISTRADOR</option>
+		       					</c:if>
        						</c:otherwise>
        						</c:choose>
 				       	
@@ -154,7 +161,7 @@
 			<input type="hidden" name="codigo" value="${user.codigo}" />
 			<input type="submit" class="btn btn-primary" value="Cambiar contraseña" />
 		</form>
-		<c:if test="${!(UserRol eq ('[ROLE_NOUSUARIO]')) && !(UserCodigo.codigo eq user.codigo) }">
+		<c:if test="${!(UserRol eq ('[ROLE_NOUSUARIO]')) && !(UserCodigo.codigo eq user.codigo) && !(UserRol eq ('[ROLE_USUARIO]')) }">
 		<form action="${pageContext.request.contextPath}/usuarios/eliminar" method="post">
 			<input type="hidden" name="codigo" value="${user.codigo}" />
 			<input type="submit" class="btn btn-danger" value="Eliminar Usuario" />
