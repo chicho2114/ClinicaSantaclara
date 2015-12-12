@@ -224,10 +224,10 @@
 					<div class="span6">
 						<a href="#">Desarrollado por ISCON, C.A.</a>
 						<br>
-						<a href="#">Soporte: Manuel Cárdenas / 0426-9452127</a>
+						<a href="#">Soporte: Manuel Cárdenas / 0426-9452127 / 0412-4335969 </a>
 					</div>
 					<div class="span6">
-						<p class="muted pull-right">© 2015 Policlínico Santa Clara. RIF: J-30040457-9. Todos los derechos reservados</p>
+						<p class="muted pull-right">© 2015 Policlínico Santa Clara. RIF: J-07582262-5. Todos los derechos reservados</p>
 					</div>
 				</div>
 			</div>
