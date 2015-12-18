@@ -560,5 +560,71 @@ public class ReferenciaDAO {
 	return jdbcReferencia.queryForList(sql);
 	}
 	
+	public int verificarSubBodega(String id) {
+		
+		Object[] argumentos = {id};
+		
+		int[] tipos = {Types.VARCHAR};
+		
+		String sql = "select count(*) from t_subbodega where t_subbodega_codigo = ?";
+		
+		return jdbcReferencia.queryForInt(sql, argumentos, tipos);
+	}
+	 
+	@Transactional(rollbackFor=Exception.class)
+	public void insertarSubBodega(String codigo, String nombre, String usuaCrea, Date fechaCrea) throws Exception {
+		
+		if(verificarSubBodega(codigo) > 0) {
+			throw new Exception("Código de Sub-bodega ya existe");
+		}
+		
+		Object[] argumentos = {codigo, nombre, usuaCrea, fechaCrea};
+		
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP};
+		
+		String sql = prop.obtenerSQL("referencias.subbodega.insertar");
+		
+		try {
+			jdbcReferencia.update(sql, argumentos, tipos);
+		}
+		catch(DataAccessException dae) {
+			throw new Exception(dae.getCause());
+		}
+	}
 	
+	public List<Map<String, Object>> consultarSubBodegas() {
+		
+		String sql = "select t_subbodega_codigo codigo, t_subbodega_nombre nombre " + 
+						"from t_subbodega";
+		
+		return jdbcReferencia.queryForList(sql);
+	}
+	
+	public List<Map<String, Object>> consultarInventarioSubBodega(String codigo) {
+		
+		Object[] argumentos = {codigo};
+		
+		int[] tipos = {Types.VARCHAR};
+		String sql = "select t_subbodega_codigo subbodega, ts_referencia_presentacion presentacion,"
+				+ "ts_referencia_descripcion descripcion, t_referencia_codigo referencia, t_cantidad cantidad, t_invensubbod_usuacrea usuacrea, t_invensubbod_fechacrea fechacrea " +
+				 	 "from  t_inventario_subbodega, t_referencia WHERE (t_subbodega_codigo = ?) AND (t_referencia_codigo=tps_referencia_codigo)";
+		
+		return jdbcReferencia.queryForList(sql, argumentos, tipos);
+	}
+	
+	public void eliminarSubBodega(String subbodega) throws Exception {
+		
+		Object[] argumentos = {subbodega};
+		
+		int[] tipos = {Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("referencias.eliminarSubBodega");
+		
+		try {
+			jdbcReferencia.update(sql, argumentos, tipos);
+		}
+		catch(DataAccessException dae) {
+			throw new Exception(dae.getCause());
+		}
+	}
 }

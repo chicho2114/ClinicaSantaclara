@@ -744,4 +744,73 @@ public class ReferenciaController {
 			
 		return new Redireccion(map + "/listar");
 	}
+	
+	@RequestMapping(value = map + "/crear_subbodega")
+	public ModelAndView crear_subbodega(HttpServletRequest request,
+									 HttpServletResponse response) {
+		
+		ModelMap modelo = new ModelMap();
+		modelo.put("subbodegas", r.consultarSubBodegas());
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
+		
+		return new ModelAndView(view + "/crear_subbodega", modelo);
+	}
+	
+	@RequestMapping(value = map + "/crear_subbodega_accion",
+					method = RequestMethod.POST)
+	public ModelAndView crear_subbodega_accion(HttpServletRequest request,
+											HttpServletResponse response,
+											@RequestParam(value="codigo") String codigo,
+											@RequestParam(value="nombre") String nombre) {
+		
+		if(codigo == "") {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "El campo 'Código' no puede estar vacío");
+			return new Redireccion(map + "/crear_subbodega");
+		}
+		if(nombre == "") {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "El campo 'Nombre' no puede estar vacío");
+			return new Redireccion(map + "/crear_subbodega");
+		}
+		
+		try {
+			r.insertarSubBodega(codigo, nombre, Utils.obtenerUsuario(request), new Date());
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "Sub-Bodega creada correctamente");
+		}
+		catch(Exception e) {
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
+		}
+		
+		return new Redireccion(map + "/crear_subbodega");
+	}
+	
+	@RequestMapping(value = map + "/consultar_subbodega")
+	public ModelAndView consultar_subbodega(HttpServletRequest request,
+										 HttpServletResponse response,
+										 @RequestParam(value="codigo") String codigo) {
+		ModelMap modelo = new ModelMap();
+		modelo.put("subbodega", codigo);
+		modelo.put("referencias", r.consultarInventarioSubBodega(codigo));
+		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
+		modelo.addAttribute("ins", i.consultarInsumosVencidos());
+		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
+		
+		return new ModelAndView("/ajax/consultar_subbodega", modelo);
+	}
+	
+	@RequestMapping(value = map + "/eliminar_subbodega")
+	public ModelAndView eliminar_subbodega(HttpServletRequest request,
+										 HttpServletResponse response,
+										 @RequestParam(value="codigo") String codigo) {
+		
+		try {
+			r.eliminarSubBodega(codigo);
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "Sub-Bodega eliminada satisfactoriamente");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new Redireccion(map + "/crear_subbodega");
+	}
 }

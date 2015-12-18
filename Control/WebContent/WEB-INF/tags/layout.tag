@@ -98,6 +98,7 @@
 												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/insumos/crear_archivo">Cargar Insumos mediante Archivo</a></li>
 												                
 												                	<li class="divider"></li>
+												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_subbodega">Sub-Bodegas</a></li>
 												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_bodega">Bodegas de Inventario</a></li>
 												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_ajuste">Cargar Ajustes en Inventario</a></li>
 												              	</c:when>
@@ -111,7 +112,8 @@
 												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Cargar Insumos mediante Archivo</a></li>
 												                
 												                	<li class="divider"></li>
-												                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/crear_bodega">Bodegas de Inventario</a></li>
+												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Sub-bodegas</a></li>
+												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Bodegas de Inventario</a></li>
 												                	<li><a tabindex="-1" href="#myModal" data-toggle="modal">Cargar Ajustes en Inventario</a></li>
 												              	
 												              	</c:otherwise>
