@@ -88,6 +88,7 @@ public class ProveedorDAO {
 				catch(DataAccessException dae) {
 					throw new SQLException(dae.getMessage() + "1");
 				}
+				r.actualizarConsecutivo("AJUSTEPROVEEDOR", 1);
 		
 	}
 	

@@ -505,6 +505,8 @@ public class ReferenciaController {
 		ModelMap modelo = new ModelMap();
 		modelo.put("ajuste", r.consultarConsecutivo("AJUSTEINVENTARIO"));
 		modelo.put("bodegas", r.consultarBodegas());
+		modelo.addAttribute("referencias", i.consultarReferencias());
+		modelo.addAttribute("subbodegas", i.consultarSubBodegas());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
@@ -517,9 +519,9 @@ public class ReferenciaController {
 	public ModelAndView crear_ajuste_accion(HttpServletRequest request,
 											HttpServletResponse response,
 											@RequestParam(value="referencia") String referencia,
-											@RequestParam(value="ref") String refe,
 											@RequestParam(value="cantidad") int cantidad,
-											@RequestParam(value="bodega") String bodega) {
+											@RequestParam(value="bodega") String bodega,
+											@RequestParam(value="motivo") String motivo) {
 		
 		
 		
@@ -544,13 +546,17 @@ public class ReferenciaController {
 		
 		List<Referencia> l = r.listarReferencias(ref);
 		
-		if(l.size() == 0 || l.size() > 1 || !l.get(0).getDescripcion().equals(refe)) {
+		if(l.size() == 0 || l.size() > 1) {
 			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "La referencia no existe");
+			return new Redireccion(map + "/crear_ajuste");
+		}
+		if(l.get(0).getCantidad() < -cantidad){
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.ADVERTENCIA, "No se puede crear el ajuste por NO disponer de insumos SUFICIENTES");
 			return new Redireccion(map + "/crear_ajuste");
 		}
 		
 		try {
-			r.insertarAjuste(bodega, referencia, cantidad, Utils.obtenerUsuario(request));
+			r.insertarAjuste(bodega, referencia, cantidad, Utils.obtenerUsuario(request), motivo);
 			try {
 				i.actualizarInsumoAjuste(l.get(0).getCodigo(), bodega, cantidad);
 			} catch (ExcepcionSQL e) {

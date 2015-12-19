@@ -44,7 +44,15 @@
 			       		</tr>
 			       		<tr>
 			       			<td><strong>Referencia:</strong></td>
-			       			<td><input class="uppercase" name="referencia" id="referencia"/>&nbsp;<input id="ref" name="ref" readonly />&nbsp;<input type="button" value= "Buscar Referencia" onclick="buscarRef();"></td>
+			       			<td>	
+			       				<select id="referencia" name="referencia" tabindex="5">
+			       					<c:forEach items="${referencias}" var="referencia">
+			       						<option value="${referencia.codigo}">${referencia.codigo} - ${referencia.descripcion}</option>
+			       					</c:forEach>
+			       				</select>
+			       				<input type="text" id="entrada">
+			       			</td>
+			       			<!--<td><input class="uppercase" name="referencia" id="referencia"/>&nbsp;<input id="ref" name="ref" readonly />&nbsp;<input type="button" value= "Buscar Referencia" onclick="buscarRef();"></td>-->
 			       		</tr>
 			       		<tr>
 			       			<td><strong>Cantidad:</strong></td>
@@ -57,6 +65,17 @@
 								<option value=""></option>
 								<c:forEach var="bodega" items="${bodegas}">
 									<option value="${bodega.codigo}">${bodega.codigo} - ${bodega.nombre}</option>
+								</c:forEach>
+								</select>
+							</td>
+			       		</tr>
+			       		<tr>
+			       			<td><strong>Motivo:</strong></td>
+			       			<td>
+			       				<select id="motivo" name="motivo">
+								<option value="OTROS">OTROS</option>
+								<c:forEach var="subbodega" items="${subbodegas}">
+									<option value="${subbodega.codigo}">Mover a ${subbodega.nombre}</option>
 								</c:forEach>
 								</select>
 							</td>
@@ -150,6 +169,42 @@
 				        });    
 				    });
 				</script>
+				<script>			
+			jQuery.fn.filterByText = function(textbox, selectSingleMatch) {
+		        return this.each(function() {
+		            var select = this;
+		            var options = [];
+		            $(select).find('option').each(function() {
+		                options.push({value: $(this).val(), text: $(this).text()});
+		            });
+		            $(select).data('options', options);
+		            $(textbox).bind('change keyup', function() {
+		                var options = $(select).empty().data('options');
+		                var search = $(this).val().trim();
+		                var regex = new RegExp(search,"gi");
+		              
+		                $.each(options, function(i) {
+		                    var option = options[i];
+		                    if(option.text.match(regex) !== null) {
+		                        $(select).append(
+		                           $('<option>').text(option.text).val(option.value)
+		                        );
+		                    }
+		                });
+		                if (selectSingleMatch === true && $(select).children().length === 1) {
+		                    $(select).children().get(0).selected = true;
+		                }
+		            });            
+		        });
+		    };
+
+		    $(function() {
+		        $('#referencia').filterByText($('#entrada'), true);
+		      
+		    });
+		    
+
+		</script>
 			</div>
 		</div>
 	</jsp:attribute>

@@ -70,7 +70,7 @@ public class InsumoDAO {
 	
 	public List<Map<String, Object>> consultarReferencias() {
 		
-		String sql = "select tps_referencia_codigo codigo, ts_referencia_presentacion presentacion," +
+		String sql = "select tps_referencia_codigo codigo, ts_referencia_descripcion descripcion, ts_referencia_presentacion presentacion," +
 					 " t_referencia_cantidad cantidad, ti_referencia_cantmini cantmini, td_referencia_fechacrea fechacrea from t_referencia";
 					 
 		
@@ -90,6 +90,14 @@ public class InsumoDAO {
 	public List<Map<String, Object>> consultarBodegas() {
 		
 		String sql = "select tps_bodega_codigo codigo, ts_bodega_nombre nombre from t_bodega";
+					 
+		
+		return jdbcInsumo.queryForList(sql);
+	}
+
+	public List<Map<String, Object>> consultarSubBodegas() {
+		
+		String sql = "select t_subbodega_codigo codigo, t_subbodega_nombre nombre from t_subbodega";
 					 
 		
 		return jdbcInsumo.queryForList(sql);
@@ -197,9 +205,9 @@ public class InsumoDAO {
 			}
 			int codigo = r.consultarConsecutivo("AJUSTEINVENTARIO");
 			//Insertamos el movimiento
-			Object[] argumentos4 = {insumo.getCodref(), insumo.getCantInsumos(), "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", insumo.getUsuaCrea()};
+			Object[] argumentos4 = {insumo.getCodref(), insumo.getCantInsumos(), "Agregado a " + insumo.getBodega(), "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", insumo.getUsuaCrea()};
 			
-			int[] tipos4 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+			int[] tipos4 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 			
 			String sql4 = prop.obtenerSQL("insumos.movimiento.insertar");
 			
@@ -209,6 +217,7 @@ public class InsumoDAO {
 			catch(DataAccessException dae) {
 				throw new SQLException(dae.getMessage() + "1");
 			}
+			r.actualizarConsecutivo("AJUSTEINVENTARIO", 1);
 		
 	}
 	
@@ -383,9 +392,10 @@ public class InsumoDAO {
 	}
 	
 	@Transactional(rollbackFor=DataAccessException.class)
-	public void actualizarInsumo(Insumo insumo) throws ExcepcionSQL, Exception {	
+	public void actualizarInsumo(Insumo insumo, String motivo) throws ExcepcionSQL, Exception {	
 
 			List<Insumo> l = consultarInsumo(insumo);
+			
 			//Actualizar tabla t_insumo
 			Object[] argumentos = {insumo.getBodega(), insumo.getCantInsumos(), insumo.getPrecioVent(), 
 									insumo.getUsuaModi(), insumo.getFechaModi(), insumo.getCodcaja(), insumo.getCodref() };
@@ -480,10 +490,23 @@ public class InsumoDAO {
 		
 			}
 			int codigo = r.consultarConsecutivo("AJUSTEINVENTARIO");
+			//definir leyenda en la tabla movimientos
+			if(!motivo.equals("Eliminado")){
+				if(((insumo.getCantInsumos() - l.get(0).getCantInsumos()) < 0)){
+	
+					motivo = "Retirado de "+l.get(0).getBodega()+" hasta "+motivo;
+				}
+				else{
+					motivo = "Agregado a "+l.get(0).getBodega();
+				}
+			}
+			else{
+				motivo = "Eliminado de "+l.get(0).getBodega();
+			}
 			//Insertamos el movimiento
-			Object[] argumentos4 = {insumo.getCodref(), insumo.getCantInsumos() - l.get(0).getCantInsumos(), "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", insumo.getUsuaModi()};
+			Object[] argumentos4 = {insumo.getCodref(), insumo.getCantInsumos() - l.get(0).getCantInsumos(), motivo, "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", insumo.getUsuaModi()};
 			
-			int[] tipos4 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+			int[] tipos4 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 			
 			String sql4 = prop.obtenerSQL("insumos.movimiento.insertar");
 			
@@ -493,5 +516,6 @@ public class InsumoDAO {
 			catch(DataAccessException dae) {
 				throw new SQLException(dae.getMessage() + "1");
 			}
+			r.actualizarConsecutivo("AJUSTEINVENTARIO", 1);
 	}
 }

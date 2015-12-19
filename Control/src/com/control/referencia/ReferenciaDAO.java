@@ -375,7 +375,7 @@ public class ReferenciaDAO {
 	}
 	
 	@Transactional(rollbackFor=SQLException.class)
-	public void insertarAjuste(String bodega, String referencia, int cantidad, String usuario) throws SQLException {
+	public void insertarAjuste(String bodega, String referencia, int cantidad, String usuario, String motivo) throws SQLException {
 		
 		//Establecemos el ajuste 
 		int codigo = consultarConsecutivo("AJUSTEINVENTARIO");
@@ -394,9 +394,21 @@ public class ReferenciaDAO {
 		}
 		
 		//Insertamos el movimiento
-		Object[] argumentos2 = {referencia, cantidad, "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", usuario};
+		if(!motivo.equals("Eliminado")){
+			if(((cantidad) < 0)){
+
+				motivo = "Retirado de "+bodega+" hasta "+motivo;
+			}
+			else{
+				motivo = "Agregado a "+bodega;
+			}
+		}
+		else{
+			motivo = "Eliminado de "+bodega;
+		}
+		Object[] argumentos2 = {referencia, cantidad, motivo, "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", usuario};
 		
-		int[] tipos2 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+		int[] tipos2 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 		
 		sql = prop.obtenerSQL("referencias.movimiento.insertar");
 		

@@ -18,7 +18,8 @@
 				          <th>Nro#</th>
 				          <th>Motivo</th>
 				          <th>Cantidad</th>
-				          <th>Observación</th>						          
+				          <th>Observación</th>
+				          <th>Proceso</th>					          
 				          <th>Usuario</th>
 				          <th>Fecha</th>
 				        </tr>
@@ -31,6 +32,7 @@
 							<td>${movimiento.id}</td>
 							<td>${movimiento.referencia}</td>
 							<td>+${movimiento.cantidad}</td>
+							<td>${movimiento.motivo }</td>
 							<td>${movimiento.observacion }</td>
 							<td>${movimiento.usuario }</td>
 							<td><fmt:formatDate value="${movimiento.fecha }" pattern="dd/MM/yyyy hh:mm:ss a" /></td>
@@ -42,6 +44,7 @@
 								<td>${movimiento.id}</td>
 								<td>${movimiento.referencia}</td>
 								<td>${movimiento.cantidad}</td>
+								<td>${movimiento.motivo }</td>
 								<td>${movimiento.observacion }</td>
 								<td>${movimiento.usuario }</td>
 								<td><fmt:formatDate value="${movimiento.fecha }" pattern="dd/MM/yyyy hh:mm:ss a" /></td>

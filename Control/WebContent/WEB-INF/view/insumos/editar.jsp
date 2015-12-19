@@ -42,9 +42,14 @@
 			       	
 			       		<tr>
 			       			<td><strong>Cantidad disponible:</strong></td>
-			       			<td><input class="uppercase numeric" name="cantInsumos" placeholder="${insumo.cantInsumos}" required type="number" value="${insumo.cantInsumos}"></td>
-			       			<td></td>
-			       			<td></td>
+			       			<td><input class="uppercase numeric" name="cantInsumos" placeholder="${insumo.cantInsumos}" required type="number" min="0" value="${insumo.cantInsumos}"></td>
+			       			<td><strong>Motivo: </strong></td>
+			       			<td><select name="motivo" tabindex="2">
+			       					<option selected value="OTROS">OTROS</option>
+			       					<c:forEach items="${subbodegas}" var="subbodega">
+			       							<option value="${subbodega.codigo}">Mover a ${subbodega.nombre}</option>
+			       					</c:forEach>
+			       				</select></td>
 			       		</tr>
 			       		
 			       		<tr>

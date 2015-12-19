@@ -44,21 +44,20 @@
 			<tr>
 		</c:if>
 	</tbody>
-		<c:if test="${(UserRol eq ('[ROLE_ADMINISTRADOR]')) }">
-				<td class="text-center">
-					<form action="${pageContext.request.contextPath}/referencias/eliminar_subbodega">
-						<input type=hidden name="codigo" value="${subbodega}" >
-						<button class="btn btn-danger" type="submit">Eliminar Sub-Bodega</button>
-					</form>
-				</td>
-		</c:if>
+
 </table>
+<c:if test="${(UserRol eq ('[ROLE_ADMINISTRADOR]')) }">
+		
+			<form action="${pageContext.request.contextPath}/referencias/eliminar_subbodega">
+				<input type=hidden name="codigo" value="${subbodega}" >
+				<button class="btn btn-danger" type="submit">Eliminar Sub-Bodega</button>
+			</form>
+		
+</c:if>
 <script src="${pageContext.request.contextPath}/js/jquery.filtertable.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 	       $('table').filterTable();
 	   });
-	} );
-	
+	} );	
 </script>
-</html>

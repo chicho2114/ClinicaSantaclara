@@ -44,13 +44,16 @@
 			<tr>
 		</c:if>
 	</tbody>
-				<td class="text-center">
-					<form action="${pageContext.request.contextPath}/referencias/eliminar_bodega">
-						<input type=hidden name="codigo" value="${bodega}" >
-						<button class="btn btn-danger" type="submit">Eliminar Bodega</button>
-					</form>
-				</td>
+				
+					
+				
 </table>
+<c:if test="${(UserRol eq ('[ROLE_ADMINISTRADOR]')) }">
+	<form action="${pageContext.request.contextPath}/referencias/eliminar_bodega">
+		<input type=hidden name="codigo" value="${bodega}" >
+		<button class="btn btn-danger" type="submit">Eliminar Bodega</button>
+	</form>
+</c:if>
 <script src="${pageContext.request.contextPath}/js/jquery.filtertable.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).ready(function() {

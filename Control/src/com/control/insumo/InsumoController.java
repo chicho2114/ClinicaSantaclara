@@ -311,6 +311,7 @@ public class InsumoController {
 		ModelMap modelo = new ModelMap();
 		modelo.put("insumo", l.get(0));
 		modelo.addAttribute("bodegas", i.consultarBodegas());
+		modelo.addAttribute("subbodegas", i.consultarSubBodegas());
 		modelo.addAttribute("refes", i.consultarReferenciasTerminadas());
 		modelo.addAttribute("ins", i.consultarInsumosVencidos());
 		modelo.addAttribute("UserRol", u.obtenerPermisos(Utils.obtenerUsuario(request)));
@@ -324,6 +325,7 @@ public class InsumoController {
 							@RequestParam(value="codcaja", required=true) String codcaja,
 							@RequestParam(value="codref", required=true) String codref,
 							@RequestParam(value="bodega", required=true) String bodega,
+							@RequestParam(value="motivo", required=true) String motivo,
 							@RequestParam(value="cantInsumos", required=true) Integer cantInsumos,
 							@RequestParam(value="precioVent", required=true) String precioVent) {
 		
@@ -338,7 +340,7 @@ public class InsumoController {
 		insumo.setFechaModi(new Date());
 		
 		try {
-				this.i.actualizarInsumo(insumo);
+				this.i.actualizarInsumo(insumo, motivo);
 				ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "El insumo ha sido modificado satisfactoriamente");
 			} catch (Exception e) {
 				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
@@ -359,10 +361,12 @@ public class InsumoController {
 		insumo.setCodcaja(codcaja);
 		insumo.setCodref(codref);
 		insumo.setBodega(bodega);
+		insumo.setUsuaModi(Utils.obtenerUsuario(request));
 		List<Insumo> l = i.consultarInsumo(insumo);
 		l.get(0).setCantInsumos(0);
+		l.get(0).setUsuaModi(Utils.obtenerUsuario(request));
 		try {
-				this.i.actualizarInsumo(l.get(0));
+				this.i.actualizarInsumo(l.get(0), "Eliminado");
 				ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "El insumo ha sido eliminado satisfactoriamente");
 			} catch (Exception e) {
 				ManejadorMensajes.agregarMensaje(request, TipoMensaje.ERROR, e.getMessage());
