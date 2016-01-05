@@ -76,9 +76,9 @@ public class ProveedorDAO {
 		//Establecemos el ajuste 
 				int codigo = r.consultarConsecutivo("AJUSTEPROVEEDOR");
 				//Insertamos el movimiento
-				Object[] argumentos2 = {proveedor.getCodigo(), 1, "AJUSTEPROVEEDOR" + codigo, "AJUSTEPROVEEDOR", proveedor.getUsuaCrea()};
+				Object[] argumentos2 = {proveedor.getCodigo(), 1, "Agregar Proveedor", "AJUSTEPROVEEDOR" + codigo, "AJUSTEPROVEEDOR", proveedor.getUsuaCrea()};
 				
-				int[] tipos2 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+				int[] tipos2 = {Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 				
 					String sql2 = prop.obtenerSQL("proveedores.movimiento.insertar");
 				

@@ -819,4 +819,20 @@ public class ReferenciaController {
 		}
 		return new Redireccion(map + "/crear_subbodega");
 	}
+	
+		@RequestMapping(value = map + "/vaciar_subbodega")
+	public ModelAndView vaciar_subbodega(HttpServletRequest request,
+										 HttpServletResponse response,
+										 @RequestParam(value="codref") String codref,
+										 @RequestParam(value="codsbb") String codsbb) {
+		
+		try {
+			r.vaciarSubBodega(codref, codsbb);
+			ManejadorMensajes.agregarMensaje(request, TipoMensaje.EXITO, "Insumos de Sub-Bodega eliminados satisfactoriamente");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new Redireccion(map + "/crear_subbodega");
+	}
 }

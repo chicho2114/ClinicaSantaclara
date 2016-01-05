@@ -190,11 +190,28 @@ public class InsumoDAO {
 			}
 			
 			//Insertar cantidad de insumos en bodega
-			Object[] argumentos3 = {  insumo.getCantInsumos(), insumo.getUsuaModi(), insumo.getFechaModi(),  
+			Object[] argumentos3 = {  insumo.getCantInsumos(), insumo.getUsuaCrea(), insumo.getFechaCrea(),  
 										insumo.getBodega(), insumo.getCodref(),};
 			
+			if(r.consultarReferenciaEnBodega(insumo.getBodega(), insumo.getCodref())==0){
+				//Insertar referencia en bodega
+				Object[] argumentos4 = {insumo.getBodega(), insumo.getCodref(), 
+										insumo.getUsuaCrea(), insumo.getFechaCrea()};
+				
+				int[] tipo4 = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP};
+						
+				String sql4 = prop.obtenerSQL("insumos.insertar.en.bodega");
+				
+				try {
+					jdbcInsumo.update(sql4, argumentos4, tipo4);
+				}
+				catch(DataAccessException dae) {
+					throw new Exception(dae.getCause());
+				}
+			}
+
 			int[] tipo3 = { Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR, Types.VARCHAR  };
-					
+			
 			String sql3 = prop.obtenerSQL("insumos.actualizarBodegaInsumo");
 			
 			try {
@@ -203,6 +220,9 @@ public class InsumoDAO {
 			catch(DataAccessException dae) {
 				throw new Exception(dae.getCause());
 			}
+			
+			
+
 			int codigo = r.consultarConsecutivo("AJUSTEINVENTARIO");
 			//Insertamos el movimiento
 			Object[] argumentos4 = {insumo.getCodref(), insumo.getCantInsumos(), "Agregado a " + insumo.getBodega(), "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", insumo.getUsuaCrea()};
@@ -489,7 +509,34 @@ public class InsumoDAO {
 				}
 		
 			}
-			int codigo = r.consultarConsecutivo("AJUSTEINVENTARIO");
+			if(!motivo.equals("OTROS")){
+				if(consultarSubBodegasCreadas(motivo, insumo.getCodref())==0){
+					Object[] argumentos5 = {motivo, insumo.getCodref(), insumo.getUsuaModi(), new Date()};
+					
+					int[] tipos5 = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE};
+					
+					String sql5 = prop.obtenerSQL("insumos.insertar.en.subbodega");
+					
+					try {
+						jdbcInsumo.update(sql5, argumentos5, tipos5);
+					}
+					catch(DataAccessException dae) {
+						throw new SQLException(dae.getMessage() + "1");
+					}
+				}
+				Object[] argumentos5 = {motivo, insumo.getCodref(), l.get(0).getCantInsumos() - insumo.getCantInsumos(), insumo.getUsuaModi(), new Date(), motivo, insumo.getCodref(),};
+				
+				int[] tipos5 = {Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.DATE, Types.VARCHAR, Types.VARCHAR};
+				
+				String sql5 = prop.obtenerSQL("insumos.actualizar.subbodega");
+				
+				try {
+					jdbcInsumo.update(sql5, argumentos5, tipos5);
+				}
+				catch(DataAccessException dae) {
+					throw new SQLException(dae.getMessage() + "1");
+				}
+			}
 			//definir leyenda en la tabla movimientos
 			if(!motivo.equals("Eliminado")){
 				if(((insumo.getCantInsumos() - l.get(0).getCantInsumos()) < 0)){
@@ -503,6 +550,8 @@ public class InsumoDAO {
 			else{
 				motivo = "Eliminado de "+l.get(0).getBodega();
 			}
+			
+			int codigo = r.consultarConsecutivo("AJUSTEINVENTARIO");
 			//Insertamos el movimiento
 			Object[] argumentos4 = {insumo.getCodref(), insumo.getCantInsumos() - l.get(0).getCantInsumos(), motivo, "AJUSTEINVENTARIO" + codigo, "AJUSTEINVENTARIO", insumo.getUsuaModi()};
 			
@@ -517,5 +566,16 @@ public class InsumoDAO {
 				throw new SQLException(dae.getMessage() + "1");
 			}
 			r.actualizarConsecutivo("AJUSTEINVENTARIO", 1);
+	}
+	
+	public int consultarSubBodegasCreadas(String codigoSubBod, String codigoRef){
+		
+		Object[] argumentos = {codigoSubBod, codigoRef};
+		
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR};
+		
+		String sql = "select count(*) from t_inventario_subbodega where t_subbodega_codigo = ? AND t_referencia_codigo = ?";
+		
+		return jdbcInsumo.queryForInt(sql, argumentos, tipos);
 	}
 }

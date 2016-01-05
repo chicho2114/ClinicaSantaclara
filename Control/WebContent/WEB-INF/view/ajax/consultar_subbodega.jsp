@@ -12,13 +12,8 @@
 			<th>
 				Cantidad
 			</th>
-			<c:if test="${referencias.isEmpty()}">
 			<th>
-				Operar
-			</th>
-			</c:if>
-			<th>
-				Ver
+			    Operar
 			</th>
 		</tr>
 	</thead>
@@ -27,7 +22,11 @@
 			<tr>
 				<td>${referencia.referencia} - ${referencia.presentacion} - ${referencia.descripcion}</td>
 				<td>${referencia.cantidad}</td>
-				<td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${referencia.referencia}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
+				<td><form action="${pageContext.request.contextPath}/referencias/vaciar_subbodega">
+						<input type=hidden name="codref" value="${referencia.referencia}" >
+						<input type=hidden name="codsbb" value="${subbodega}" >
+						<button class="btn btn-small btn-danger" type="submit">Eliminar</button>
+					</form></td>
 			<tr>
 		</c:forEach>
 		<c:if test="${referencias.isEmpty() }">
@@ -36,11 +35,11 @@
 				<td><p class="text-error">0</p></td>
 				<td class="text-center">
 					<form action="${pageContext.request.contextPath}/referencias/eliminar_subbodega">
-						<input type=hidden name="codigo" value="${subbodega}" >
+						<input type=hidden name="codref" value="${referencia.referencia}" >
+						<input type=hidden name="codsbb" value="${subbodega}" >
 						<button class="btn btn-small btn-danger" type="submit">Eliminar</button>
 					</form>
 				</td>
-				<td><a href="${pageContext.request.contextPath}/referencias/ver?codigo=${referencia.referencia}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
 			<tr>
 		</c:if>
 	</tbody>

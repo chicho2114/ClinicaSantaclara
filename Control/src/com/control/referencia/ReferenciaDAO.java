@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.control.general.ExcepcionSQL;
 import com.control.general.Propiedades;
+import com.control.insumo.InsumoDAO;
 
 public class ReferenciaDAO {
 	
@@ -28,6 +29,9 @@ public class ReferenciaDAO {
 	public ReferenciaDAO() throws IOException {
 		prop = new Propiedades("referencias.properties");
 	}
+	
+	@Autowired
+	private InsumoDAO i;
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
@@ -330,6 +334,17 @@ public class ReferenciaDAO {
 		return jdbcReferencia.queryForList(sql, argumentos, tipos);
 	}
 	
+	public int consultarReferenciaEnBodega(String codigoBod, String codigoRef) {
+		
+		Object[] argumentos = {codigoBod, codigoRef};
+		
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR};
+		
+		String sql = "select count(*) from t_inventario_bodega where tpfs_invebode_bodega = ? AND tpfs_invebode_referencia = ?";
+		
+		return jdbcReferencia.queryForInt(sql, argumentos, tipos);
+	}
+	
 	public List<Map<String, Object>> consultarInventarioReferencia(Referencia referencia) {
 		
 		Object[] argumentos = {referencia.getCodigo()};
@@ -391,6 +406,34 @@ public class ReferenciaDAO {
 		}
 		catch(DataAccessException dae) {
 			throw new SQLException(dae.getMessage());
+		}
+		if(!motivo.equals("OTROS")){
+			if(i.consultarSubBodegasCreadas(motivo, referencia)==0){
+				Object[] argumentos5 = {motivo, referencia, usuario, new Date()};
+				
+				int[] tipos5 = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE};
+				
+				String sql5 = prop.obtenerSQL("referencias.insertar.en.subbodega");
+				
+				try {
+					jdbcReferencia.update(sql5, argumentos5, tipos5);
+				}
+				catch(DataAccessException dae) {
+					throw new SQLException(dae.getMessage() + "1");
+				}
+			}
+			Object[] argumentos5 = {motivo, referencia, -cantidad, usuario, new Date(), motivo, referencia,};
+			
+			int[] tipos5 = {Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.DATE, Types.VARCHAR, Types.VARCHAR};
+			
+			String sql5 = prop.obtenerSQL("referencias.actualizar.subbodega");
+			
+			try {
+				jdbcReferencia.update(sql5, argumentos5, tipos5);
+			}
+			catch(DataAccessException dae) {
+				throw new SQLException(dae.getMessage() + "1");
+			}
 		}
 		
 		//Insertamos el movimiento
@@ -631,6 +674,37 @@ public class ReferenciaDAO {
 		int[] tipos = {Types.VARCHAR};
 		
 		String sql = prop.obtenerSQL("referencias.eliminarSubBodega");
+		
+		try {
+			jdbcReferencia.update(sql, argumentos, tipos);
+		}
+		catch(DataAccessException dae) {
+			throw new Exception(dae.getCause());
+		}
+	}
+	
+	public List<Map<String, Object>> consultarSubBodega(String codSubBod, String codRef) {
+		
+		Object[] argumentos = {codSubBod, codRef};
+		
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR};
+		
+		String sql = "SELECT t_subbodega.t_subbodega_nombre nombre, t_inventario_subbodega.t_subbodega_codigo subbodega, t_inventario_subbodega.t_referencia_codigo codref, t_inventario_subbodega.t_cantidad cantidad " +
+				 	 "FROM t_subbodega INNER JOIN t_inventario_subbodega "+ 
+				 	 "ON t_inventario_subbodega.t_subbodega_codigo = t_subbodega.t_subbodega_codigo " +
+				 	 "WHERE t_inventario_subbodega.t_subbodega_codigo = ? "+ 
+				 	 "and t_inventario_subbodega.t_referencia_codigo = ?";
+		
+		return jdbcReferencia.queryForList(sql, argumentos, tipos);
+	}
+	
+	public void vaciarSubBodega(String codref, String subbodega) throws Exception {
+		
+		Object[] argumentos = {codref, subbodega};
+		
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("referencias.vaciarSubBodega");
 		
 		try {
 			jdbcReferencia.update(sql, argumentos, tipos);
