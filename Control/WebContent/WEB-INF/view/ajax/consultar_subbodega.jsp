@@ -35,8 +35,7 @@
 				<td><p class="text-error">0</p></td>
 				<td class="text-center">
 					<form action="${pageContext.request.contextPath}/referencias/eliminar_subbodega">
-						<input type=hidden name="codref" value="${referencia.referencia}" >
-						<input type=hidden name="codsbb" value="${subbodega}" >
+						<input type=hidden name="codigo" value="${subbodega}" >
 						<button class="btn btn-small btn-danger" type="submit">Eliminar</button>
 					</form>
 				</td>

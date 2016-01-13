@@ -40,9 +40,20 @@
 		<script src="${pageContext.request.contextPath}/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script type="text/javascript">
+			var pepe;
+			function ini() {
+			  pepe = setTimeout('location="${pageContext.request.contextPath}/"',120000); // 5 segundos
+			}
+			function parar() {
+			  clearTimeout(pepe);
+			  pepe = setTimeout('location="${pageContext.request.contextPath}/"',120000); // 5 segundos
+			}
+		</script>
+		
 		<title>${title}</title>
 	</head>
-	<body>
+	<body onload="ini()" onkeypress="parar()" onmousemove="parar()" onclick="parar()">
 		<!-- Membrete y menú -->
 		<div class="container">
 			<div class="row">

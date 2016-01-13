@@ -509,7 +509,7 @@ public class InsumoDAO {
 				}
 		
 			}
-			if(!motivo.equals("OTROS")){
+			if((!motivo.equals("OTROS")) &&(!motivo.equals("Eliminado"))){
 				if(consultarSubBodegasCreadas(motivo, insumo.getCodref())==0){
 					Object[] argumentos5 = {motivo, insumo.getCodref(), insumo.getUsuaModi(), new Date()};
 					
