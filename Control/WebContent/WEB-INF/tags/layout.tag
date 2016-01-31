@@ -43,11 +43,11 @@
 		<script type="text/javascript">
 			var pepe;
 			function ini() {
-			  pepe = setTimeout('location="${pageContext.request.contextPath}/"',120000); // 5 segundos
+			  pepe = setTimeout('location="${pageContext.request.contextPath}/"',60000); // 5 segundos
 			}
 			function parar() {
 			  clearTimeout(pepe);
-			  pepe = setTimeout('location="${pageContext.request.contextPath}/"',120000); // 5 segundos
+			  pepe = setTimeout('location="${pageContext.request.contextPath}/"',60000); // 5 segundos
 			}
 		</script>
 		

@@ -16,6 +16,7 @@
 	<context:component-scan base-package="com.control.proveedor" />
 	<context:component-scan base-package="com.control.insumo" />
 	<context:component-scan base-package="com.control.usuario" />
+	<context:component-scan base-package="com.control.cliente" />
 	<mvc:annotation-driven /> 
 	
 	<mvc:annotation-driven/>
@@ -45,6 +46,9 @@
     	<property name="dataSource" ref="dataSource" />
     </bean>
     <bean name="jdbcInsumo" class="com.control.insumo.InsumoDAO">
+    	<property name="dataSource" ref="dataSource" />
+    </bean>    
+    <bean name="jdbcCliente" class="com.control.cliente.ClienteDAO">
     	<property name="dataSource" ref="dataSource" />
     </bean>
 	

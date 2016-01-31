@@ -35,6 +35,7 @@
 					      <li class="divider"></li>
 					      <li><a href="#agregados" data-toggle="tab"><i class="icon-plus"></i> Ultimos insumos agregados</a></li>
 					      <li><a href="#retirados" data-toggle="tab"><i class="icon-list"></i> Ultimos movimientos realizados</a></li>
+					      <li><a href="${pageContext.request.contextPath}/cliente/crear" ><i class="icon-plus"></i> Agregar Cliente Nuevo</a></li>
 					    </ul>
 			          </div>
 				          <div class="span8 ">
