@@ -12,7 +12,7 @@ public class Cliente implements Serializable {
 
 	private String nombre;
 	private String nacionalidad;
-	private Integer cedula;
+	private String cedula;
 	private String direccion;
 	private String telefono;
 	private Date fechacrea;
@@ -25,7 +25,7 @@ public class Cliente implements Serializable {
 
 		nombre = null;
 		nacionalidad = null;
-		setCedula(null);
+		cedula = null;
 		direccion = null;
 		telefono = null;
 		fechacrea = null;
@@ -34,11 +34,11 @@ public class Cliente implements Serializable {
 		fechamodi = null;
 	}
 	
-	public Cliente(String nombre, String nacionalidad, Integer cedula, String direccion, String telefono, Date fechacrea, String usuaCrea, Date fechamodi, String usuaModi){
+	public Cliente(String nombre, String nacionalidad, String cedula, String direccion, String telefono, Date fechacrea, String usuaCrea, Date fechamodi, String usuaModi){
 
 		this.nombre = nombre;
 		this.nacionalidad = nacionalidad;
-		this.setCedula(cedula);
+		this.cedula = cedula;
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.fechacrea = fechacrea;
@@ -96,10 +96,12 @@ public class Cliente implements Serializable {
 	public void setNacionalidad(String nacionalidad) {
 		this.nacionalidad = nacionalidad;
 	}
-	public Integer getCedula() {
+
+	public String getCedula() {
 		return cedula;
 	}
-	public void setCedula(Integer cedula) {
+
+	public void setCedula(String cedula) {
 		this.cedula = cedula;
 	}
 

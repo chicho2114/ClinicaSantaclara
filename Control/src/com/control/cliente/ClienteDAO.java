@@ -3,6 +3,7 @@ package com.control.cliente;
 import java.io.IOException;
 import java.sql.Types;
 import java.util.Date;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.control.general.ExcepcionSQL;
 import com.control.general.Propiedades;
+import com.control.referencia.ReferenciaDAO;
 
 public class ClienteDAO {
 	
@@ -23,6 +25,9 @@ public class ClienteDAO {
 		prop = new Propiedades("clientes.properties");
 		jdbcCliente = null;
 	}
+	
+	@Autowired
+	private ReferenciaDAO r;
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
@@ -43,7 +48,7 @@ public class ClienteDAO {
 		//Insertar en tabla de clientes
 		Object[] argumentos = {cliente.getCedula(), cliente.getNacionalidad(), cliente.getNombre(), cliente.getTelefono(), cliente.getDireccion(), cliente.getFechacrea(), cliente.getUsuaCrea()};
 		
-		int[] tipos = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
 					   Types.TIMESTAMP, Types.VARCHAR};
 		
 		String sql =  prop.obtenerSQL("clientes.insertar");
@@ -53,19 +58,31 @@ public class ClienteDAO {
 		}
 		catch(DataAccessException e) {
 			throw new ExcepcionSQL(e.getCause());
-		}
+		}	
+		
 		
 	}
 	
-	public int verificarCliente(Integer cedula) {
+	public int verificarCliente(String cedula) {
 		
 		Object[] argumentos = {cedula};
 		
-		int[] tipos = {Types.INTEGER};
+		int[] tipos = {Types.VARCHAR};
 		
 		String sql = prop.obtenerSQL("clientes.verificarCliente");
 		
 		return jdbcCliente.queryForInt(sql, argumentos, tipos);
+	}
+	
+	public List<Cliente> listarClientes(Cliente cliente) {
+		
+		Object[] argumentos = {cliente.getCedula()+"%", cliente.getNombre()+"%"};
+		
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("clientes.listar");
+		
+		return jdbcCliente.query(sql, argumentos, tipos, new ClienteMapper());
 	}
 	
 }

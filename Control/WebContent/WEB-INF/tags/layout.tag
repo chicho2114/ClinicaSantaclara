@@ -142,6 +142,12 @@
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/referencias/inventario_general_reporte">Consulta de Inventario General</a></li>
 											              	</ul>
 										            	</li>
+										            	<li class="dropdown">
+										              		<a href="#" id="drop4" class="dropdown-toggle text-warning" data-toggle="dropdown" >Clientes<b class="caret"></b></a>
+										              		<ul class="dropdown-menu">
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/cliente/crear">Crear Cliente</a></li>
+											                </ul>
+										            	</li>
 										          	</ul>
 										          	<ul class="nav pull-right">
 										            	<li id="fat-menu" class="dropdown warning text-warning">

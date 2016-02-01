@@ -19,21 +19,27 @@
 			       		<tr>
 			       			<td><strong>Nombre y apellido:</strong></td>
 			       			<td><input name="nombre" type="text" tabindex="1" required></td>
-			       		</tr>
-			       		<tr>
-							<td><strong>Cedula:</strong></td>
-							<td><input class="uppercase" name="cedula" type="text" tabindex="2"></td>
+			       			<td><strong>Cedula:</strong></td>
+							<td><select name="nacionalidad" class="span2">
+									  <option value="V">V</option>
+									  <option value="E">E</option>
+								</select><input class="uppercase numeric" name="cedula" type="text" tabindex="2" required></td>
+							
 			       		</tr>
 			       		<tr>
 			       			<td><strong>Telefono:</strong></td>
-			       			<td><input class="uppercase numeric" name="telefono" type=text tabindex="3"></td>
+			       			<td><input class="uppercase numeric" name="telefono" type=text tabindex="3" required></td>
+			       			<td><strong>Direccion:</strong></td>
+			       			<td><textarea class="uppercase" name="direccion" rows="2" cols="120" tabindex="4" required></textarea></td>
 			       		</tr>
 			       		<tr>
-			       			<td><strong>Direccion:</strong></td>
-			       			<td><textarea class="uppercase" name="direccion" rows="2" cols="75" tabindex="4"></textarea></td>
+			       			
 			       		</tr>
 					</table>
 					<input type="submit" class="btn btn-primary" value="Crear" tabindex="8">
+				</form>
+				<form action="${pageContext.request.contextPath}/cliente/buscar_cliente">
+					<input type="submit" class="btn btn-info" value="Buscar Cliente" tabindex="8">
 				</form>
 					</c:when>
 	<c:otherwise>

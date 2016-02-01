@@ -13,7 +13,7 @@ public class ClienteMapper implements RowMapper<Cliente> {
 		
 		Cliente c = new Cliente();
 		
-		c.setCedula(rs.getInt("cedula"));
+		c.setCedula(rs.getString("cedula"));
 		c.setNombre(rs.getString("nombre"));
 		c.setNacionalidad(rs.getString("nacionalidad"));
 		c.setDireccion(rs.getString("direccion"));
