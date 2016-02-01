@@ -19,17 +19,23 @@
 					<table class="table table-striped">
 						<tr>
 							<td><strong>Cedula:</strong></td>
-							<td><input class="uppercase numeric" name="codigo" type="text" size="50" tabindex = "1"/></td>
+							<td><select name="nacionalidad" class="span2">
+									  <option value=""></option>
+									  <option value="V">V</option>
+									  <option value="E">E</option>
+								</select><input class="uppercase numeric" name="cedula" type="text" size="50" tabindex = "1"/></td>
 						</tr>
 						<tr>
 							<td><strong>Nombre:</strong></td>
-							<td><input name="descripcion" type="text" size="50" tabindex = "2"/></td>
+							<td><input name="nombre" type="text" size="50" tabindex = "2"/></td>
 						</tr>
 					</table>
-					<input type="submit" class="btn btn-primary" value="Buscar" />
+					 <!--<input type="submit" class="btn btn-primary" value="Buscar" />-->
+					<button class="btn btn-primary" type="submit">Buscar <i class="icon-search"></i></button>
 				</form>
 				<form action="${pageContext.request.contextPath}/cliente/crear">
-					<input type="submit" class="btn btn-info" value="Crear cliente" />
+					<!--<input type="submit" class="btn btn-info" value="Crear cliente" /> -->
+					<button class="btn btn-info" type="submit">Crear cliente <i class="icon-edit"></i></button>
 				</form>
 					
 				<t:regresar></t:regresar>

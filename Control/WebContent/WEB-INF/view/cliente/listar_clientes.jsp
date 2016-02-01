@@ -11,7 +11,7 @@
 			<div class="row-fluid">
 				<h1>Resultados de consulta</h1>
 				<a href="#" onClick ="$('#consulta').tableExport({type:'excel',escape:'false',});"><img src="${pageContext.request.contextPath}/images/icon_excel.png" /></a>
-				<table class="table table-striped table-hover" id="consulta">
+				<table class="table table-striped table-hover table-bordered" id="consulta">
 					<thead>
 						<tr>
 			         			<th>Nombre</th>
@@ -19,6 +19,7 @@
 			         			<th>Telefono</th>
 			         			<th>Fecha de creación</th>
 			         			<th>Usuario de creación</th>
+			         			<th>Fecha de modificacion</th>
 			         			<th>Ver</th>
 			       		</tr>
 		       		</thead>
@@ -28,11 +29,16 @@
 							<td>${cliente.nacionalidad} - ${cliente.cedula}</td>
 							<td>${cliente.telefono}</td>
 							<td><fmt:formatDate value="${cliente.fechacrea}" pattern="dd/MM/yyyy hh:mm a" /></td>
-							<td>${cliente.usuacrea}</td>
-							<td><a href="${pageContext.request.contextPath}/cliente/ver?codigo=${cliente.codigo}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
+							<td>${cliente.usuaCrea}</td>
+							<td><fmt:formatDate value="${cliente.fechamodi}" pattern="dd/MM/yyyy hh:mm a" /></td>
+							<td><a href="${pageContext.request.contextPath}/cliente/ver?C=${cliente.cedula}&N=${cliente.nacionalidad}"><img src="${pageContext.request.contextPath}/images/buscar.png" /></a></td>
 						</tr>
 					</c:forEach>
 				</table>
+				<form action="${pageContext.request.contextPath}/cliente/buscar_cliente" method="post">
+					<button class="btn btn-info" type="submit">Regresar <i class="icon-arrow-left"></i></button>
+				</form>
+				
 				<t:regresar></t:regresar>
 				<script src="${pageContext.request.contextPath}/js/jquery.filtertable.min.js" type="text/javascript"></script>
 				<script type="text/javascript">

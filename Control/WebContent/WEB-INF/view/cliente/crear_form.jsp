@@ -36,10 +36,12 @@
 			       			
 			       		</tr>
 					</table>
-					<input type="submit" class="btn btn-primary" value="Crear" tabindex="8">
+					<!--  <input type="submit" class="btn btn-primary" value="Crear" tabindex="5">-->
+					<button class="btn btn-primary" type="submit" tabindex="5">Crear <i class="icon-edit"></i></button>
 				</form>
 				<form action="${pageContext.request.contextPath}/cliente/buscar_cliente">
-					<input type="submit" class="btn btn-info" value="Buscar Cliente" tabindex="8">
+					<!--  <input type="submit" class="btn btn-info" value="Buscar Cliente" tabindex="6">-->
+					<button class="btn btn-info" tabindex="6" type="submit">Buscar Cliente <i class="icon-search"></i></button>
 				</form>
 					</c:when>
 	<c:otherwise>

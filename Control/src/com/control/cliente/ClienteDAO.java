@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.control.general.ExcepcionSQL;
 import com.control.general.Propiedades;
-import com.control.referencia.ReferenciaDAO;
 
 public class ClienteDAO {
 	
@@ -26,8 +25,6 @@ public class ClienteDAO {
 		jdbcCliente = null;
 	}
 	
-	@Autowired
-	private ReferenciaDAO r;
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
@@ -76,13 +73,52 @@ public class ClienteDAO {
 	
 	public List<Cliente> listarClientes(Cliente cliente) {
 		
-		Object[] argumentos = {cliente.getCedula()+"%", cliente.getNombre()+"%"};
+		Object[] argumentos = {cliente.getCedula()+"%", cliente.getNombre()+"%", cliente.getNacionalidad()+"%"};
 		
-		int[] tipos = {Types.VARCHAR, Types.VARCHAR};
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 		
 		String sql = prop.obtenerSQL("clientes.listar");
 		
 		return jdbcCliente.query(sql, argumentos, tipos, new ClienteMapper());
 	}
 	
+	public List<Cliente> encontrarCliente(Cliente cliente) {
+		
+		Object[] argumentos = {cliente.getCedula(), cliente.getNacionalidad()};
+		
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR};
+		
+		String sql = prop.obtenerSQL("clientes.encontrar");
+		
+		return jdbcCliente.query(sql, argumentos, tipos, new ClienteMapper());
+	}
+	
+	//-------------------------------------ACTUALIZAR CLIENTE----------------------------------------
+	
+	@Transactional(rollbackFor=DataAccessException.class)
+	public void actualizarCliente(Cliente cliente, String cedulaOriginal, String nacionalOriginal) throws ExcepcionSQL, Exception {
+		
+		if(verificarCliente(cliente.getCedula()) > 0) {		
+			
+			//Insertar en tabla de cliente
+			Object[] argumentos = {cliente.getCedula(), cliente.getNacionalidad(), cliente.getNombre(), 
+									cliente.getTelefono(), cliente.getDireccion(), cliente.getUsuaModi(), 
+									cliente.getFechamodi(), cedulaOriginal, nacionalOriginal};
+			
+			int[] tipos = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, 
+							Types.VARCHAR, Types.VARCHAR,  Types.VARCHAR,
+						   Types.TIMESTAMP,  Types.VARCHAR, Types.VARCHAR};
+			
+			String sql =  prop.obtenerSQL("clientes.actualizar");
+			
+			try {
+				jdbcCliente.update(sql, argumentos, tipos);
+			}
+			catch(DataAccessException e) {
+				throw new ExcepcionSQL(e.getCause());
+			}
+		}
+		
+	}
+	//-------------------------------------FIN ACTUALIZAR CLIENTE------------------------------------
 }

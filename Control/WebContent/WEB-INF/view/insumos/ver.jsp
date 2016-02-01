@@ -64,7 +64,7 @@
 	
 					</table>
 					<c:if test="${!(UserRol eq ('[ROLE_NOUSUARIO]')) }">
-						<input type="submit" class="btn btn-primary" value="Editar" tabindex="8">
+						<button class="btn btn-primary" type="submit">Editar Cliente</button>
 					</c:if>
 				</form>
 				
