@@ -34,7 +34,7 @@ public class ClienteDAO {
 	@Transactional(rollbackFor=DataAccessException.class)
 	public void insertarCliente(Cliente cliente) throws ExcepcionSQL, Exception {
 		
-		if(verificarCliente(cliente.getCedula()) > 0) {
+		if(verificarCliente(cliente.getCedula(), cliente.getNacionalidad()) > 0) {
 			throw new Exception("Este cliente ya existe en el sistema!");
 		}
 		
@@ -60,11 +60,11 @@ public class ClienteDAO {
 		
 	}
 	
-	public int verificarCliente(String cedula) {
+	public int verificarCliente(String cedula, String nacionalidad) {
 		
-		Object[] argumentos = {cedula};
+		Object[] argumentos = {cedula, nacionalidad};
 		
-		int[] tipos = {Types.VARCHAR};
+		int[] tipos = {Types.VARCHAR, Types.VARCHAR};
 		
 		String sql = prop.obtenerSQL("clientes.verificarCliente");
 		
@@ -98,7 +98,7 @@ public class ClienteDAO {
 	@Transactional(rollbackFor=DataAccessException.class)
 	public void actualizarCliente(Cliente cliente, String cedulaOriginal, String nacionalOriginal) throws ExcepcionSQL, Exception {
 		
-		if(verificarCliente(cliente.getCedula()) > 0) {		
+		if(verificarCliente(cliente.getCedula(), cliente.getNacionalidad()) > 0) {		
 			
 			//Insertar en tabla de cliente
 			Object[] argumentos = {cliente.getCedula(), cliente.getNacionalidad(), cliente.getNombre(), 

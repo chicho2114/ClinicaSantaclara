@@ -49,6 +49,9 @@
 						<button class="btn btn-primary" type="submit">Editar <i class="icon-edit"></i></button>
 					</c:if>
 				</form>
+				<form action="#" method="post">
+					<button class="btn btn-success" type="submit" disabled>Agregar cita <i class="icon-plus-sign"></i></button>
+				</form>
 				<form action="${pageContext.request.contextPath}/cliente/listar" method="post">
 					<button class="btn btn-info" type="submit">Regresar <i class="icon-arrow-left"></i></button>
 				</form>

@@ -148,6 +148,12 @@
 											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/cliente/crear">Crear Cliente</a></li>
 											                </ul>
 										            	</li>
+										            	<li class="dropdown">
+										              		<a href="#" id="drop4" class="dropdown-toggle text-warning" data-toggle="dropdown" >Medicos<b class="caret"></b></a>
+										              		<ul class="dropdown-menu">
+											                	<li><a tabindex="-1" href="${pageContext.request.contextPath}/medico/crear">Crear Medico</a></li>
+											                </ul>
+										            	</li>
 										          	</ul>
 										          	<ul class="nav pull-right">
 										            	<li id="fat-menu" class="dropdown warning text-warning">
